@@ -1,9 +1,9 @@
 <template>
-  <RouterView />
+  <BrandManagement />
 </template>
 
 <script lang="ts" setup>
-import './scss/sweetalert/sweetalert2.scss'
+import BrandManagement from '../../components/management/BrandManagement.vue'
 </script>
 
 <style lang="scss" scoped>

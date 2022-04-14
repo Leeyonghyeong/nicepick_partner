@@ -1,9 +1,9 @@
 <template>
-  <RouterView />
+  <PremiumPay />
 </template>
 
 <script lang="ts" setup>
-import './scss/sweetalert/sweetalert2.scss'
+import PremiumPay from '../../components/pay/PremiumPay.vue'
 </script>
 
 <style lang="scss" scoped>

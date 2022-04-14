@@ -1,9 +1,9 @@
 <template>
-  <RouterView />
+  <SignUp />
 </template>
 
 <script lang="ts" setup>
-import './scss/sweetalert/sweetalert2.scss'
+import SignUp from '../../components/auth/signup/SignUp.vue'
 </script>
 
 <style lang="scss" scoped>

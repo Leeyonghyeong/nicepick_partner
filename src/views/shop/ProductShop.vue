@@ -1,9 +1,9 @@
 <template>
-  <RouterView />
+  <ProductShop />
 </template>
 
 <script lang="ts" setup>
-import './scss/sweetalert/sweetalert2.scss'
+import ProductShop from '../../components/shop/ProductShop.vue'
 </script>
 
 <style lang="scss" scoped>

@@ -1,8 +1,6 @@
 <template>
   <div class="company-register">
-    <div class="company-register-top">
-      <div class="title">브랜드 관리자 회원가입</div>
-    </div>
+    <MobileHeader title="브랜드 관리자 회원가입" :back="true" :cart="false" />
     <div class="company-register-body">
       <!-- 사업자 번호 -->
       <div class="register-item">
@@ -290,13 +288,14 @@
       <button @click="rSubmit">가입하기</button>
     </div>
     <div class="close-register">
-      이미 가입하셨나요? <span @click="showOrcloseRegister">로그인하기</span>
+      이미 가입하셨나요? <span @click="router.push('/')">로그인하기</span>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import MobileHeader from '../../common/MobileHeader.vue'
 import { LargeCategory, SmallCategory } from '../../../types/category'
 import api from '../../../config/axios.config'
 import { toastAlert } from '../../../functions/alert'
@@ -307,14 +306,6 @@ interface BrandInfo {
   id: string
   brandName: string
   category: string
-}
-
-const emit = defineEmits<{
-  (e: 'showOrcloseRegister'): void
-}>()
-
-const showOrcloseRegister = () => {
-  emit('showOrcloseRegister')
 }
 
 const store = useStore()
@@ -394,7 +385,6 @@ const changeBrandCheck = (e: Event) => {
     inputBrandAuto.value = true
     companyName.value = ''
     ownerName.value = ''
-    // if (brandNameValidation.value) brandNameValidation.value.innerText = ''
 
     selectBrand.value.push(checkBoxEl.id)
     selectBrandNameArr.value.push(brandName)
@@ -590,26 +580,32 @@ const rSubmit = async () => {
     isActive: true, // 나중에 바꿔야 됨
   }
 
-  const register = await api.post('/auth/signup', payload)
-  const accessToken = register.data.accessToken
-  const user = register.data.user
-  const brand = register.data.brandId ? register.data.brandId : ''
+  const result = await api.post('/auth/signup', payload)
 
-  localStorage.setItem('accessToken', accessToken)
+  if (result.data.success) {
+    const accessToken = result.data.accessToken
+    const user = result.data.user
+    const brandId = result.data.brandId
 
-  const userData = {
-    userName: user.userName,
-    email: user.email,
-    role: user.role,
+    localStorage.setItem('accessToken', accessToken)
+
+    const userData = {
+      id: user.id,
+      userName: user.userName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+    }
+
+    store.commit('auth/updateState', {
+      user: userData,
+      isLogin: true,
+      brandId,
+    })
+
+    router.push('/management')
+  } else {
+    toastAlert(result.data.errorMessage)
   }
-
-  store.commit('auth/updateState', {
-    user: userData,
-    isLogin: true,
-    brand,
-  })
-
-  router.push('/company/login/success')
 }
 
 const getAllCategory = async () => {

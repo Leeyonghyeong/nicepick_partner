@@ -448,6 +448,8 @@ getPayCategory()
   }
 
   .pay-button {
+    position: sticky;
+    bottom: 10px;
     padding: 0 24px;
     margin-bottom: 20px;
     button {

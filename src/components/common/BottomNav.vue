@@ -27,7 +27,7 @@
       />
       <img v-else src="../../assets/nav/product.png" alt="광고상품" />
     </div>
-    <div class="nav-item">
+    <div class="nav-item" @click="router.push('/mypage')">
       <img src="../../assets/nav/mypage.png" alt="마이페이지" />
     </div>
   </nav>

@@ -142,6 +142,7 @@
   footer {
     height: 136px;
     overflow: hidden;
+    background-color: #fcfcfc;
     .footer-zone {
       height: 100%;
       display: flex;
@@ -201,6 +202,7 @@
 
 @include mobile {
   footer {
+    background-color: #fcfcfc;
     .footer-zone {
       display: flex;
       flex-direction: column-reverse;

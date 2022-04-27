@@ -7,6 +7,7 @@
         class="cart"
         src="../../assets/shop/cart.png"
         alt="cart"
+        @click="router.push('/cart')"
       />
       <img
         v-if="back"

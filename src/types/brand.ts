@@ -7,6 +7,7 @@ export interface Brand {
   brandImgKey: string
   webUrl: string
   brandPromotion: string
+  isPremium: boolean
   brandIntroImg: BrandIntroImg[]
   brandStartCostImg: BrandStartCostImg[]
   brandMenuImg: BrandMenuImg[]

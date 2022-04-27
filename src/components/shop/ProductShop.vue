@@ -58,6 +58,7 @@ const serviceType = ref<string>('premium')
         height: 50px;
         @include flex-center();
         font-size: 1.4rem;
+        cursor: pointer;
 
         &.active {
           background-color: #fff;

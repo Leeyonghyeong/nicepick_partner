@@ -11,7 +11,7 @@
       </div>
       <div class="noti">한달 후 정기결제 시작, 언제든 해지가능</div>
       <div class="start-button">
-        <button @click="router.push('/pay/premium')">한달 무료 시작하기</button>
+        <button @click="checkPremiumService">한달 무료 시작하기</button>
       </div>
     </div>
 
@@ -125,7 +125,7 @@
     </div>
 
     <div class="move-pay-button">
-      <button @click="router.push('/pay/premium')">한달 무료 시작하세요</button>
+      <button @click="checkPremiumService">한달 무료 시작하세요</button>
     </div>
   </div>
 </template>
@@ -135,9 +135,11 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { PayCategory, PayProduct } from '../../types/pay'
 import api from '../../config/axios.config'
-import { toastAlert } from '../../functions/alert'
+import { checkAlert, toastAlert } from '../../functions/alert'
+import { useStore } from 'vuex'
 
 const router = useRouter()
+const store = useStore()
 
 const qnaShow = ref<boolean[]>([false, false, false, false, false])
 const payCategory = ref<PayCategory[]>([])
@@ -156,6 +158,21 @@ const getPayCategory = async () => {
 
     if (payCategory.value) {
       isLoading.value = false
+    }
+  } else {
+    toastAlert(result.data.errorMessage)
+  }
+}
+
+const checkPremiumService = async () => {
+  const result = await api.get(`/pay/premium/${store.state.auth.brandId}`)
+
+  if (result.data.success) {
+    if (result.data.isPremium) {
+      checkAlert('무료서비스를 이미 사용하셨습니다')
+      return
+    } else {
+      router.push('/pay/premium')
     }
   } else {
     toastAlert(result.data.errorMessage)

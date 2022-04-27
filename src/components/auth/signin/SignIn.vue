@@ -26,7 +26,9 @@
             <button @click="signinSubmit">로그인</button>
           </div>
         </div>
-        <div class="find-password">비밀번호 찾기</div>
+        <div class="find-password" @click="router.push('/findpw')">
+          비밀번호 찾기
+        </div>
         <div class="signup-button">
           <button @click="router.push('/signup')">회원가입</button>
         </div>
@@ -153,6 +155,8 @@ const signinSubmit = async () => {
       isLogin: true,
       brandId,
     })
+
+    router.push('/management')
   } else {
     toastAlert(result.data.errorMessage)
 

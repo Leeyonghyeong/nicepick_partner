@@ -1,12 +1,11 @@
 import { Module } from 'vuex'
 import { RootState } from '.'
-import { BrandList, User } from '../types/auth'
+import { User } from '../types/auth'
 
 export interface AuthModuleState {
   user: User
   isLogin: boolean
   brandId: string
-  brandList: BrandList[]
 }
 
 export const authModule: Module<AuthModuleState, RootState> = {
@@ -16,7 +15,6 @@ export const authModule: Module<AuthModuleState, RootState> = {
     user: {} as User,
     isLogin: false,
     brandId: '',
-    brandList: [],
   }),
 
   mutations: {

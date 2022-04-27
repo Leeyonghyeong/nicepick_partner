@@ -6,10 +6,3 @@ export interface User {
   isEmail: string
   isSMS: string
 }
-
-export interface BrandList {
-  id: string
-  brandName: string
-  brandLogoImg: string
-  smallCategoryName: string
-}

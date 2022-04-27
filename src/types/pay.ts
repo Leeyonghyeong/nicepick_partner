@@ -7,6 +7,8 @@ export interface PayProduct {
   id: string
   productName: string
   productImg: string
+  productMobileImg: string
+  productNoti: string
   payTermPrice: PayTermPrice[]
   selectTermPrice: PayTermPrice
   payType: string
@@ -15,7 +17,7 @@ export interface PayProduct {
 
 export interface PayTermPrice {
   id: string
-  term: string
+  term: number
   price: number
   sale: number
   payProductId: string

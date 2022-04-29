@@ -1,18 +1,39 @@
 <template>
   <div class="ad-service">
     <img
-      src="../../assets/shop/hotclip.png"
+      src="../../assets/shop/hotclip_mobile.png"
       alt="브랜드 핫클립"
+      class="mobile"
       @click="moveProductPage('브랜드 핫클립')"
     />
     <img
-      src="../../assets/shop/brand.png"
+      src="../../assets/shop/hotclip_pc.png"
+      alt="브랜드 핫클립"
+      class="pc"
+      @click="moveProductPage('브랜드 핫클립')"
+    />
+    <img
+      src="../../assets/shop/brand_mobile.png"
       alt="유망브랜드"
+      class="mobile"
       @click="moveProductPage('유망브랜드')"
     />
     <img
-      src="../../assets/shop/search.png"
+      src="../../assets/shop/brand_pc.png"
+      alt="유망브랜드"
+      class="pc"
+      @click="moveProductPage('유망브랜드')"
+    />
+    <img
+      src="../../assets/shop/search_mobile.png"
       alt="검색페이지 상위노출"
+      class="mobile"
+      @click="moveProductPage('검색상단 노출')"
+    />
+    <img
+      src="../../assets/shop/search_pc.png"
+      alt="검색페이지 상위노출"
+      class="pc"
       @click="moveProductPage('검색상단 노출')"
     />
   </div>
@@ -55,9 +76,31 @@ getProduct()
 <style lang="scss" scoped>
 @import '@/scss/main';
 
+@include desktop {
+  .ad-service {
+    @include pc-container();
+    margin-top: 130px;
+    margin-bottom: 190px;
+    display: flex;
+    justify-content: space-between;
+
+    .mobile {
+      display: none;
+    }
+
+    img {
+      cursor: pointer;
+    }
+  }
+}
+
 @include mobile {
   .ad-service {
     margin-top: 24px;
+
+    .pc {
+      display: none;
+    }
 
     img {
       width: 100%;

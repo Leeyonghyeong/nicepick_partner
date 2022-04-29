@@ -13,3 +13,11 @@ export const dateFormat = (date: string) => {
 
   return `${year}.${month}.${day}`
 }
+
+export const calcOriginPrice = (price: number, sale: number) => {
+  const calcSale = 1 - sale / 100
+
+  const originPrice = price / calcSale
+
+  return originPrice.toLocaleString()
+}

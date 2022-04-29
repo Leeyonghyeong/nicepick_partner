@@ -1,5 +1,6 @@
 <template>
-  <div class="bottom-cart">
+  <!-- mobile -->
+  <div class="bottom-cart mobile">
     <div class="select-term-price">
       <div class="top">상품을 선택해주세요(중복선택 불가능)</div>
       <div class="product-item" v-for="item in payTermPrice" :key="item.id">
@@ -8,7 +9,7 @@
             v-model="selectProduct"
             type="radio"
             :id="item.id"
-            name="product"
+            name="product_mobile"
             :value="item"
             @change="changeProduct"
           />
@@ -32,19 +33,75 @@
       <button @click="movePay">결제하기</button>
     </div>
   </div>
+  <!-- mobile -->
+
+  <!-- desktop -->
+  <div class="bottom-cart desktop">
+    <div class="select-term-price">
+      <div class="product-item" v-for="item in payTermPrice" :key="item.id">
+        <div class="input-zone">
+          <label :for="item.id">
+            {{ item.payProductName }}({{ item.term }}일)
+          </label>
+          <input
+            v-model="selectProduct"
+            type="radio"
+            :id="item.id"
+            name="product_desktop"
+            :value="item"
+            @change="changeProduct"
+          />
+        </div>
+        <div class="price-zone">
+          <div class="price-zone-item">
+            <div>광고기간</div>
+            <div>{{ item.term }}일</div>
+          </div>
+          <div class="price-zone-item">
+            <div>
+              비용<span
+                >(<span v-if="item.sale > 0">{{ item.sale }}% DC, </span
+                >부가세별도)</span
+              >
+            </div>
+            <div v-if="item.sale > 0" class="origin">
+              {{ calcOriginPrice(item.price, item.sale) }} 원
+            </div>
+            <div v-else>{{ item.price.toLocaleString() }} 원</div>
+            <div class="sale-price" v-if="item.sale > 0">
+              {{ item.price.toLocaleString() }} 원
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cart">
+      <div class="pay-price">
+        <div>선택상품 합계 비용 :</div>
+        <div id="price">
+          {{ totalPrice.toLocaleString() }}원<span>(부가세포함)</span>
+        </div>
+      </div>
+      <div class="cart-button">
+        <button @click="addCart">장바구니</button>
+        <button @click="movePay">결제하기</button>
+      </div>
+    </div>
+  </div>
+  <!-- desktop -->
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { PayProduct, PayTermPrice } from '../../../types/pay'
+import { PayTermPrice } from '../../../types/pay'
 import api from '../../../config/axios.config'
 import { toastAlert } from '../../../functions/alert'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { calcOriginPrice } from '../../../functions/commons'
 
 defineProps<{
   payTermPrice: PayTermPrice[]
-  payProduct: PayProduct | undefined
 }>()
 
 const store = useStore()
@@ -131,10 +188,140 @@ const movePay = () => {
 <style lang="scss" scoped>
 @import '@/scss/main';
 
+@include desktop {
+  .bottom-cart {
+    margin-top: 109px;
+    &.mobile {
+      display: none;
+    }
+
+    .select-term-price {
+      @include pc_container();
+      display: flex;
+      justify-content: center;
+      margin-bottom: 158px;
+
+      .product-item {
+        width: 424px;
+        height: 265px;
+        border: 1px solid #dcdcdc;
+        margin: 0 5px;
+
+        .input-zone {
+          height: 105px;
+          padding: 0 52px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 2.4rem;
+          color: #353535;
+          background-color: #f2f4f6;
+          box-sizing: border-box;
+          border-bottom: 1px solid #dcdcdc;
+
+          input[type='radio'] {
+            width: 38px;
+            height: 37px;
+          }
+        }
+
+        .price-zone {
+          padding: 45px 52px;
+
+          .price-zone-item {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 13px;
+            font-size: 2rem;
+            color: #353535;
+
+            div {
+              span {
+                font-size: 1.2rem;
+                color: #777;
+
+                span {
+                  color: #fa5252;
+                }
+              }
+            }
+
+            .origin {
+              text-decoration: line-through;
+              color: #888;
+            }
+
+            .sale-price {
+              position: absolute;
+              right: 0;
+              top: 30px;
+              color: #fa5252;
+            }
+          }
+        }
+      }
+    }
+
+    .cart {
+      position: sticky;
+      bottom: 0;
+      background-color: #f3f8ff;
+      width: 100%;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .pay-price {
+        display: flex;
+        font-size: 2.6rem;
+        color: #353535;
+
+        #price {
+          margin-left: 10px;
+          color: #fa5252;
+
+          span {
+            font-size: 1.6rem;
+            color: #777;
+          }
+        }
+      }
+
+      .cart-button {
+        margin-top: 33px;
+
+        button {
+          width: 170px;
+          height: 60px;
+          background-color: #fff;
+          border: 1px solid #fa5252;
+          color: #fa5252;
+          border-radius: 10px;
+          margin: 0 2.5px;
+          font-size: 2.6rem;
+          cursor: pointer;
+
+          &:last-child {
+            color: #fff;
+            background-color: #fa5252;
+          }
+        }
+      }
+    }
+  }
+}
+
 @include mobile {
   .bottom-cart {
     position: sticky;
     bottom: 0;
+
+    &.desktop {
+      display: none;
+    }
 
     .select-term-price {
       background-color: #fff;

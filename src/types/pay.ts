@@ -38,6 +38,7 @@ export interface CurrentProduct {
   expire: string
   productName: string
   categoryName: string
+  payProductId: string
   payStatus: PayStatus
   createAt: string
 }

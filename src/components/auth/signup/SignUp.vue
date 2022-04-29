@@ -1,301 +1,376 @@
 <template>
-  <div class="company-register">
-    <MobileHeader title="브랜드 관리자 회원가입" :back="true" :cart="false" />
-    <div class="company-register-body">
-      <!-- 사업자 번호 -->
-      <div class="register-item">
-        <div class="item-top">
-          <div class="title">사업자등록번호</div>
-          <div class="noti">(사업자번호로 검색 후 브랜드 선택)</div>
-        </div>
-        <div class="input-zone">
-          <input
-            v-model="bizNumber"
-            type="text"
-            placeholder="사업자번호 예시. (123-12-12345)"
-          />
-          <button @click="getBrandInfo">검색</button>
-        </div>
-        <!--사업자 번호 검색 브랜드 목록 -->
-        <div v-if="brandInfo.length > 0" class="brand-check-list">
-          <label v-for="brand in brandInfo" :for="brand.id" :key="brand.id">
-            <div class="check-box">
-              <input
-                type="checkbox"
-                :id="brand.id"
-                @change="changeBrandCheck"
-                :brand-name="brand.brandName"
-              />
-              <div class="brand-name">{{ brand.brandName }}</div>
-              <div class="brand-category">{{ brand.category }}</div>
-            </div>
-          </label>
-        </div>
-        <!--사업자 번호 검색 브랜드 목록 -->
-      </div>
-      <!-- 사업자 번호 -->
-      <!-- 브랜드 -->
-      <div class="register-item">
-        <div class="item-top">
-          <div class="title">브랜드</div>
-          <div class="noti">(직접입력시 1개의 브랜드 명만 입력)</div>
-        </div>
-        <div class="input-zone">
-          <input
-            v-model="selectBrandName"
-            ref="checkBrandNameEl"
-            type="text"
-            placeholder="브랜드명"
-            :disabled="inputBrandAuto"
-          />
-          <button @click="changeDisabled">직접입력</button>
-        </div>
-      </div>
-      <!-- 브랜드 -->
-      <!-- 회사명 -->
-      <div class="register-item" v-if="!inputBrandAuto">
-        <div class="item-top">
-          <div class="title">회사명</div>
-        </div>
-        <div class="input-zone">
-          <input
-            v-model="companyName"
-            type="text"
-            placeholder="사업자등록증에 표기된 회사명"
-          />
-        </div>
-      </div>
-      <!-- 회사명 -->
-      <!-- 대표자명 -->
-      <div class="register-item" v-if="!inputBrandAuto">
-        <div class="item-top">
-          <div class="title">대표자명</div>
-        </div>
-        <div class="input-zone">
-          <input
-            v-model="ownerName"
-            type="text"
-            placeholder="대표자가 2인 이상일 경우 ,로 구분"
-          />
-        </div>
-      </div>
-      <!-- 대표자명 -->
-      <!-- 사업자등록증 -->
-      <div class="register-item">
-        <div class="item-top">
-          <div class="title">사업자등록증</div>
-          <div class="noti">(이미지 파일만 첨부)</div>
-        </div>
-        <div class="input-zone">
-          <input
-            id="fileUpload"
-            type="file"
-            placeholder="브랜드명"
-            ref="fileEl"
-            @change="getFileName"
-          />
-          <input
-            type="text"
-            disabled
-            v-model="fileName"
-            placeholder="파일을 첨부해주세요."
-          />
-          <label for="fileUpload">파일첨부</label>
-        </div>
-      </div>
-      <!-- 사업자등록증 -->
-      <!-- 업종 선택 -->
-      <div class="register-item">
-        <div class="item-top">
-          <div class="title">업종선택</div>
-          <div class="noti">(사업자번호로 검색 후 브랜드 선택)</div>
-        </div>
-        <div class="input-zone">
-          <select v-model="largeCategory" @change="changeLargeCategory">
-            <option :value="undefined">1차 선택</option>
-            <option
-              v-for="category in largeCategoryArr"
-              :key="category.id"
-              :value="category"
-            >
-              {{ category.categoryName }}
-            </option>
-          </select>
-          <select v-model="smallCategory">
-            <option :value="''">2차 선택</option>
-            <option
-              v-for="category in smallCategoryArr"
-              :key="category.id"
-              :value="category.categoryName"
-            >
-              {{ category.categoryName }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <!-- 업종 선택 -->
-      <div class="line"></div>
-      <!-- 담당자 명 -->
-      <div class="register-item">
-        <div class="item-top">
-          <div class="title">담당자 명</div>
-        </div>
-        <div class="input-zone">
-          <input v-model="rName" type="text" placeholder="이름 입력" />
-        </div>
-      </div>
-      <!-- 담당자 명 -->
-      <!-- 이메일 -->
-      <div class="register-item">
-        <div class="item-top">
-          <div class="title">이메일</div>
-          <div class="noti">(이메일 주소는 ID로 사용됩니다)</div>
-        </div>
-        <div class="input-zone">
-          <input
-            v-model="rEmail"
-            type="text"
-            placeholder="아이디@도메인으로 입력"
-          />
-        </div>
-      </div>
-      <!-- 이메일 -->
-      <!-- 비밀번호 -->
-      <div class="register-item">
-        <div class="item-top">
-          <div class="title">비밀번호</div>
-          <div class="noti">(이메일 주소는 ID로 사용됩니다)</div>
-        </div>
-        <div class="input-zone">
-          <input
-            v-model="rPassword"
-            type="password"
-            placeholder="비밀번호 입력(영문+숫자+특수문자 8~16자)"
-            @keyup="checkPasswordImg"
-          />
-          <div class="validation-password">
-            <img
-              v-if="rPasswordImgName === 'default'"
-              src="../../../assets/signup/default_password.png"
-              alt="default_password"
+  <main>
+    <div class="company-register">
+      <MobileHeader title="브랜드 관리자 회원가입" :back="true" :cart="false" />
+      <Header />
+      <div class="company-register-body">
+        <div class="register-top">회원가입</div>
+        <!-- 사업자 번호 -->
+        <div class="register-item">
+          <div class="item-top">
+            <div class="title">사업자등록번호</div>
+            <div class="noti">(사업자번호로 검색 후 브랜드 선택)</div>
+          </div>
+          <div class="input-zone">
+            <input
+              v-model="bizNumber"
+              type="text"
+              placeholder="사업자번호 예시. (123-12-12345)"
             />
-            <img
-              v-else-if="rPasswordImgName === 'danger'"
-              src="../../../assets/signup/danger_password.png"
-              alt="danger_password"
+            <button @click="getBrandInfo">검색</button>
+          </div>
+          <!--사업자 번호 검색 브랜드 목록 -->
+          <div v-if="brandInfo.length > 0" class="brand-check-list">
+            <label v-for="brand in brandInfo" :for="brand.id" :key="brand.id">
+              <div class="check-box">
+                <input
+                  type="checkbox"
+                  :id="brand.id"
+                  @change="changeBrandCheck"
+                  :brand-name="brand.brandName"
+                />
+                <div class="brand-name">{{ brand.brandName }}</div>
+                <div class="brand-category">{{ brand.category }}</div>
+              </div>
+            </label>
+          </div>
+          <!--사업자 번호 검색 브랜드 목록 -->
+        </div>
+        <!-- 사업자 번호 -->
+        <!-- 브랜드 -->
+        <div class="register-item">
+          <div class="item-top">
+            <div class="title">브랜드</div>
+            <div class="noti">(직접입력시 1개의 브랜드 명만 입력)</div>
+          </div>
+          <div class="input-zone">
+            <input
+              v-model="selectBrandName"
+              ref="checkBrandNameEl"
+              type="text"
+              placeholder="브랜드명"
+              :disabled="inputBrandAuto"
             />
-            <img
-              v-else
-              src="../../../assets/signup/safe_password.png"
-              alt="safe_password"
+            <button @click="changeDisabled">직접입력</button>
+          </div>
+        </div>
+        <!-- 브랜드 -->
+        <!-- 회사명 -->
+        <div class="register-item no-button" v-if="!inputBrandAuto">
+          <div class="item-top">
+            <div class="title">회사명</div>
+          </div>
+          <div class="input-zone">
+            <input
+              v-model="companyName"
+              type="text"
+              placeholder="사업자등록증에 표기된 회사명"
             />
           </div>
         </div>
-        <div class="input-zone">
-          <input
-            v-model="rRePassword"
-            type="password"
-            placeholder="비밀번호 재확인(영문+숫자+특수문자 8~16자)"
-          />
+        <!-- 회사명 -->
+        <!-- 대표자명 -->
+        <div class="register-item no-button" v-if="!inputBrandAuto">
+          <div class="item-top">
+            <div class="title">대표자명</div>
+          </div>
+          <div class="input-zone">
+            <input
+              v-model="ownerName"
+              type="text"
+              placeholder="대표자가 2인 이상일 경우 ,로 구분"
+            />
+          </div>
         </div>
-      </div>
-      <!-- 비밀번호 -->
-      <!-- 연락처 -->
-      <div class="register-item">
-        <div class="item-top">
-          <div class="title">휴대폰 번호</div>
-          <div class="noti">(이메일 주소는 ID로 사용됩니다)</div>
+        <!-- 대표자명 -->
+        <!-- 사업자등록증 -->
+        <div class="register-item">
+          <div class="item-top">
+            <div class="title">사업자등록증</div>
+            <div class="noti">(이미지 파일만 첨부)</div>
+          </div>
+          <div class="input-zone">
+            <input
+              id="fileUpload"
+              type="file"
+              placeholder="브랜드명"
+              ref="fileEl"
+              @change="getFileName"
+            />
+            <input
+              type="text"
+              disabled
+              v-model="fileName"
+              placeholder="파일을 첨부해주세요."
+            />
+            <label for="fileUpload">파일첨부</label>
+          </div>
         </div>
-        <div class="input-zone">
-          <input
-            v-model="rPhone"
-            type="text"
-            placeholder="'-'제외한 휴대폰 번호"
-          />
+        <!-- 사업자등록증 -->
+        <!-- 업종 선택 -->
+        <div class="register-item no-button">
+          <div class="item-top">
+            <div class="title">업종선택</div>
+            <div class="noti">(사업자번호로 검색 후 브랜드 선택)</div>
+          </div>
+          <div class="input-zone">
+            <select v-model="largeCategory" @change="changeLargeCategory">
+              <option :value="undefined">1차 선택</option>
+              <option
+                v-for="category in largeCategoryArr"
+                :key="category.id"
+                :value="category"
+              >
+                {{ category.categoryName }}
+              </option>
+            </select>
+            <select v-model="smallCategory">
+              <option :value="''">2차 선택</option>
+              <option
+                v-for="category in smallCategoryArr"
+                :key="category.id"
+                :value="category.categoryName"
+              >
+                {{ category.categoryName }}
+              </option>
+            </select>
+          </div>
         </div>
+        <!-- 업종 선택 -->
+        <div class="line"></div>
+        <!-- 담당자 명 -->
+        <div class="register-item no-button">
+          <div class="item-top">
+            <div class="title">담당자 명</div>
+          </div>
+          <div class="input-zone">
+            <input v-model="rName" type="text" placeholder="이름 입력" />
+          </div>
+        </div>
+        <!-- 담당자 명 -->
+        <!-- 이메일 -->
+        <div class="register-item no-button">
+          <div class="item-top">
+            <div class="title">이메일</div>
+            <div class="noti">(이메일 주소는 ID로 사용됩니다)</div>
+          </div>
+          <div class="input-zone">
+            <input
+              v-model="rEmail"
+              type="text"
+              placeholder="아이디@도메인으로 입력"
+            />
+          </div>
+        </div>
+        <!-- 이메일 -->
+        <!-- 비밀번호 -->
+        <div class="register-item no-button">
+          <div class="item-top">
+            <div class="title">비밀번호</div>
+            <div class="noti">(이메일 주소는 ID로 사용됩니다)</div>
+          </div>
+          <div class="input-zone">
+            <input
+              v-model="rPassword"
+              type="password"
+              placeholder="비밀번호 입력(영문+숫자+특수문자 8~16자)"
+              @keyup="checkPasswordImg"
+            />
+            <div class="validation-password">
+              <img
+                v-if="rPasswordImgName === 'default'"
+                src="../../../assets/signup/default_password.png"
+                alt="default_password"
+              />
+              <img
+                v-else-if="rPasswordImgName === 'danger'"
+                src="../../../assets/signup/danger_password.png"
+                alt="danger_password"
+              />
+              <img
+                v-else
+                src="../../../assets/signup/safe_password.png"
+                alt="safe_password"
+              />
+            </div>
+          </div>
+          <div class="input-zone rePassword">
+            <input
+              v-model="rRePassword"
+              type="password"
+              placeholder="비밀번호 재확인(영문+숫자+특수문자 8~16자)"
+            />
+          </div>
+        </div>
+        <!-- 비밀번호 -->
+        <!-- 연락처 -->
+        <div class="register-item no-button">
+          <div class="item-top">
+            <div class="title">휴대폰 번호</div>
+            <div class="noti">(이메일 주소는 ID로 사용됩니다)</div>
+          </div>
+          <div class="input-zone">
+            <input
+              v-model="rPhone"
+              type="text"
+              placeholder="'-'제외한 휴대폰 번호"
+            />
+          </div>
+        </div>
+        <!-- 연락처 -->
       </div>
-      <!-- 연락처 -->
-    </div>
-    <div class="big-line"></div>
-    <div class="register-agree-zone">
-      <div class="agree-zone-top">
-        <div class="title">서비스 이용 약관에 동의해 주세요</div>
-      </div>
-      <div class="agree-all-check">
-        <input
-          v-model="isAllCheck"
-          type="checkbox"
-          id="allCheck"
-          @change="allCheck"
-        />
-        <label for="allCheck">네, 모두 동의합니다</label>
-      </div>
-      <div class="agree-item">
-        <div class="check-box-zone">
+      <div class="big-line"></div>
+      <div class="register-agree-zone agree-mobile">
+        <div class="agree-zone-top">
+          <div class="title">서비스 이용 약관에 동의해 주세요</div>
+        </div>
+        <div class="agree-all-check">
           <input
+            v-model="isAllCheck"
             type="checkbox"
-            id="isService"
-            v-model="isService"
-            @change="allCheckStatus"
+            id="allCheck"
+            @change="allCheck"
           />
-          <label for="isService">(필수) 서비스 이용 약관 동의</label>
+          <label for="allCheck">네, 모두 동의합니다</label>
         </div>
-        <a
-          href="https://nicepick.notion.site/112ba598e8d34c39b6b3ab29d6c9e34a"
-          target="_blank"
-          class="more-view"
-          >자세히 보기</a
-        >
-      </div>
-      <div class="agree-item">
-        <div class="check-box-zone">
-          <input
-            type="checkbox"
-            id="isPrivacy"
-            v-model="isPrivacy"
-            @change="allCheckStatus"
-          />
-          <label for="isPrivacy">(필수) 개인정보 수집 이용 동의</label>
-        </div>
-        <a
-          href="https://nicepick.notion.site/b92941c41e6e4986b60a197ac607f1da"
-          target="_blank"
-          class="more-view"
-          >자세히 보기</a
-        >
-      </div>
-      <div class="agree-item">
-        <div class="check-box-zone">
-          <input
-            type="checkbox"
-            id="isMarketing"
-            v-model="isMarketing"
-            @change="allCheckStatus"
-          />
-          <label for="isMarketing"
-            >(선택) 창업 정보 및 이벤트 정보 수신 동의</label
+        <div class="agree-item">
+          <div class="check-box-zone">
+            <input
+              type="checkbox"
+              id="isService"
+              v-model="isService"
+              @change="allCheckStatus"
+            />
+            <label for="isService">(필수) 서비스 이용 약관 동의</label>
+          </div>
+          <a
+            href="https://nicepick.notion.site/112ba598e8d34c39b6b3ab29d6c9e34a"
+            target="_blank"
+            class="more-view"
+            >자세히 보기</a
           >
         </div>
-        <a
-          href="https://nicepick.notion.site/e5db5ba7dd064fea86a0a0057d042654"
-          target="_blank"
-          class="more-view"
-          >자세히 보기</a
-        >
+        <div class="agree-item">
+          <div class="check-box-zone">
+            <input
+              type="checkbox"
+              id="isPrivacy"
+              v-model="isPrivacy"
+              @change="allCheckStatus"
+            />
+            <label for="isPrivacy">(필수) 개인정보 수집 이용 동의</label>
+          </div>
+          <a
+            href="https://nicepick.notion.site/b92941c41e6e4986b60a197ac607f1da"
+            target="_blank"
+            class="more-view"
+            >자세히 보기</a
+          >
+        </div>
+        <div class="agree-item">
+          <div class="check-box-zone">
+            <input
+              type="checkbox"
+              id="isMarketing"
+              v-model="isMarketing"
+              @change="allCheckStatus"
+            />
+            <label for="isMarketing"
+              >(선택) 창업 정보 및 이벤트 정보 수신 동의</label
+            >
+          </div>
+          <a
+            href="https://nicepick.notion.site/e5db5ba7dd064fea86a0a0057d042654"
+            target="_blank"
+            class="more-view"
+            >자세히 보기</a
+          >
+        </div>
+      </div>
+
+      <div class="register-agree-zone agree-desktop">
+        <div class="agree-all-check">
+          <div class="title">약관동의</div>
+          <div class="agree-check">
+            <label for="allCheck">전체 동의합니다.</label>
+            <input
+              v-model="isAllCheck"
+              type="checkbox"
+              id="allCheck"
+              @change="allCheck"
+            />
+          </div>
+        </div>
+        <div class="agree-item">
+          <label for="isService">[필수] 서비스 이용 약관 동의</label>
+          <div class="check-box-zone">
+            <a
+              href="https://nicepick.notion.site/112ba598e8d34c39b6b3ab29d6c9e34a"
+              target="_blank"
+              class="more-view"
+              >자세히 보기</a
+            >
+            <input
+              type="checkbox"
+              id="isService"
+              v-model="isService"
+              @change="allCheckStatus"
+            />
+          </div>
+        </div>
+        <div class="agree-item">
+          <label for="isPrivacy">[필수] 개인정보 수집 이용 동의</label>
+          <div class="check-box-zone">
+            <a
+              href="https://nicepick.notion.site/b92941c41e6e4986b60a197ac607f1da"
+              target="_blank"
+              class="more-view"
+              >자세히 보기</a
+            >
+            <input
+              type="checkbox"
+              id="isPrivacy"
+              v-model="isPrivacy"
+              @change="allCheckStatus"
+            />
+          </div>
+        </div>
+        <div class="agree-item">
+          <label for="isMarketing"
+            >[선택] 창업 정보 및 이벤트 정보 수신 동의</label
+          >
+          <div class="check-box-zone">
+            <a
+              href="https://nicepick.notion.site/e5db5ba7dd064fea86a0a0057d042654"
+              target="_blank"
+              class="more-view"
+              >자세히 보기</a
+            >
+            <input
+              type="checkbox"
+              id="isMarketing"
+              v-model="isMarketing"
+              @change="allCheckStatus"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="register-submit-button">
+        <button @click="rSubmit">가입하기</button>
+      </div>
+      <div class="close-register">
+        이미 가입하셨나요? <span @click="router.push('/')">로그인하기</span>
       </div>
     </div>
-    <div class="register-submit-button">
-      <button @click="rSubmit">가입하기</button>
-    </div>
-    <div class="close-register">
-      이미 가입하셨나요? <span @click="router.push('/')">로그인하기</span>
-    </div>
-  </div>
+  </main>
+  <Footer v-if="!checkMobile" />
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
 import MobileHeader from '../../common/MobileHeader.vue'
+import Header from '../../common/Header.vue'
+import Footer from '../../common/Footer.vue'
 import { LargeCategory, SmallCategory } from '../../../types/category'
 import api from '../../../config/axios.config'
 import { toastAlert } from '../../../functions/alert'
@@ -310,6 +385,8 @@ interface BrandInfo {
 
 const store = useStore()
 const router = useRouter()
+
+const checkMobile = ref<boolean>(false)
 
 const bizNumber = ref<string>('')
 const brandInfo = ref<BrandInfo[]>([])
@@ -626,33 +703,214 @@ getAllCategory()
 <style lang="scss" scoped>
 @import '@/scss/main';
 
+@include desktop {
+  .company-register {
+    .company-register-body {
+      @include pc-container();
+
+      .register-top {
+        margin-top: 67px;
+        border-bottom: 1px solid #eee;
+        font-size: 2rem;
+        color: #353535;
+        padding-bottom: 11px;
+        padding-left: 15px;
+        margin-bottom: 40px;
+      }
+
+      .register-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding-left: 55px;
+        padding-right: 345px;
+        padding-bottom: 30px;
+
+        &.no-button {
+          padding-right: 451px;
+        }
+
+        &:last-child {
+          padding-bottom: 50px;
+        }
+
+        .item-top {
+          line-height: 1.3;
+          .title {
+            font-size: 1.8rem;
+            color: #353535;
+
+            &::after {
+              content: '*';
+              color: #fe3d3d;
+            }
+          }
+
+          .noti {
+            font-size: 1.2rem;
+            color: #888;
+          }
+        }
+
+        .input-zone {
+          display: flex;
+          align-items: center;
+          position: relative;
+
+          &.rePassword {
+            margin-top: 7px;
+            margin-left: 374px;
+          }
+
+          input {
+            width: 400px;
+            height: 50px;
+            border: 1px solid #cfcfcf;
+            background-color: #fff;
+            font-size: 1.6rem;
+            padding: 0 20px;
+
+            &::placeholder {
+              color: #c7c7c7;
+            }
+          }
+
+          button,
+          label {
+            width: 95px;
+            height: 50px;
+            font-size: 1.8rem;
+            color: #fff;
+            background-color: $primary;
+            border-radius: 10px;
+            margin-left: 11px;
+          }
+
+          #fileUpload {
+            display: none;
+          }
+
+          label {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
+          select {
+            width: 195px;
+            height: 50px;
+            border: 1px solid #cfcfcf;
+
+            &:first-child {
+              margin-right: 10px;
+            }
+          }
+
+          .validation-password {
+            position: absolute;
+            right: 13px;
+
+            img {
+              width: 19px;
+            }
+          }
+        }
+      }
+    }
+    .register-agree-zone {
+      @include pc-container();
+      border-top: 1px solid #eee;
+      padding-top: 40px;
+      padding-left: 429px;
+      box-sizing: border-box;
+
+      &.agree-mobile {
+        display: none;
+      }
+
+      .agree-all-check {
+        width: 400px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        .title {
+          font-size: 1.8rem;
+          color: #353535;
+          font-weight: bold;
+        }
+
+        .agree-check {
+          display: flex;
+          align-items: center;
+          font-size: 1.2rem;
+          color: #353535;
+
+          input {
+            margin-left: 8px;
+          }
+        }
+      }
+      .agree-item {
+        margin-top: 10px;
+        width: 400px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        label {
+          font-size: 1.4rem;
+          color: #888;
+        }
+
+        .check-box-zone {
+          display: flex;
+          align-items: center;
+
+          a {
+            color: #353535;
+            text-decoration: none;
+            margin-right: 9px;
+          }
+        }
+      }
+    }
+
+    .register-submit-button {
+      @include pc-container();
+      margin-top: 70px;
+      margin-bottom: 80px;
+
+      button {
+        width: 100%;
+        background-color: $primary;
+        color: #fff;
+        font-size: 2.6rem;
+        height: 70px;
+        border-radius: 50px;
+        cursor: pointer;
+      }
+    }
+
+    .close-register {
+      display: none;
+    }
+  }
+}
+
 @include mobile {
   .company-register {
     width: 100%;
     background: #fff;
 
-    .company-register-top {
-      height: 60px;
-      @include flex-center();
-      position: relative;
-      border-bottom: 1px solid #ededed;
-
-      .title {
-        font-size: 2rem;
-        color: #191919;
-      }
-
-      .back {
-        width: 28px;
-        height: 28px;
-        position: absolute;
-        left: 24px;
-      }
-    }
-
     .company-register-body {
       margin-top: 24px;
       padding: 0 24px;
+
+      .register-top {
+        display: none;
+      }
 
       .register-item {
         margin-bottom: 16px;
@@ -807,6 +1065,10 @@ getAllCategory()
     .register-agree-zone {
       padding: 0 24px;
 
+      &.agree-desktop {
+        display: none;
+      }
+
       input[type='checkbox'] {
         position: absolute;
         width: 0px;
@@ -908,6 +1170,10 @@ getAllCategory()
         margin-left: 4px;
       }
     }
+  }
+
+  footer {
+    display: none;
   }
 }
 </style>

@@ -131,7 +131,7 @@ router.beforeEach((to, from, next) => {
     if (token && isLogin) {
       next()
     } else {
-      toastAlert('로그인이 필요합니다')
+      toastAlert('로그인이 필요합니다', 3000, 'top')
       next('/')
     }
   }

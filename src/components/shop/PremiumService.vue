@@ -2,6 +2,9 @@
   <div class="premium-service" v-if="!isLoading">
     <div class="service-box">
       <div class="top">창업픽 멤버십</div>
+      <div class="premium-image">
+        <img src="../../assets/shop/premium_service.png" alt="service" />
+      </div>
       <div class="price">
         <div>
           월
@@ -16,7 +19,16 @@
     </div>
 
     <div class="intro-image">
-      <img src="../../assets/shop/premium_image.png" alt="premium" />
+      <img
+        class="pc"
+        src="../../assets/shop/premium_image_pc.png"
+        alt="premium"
+      />
+      <img
+        class="mobile"
+        src="../../assets/shop/premium_image_mobile.png"
+        alt="premium"
+      />
     </div>
 
     <div class="qna">
@@ -96,28 +108,28 @@
     <div class="notice">
       <div class="title">프리미엄 서비스 유의사항</div>
       <div class="notice-list">
-        <div>- 한달 무료 이용 혜택은 최초 1회만 제공됩니다.</div>
+        <div>한달 무료 이용 혜택은 최초 1회만 제공됩니다.</div>
         <div>
-          - 멤버십 비용은 한달 무료 이용(가입일 기준 ~ 한달)이후부터 매 월
+          멤버십 비용은 한달 무료 이용(가입일 기준 ~ 한달)이후부터 매 월
           자동결제 됩니다.
         </div>
-        <div>- 멤버십 가격은 부가세와 결제 수수료가 포함되어 있습니다.</div>
+        <div>멤버십 가격은 부가세와 결제 수수료가 포함되어 있습니다.</div>
         <div>
-          - 멤버십 결제 비용은 회원님이 선택하신 결제수단으로 구독 기간 마지막
+          멤버십 결제 비용은 회원님이 선택하신 결제수단으로 구독 기간 마지막
           날에 다음달 멤버십 금액이 청구됩니다.
         </div>
         <div>
-          - 해지를 원하실 경우 멤버십 구독 기간이 끝나는 날로부터 최소 24시간
-          전에 자동 갱신을 해지해야 합니다.
+          해지를 원하실 경우 멤버십 구독 기간이 끝나는 날로부터 최소 24시간 전에
+          자동 갱신을 해지해야 합니다.
         </div>
         <div>
-          - 자동결제 해지는 [ 기업회원페이지 > 유료 서비스 이용내역 > 결제상 품
+          자동결제 해지는 [ 기업회원페이지 > 유료 서비스 이용내역 > 결제상 품
           관리 > 해지하기 ]에서 가능합니다. 이 경우 더이상 다음 결제가 이 루어
           지지 않으며, 남은 기간 동안 서비스 이용이 가능합니다.
         </div>
-        <div>- 일부 구매 전용 상품은 멤버십으로 이용이 불가능합니다.</div>
+        <div>일부 구매 전용 상품은 멤버십으로 이용이 불가능합니다.</div>
         <div>
-          - 도움이 필요하시면
+          도움이 필요하시면
           <span style="font-weight: bold; color: #191919">1:1 문의</span>를
           이용해주세요.
         </div>
@@ -185,9 +197,185 @@ getPayCategory()
 <style lang="scss" scoped>
 @import '@/scss/main';
 
+@include desktop {
+  .premium-service {
+    margin-top: 90px;
+
+    .service-box {
+      text-align: center;
+
+      .top {
+        font-size: 2.8rem;
+        color: #353535;
+      }
+
+      .premium-image {
+        margin: 39px 0;
+      }
+
+      .price {
+        display: flex;
+        justify-content: center;
+
+        div {
+          font-size: 3rem;
+          color: #353535;
+
+          &:last-child {
+            font-size: 1.5rem;
+            color: #191919;
+            background-color: #ededed;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 95px;
+            height: 34px;
+            margin-left: 6px;
+            font-weight: bold;
+          }
+        }
+      }
+
+      .noti {
+        font-size: 1.6rem;
+        color: #777;
+        margin-top: 5px;
+      }
+
+      .start-button {
+        margin-top: 20px;
+
+        button {
+          cursor: pointer;
+          width: 400px;
+          height: 90px;
+          border-radius: 100px;
+          background-color: $primary;
+          color: #fff;
+          font-size: 2.4rem;
+        }
+      }
+    }
+
+    .intro-image {
+      margin-top: 100px;
+      .mobile {
+        display: none;
+      }
+
+      img {
+        width: 100%;
+      }
+    }
+
+    .qna {
+      margin-top: 220px;
+      padding: 99px 0 90px 0;
+      background-color: #fbfbfb;
+
+      .top {
+        @include pc-container();
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 3rem;
+        color: #353535;
+
+        &::before {
+          content: '';
+          background-image: url('../../assets/shop/smile.png');
+          width: 44px;
+          height: 44px;
+          margin-right: 10px;
+        }
+      }
+
+      .qna-list {
+        @include pc-container();
+        margin-top: 82px;
+
+        .qna-item {
+          margin-bottom: 40px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+          .qna-title {
+            display: flex;
+            font-size: 2.4rem;
+            color: #353535;
+            font-weight: bold;
+
+            &::before {
+              content: 'Q';
+              margin-right: 5px;
+            }
+
+            i {
+              display: none;
+            }
+          }
+
+          .qna-ans {
+            padding-left: 24px;
+            font-size: 2.2rem;
+            color: #777;
+            margin-top: 6px;
+          }
+        }
+      }
+    }
+
+    .notice {
+      @include pc-container();
+      margin-top: 114px;
+
+      .title {
+        font-size: 2.3rem;
+        color: #353535;
+        font-weight: bold;
+      }
+
+      .notice-list {
+        margin-top: 27px;
+        font-size: 2rem;
+        color: #777;
+        line-height: 1.7;
+
+        div {
+          display: flex;
+
+          &::before {
+            content: '-';
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+
+    .move-pay-button {
+      @include pc-container();
+      margin-top: 126px;
+      margin-bottom: 170px;
+
+      button {
+        width: 100%;
+        height: 100px;
+        background-color: $primary;
+        border-radius: 100px;
+        color: #fff;
+        font-size: 3rem;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
 @include mobile {
   .premium-service {
     margin-top: 24px;
+    padding: 0 24px;
 
     .service-box {
       background-color: #fff;
@@ -199,6 +387,10 @@ getPayCategory()
       .top {
         font-size: 1.4rem;
         color: #191919;
+      }
+
+      .premium-image {
+        display: none;
       }
 
       .price {
@@ -242,6 +434,10 @@ getPayCategory()
     }
     .intro-image {
       margin-top: 40px;
+      .pc {
+        display: none;
+      }
+
       img {
         width: 100%;
       }
@@ -308,8 +504,14 @@ getPayCategory()
         color: #767676;
 
         div {
+          display: flex;
           margin: 6px 0;
           line-height: 1.6;
+
+          &::before {
+            content: '-';
+            margin-right: 5px;
+          }
 
           &:first-child {
             margin-top: 12px;

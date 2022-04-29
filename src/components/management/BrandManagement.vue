@@ -1,12 +1,14 @@
 <template>
   <MobileHeader title="브랜드 정보관리" :cart="false" :back="false" />
+  <Header />
   <main>
     <div class="management" v-if="!isLoading">
       <!-- 브랜드 로고 -->
-      <div class="brand-info-input">
+      <!-- mobile -->
+      <div class="brand-info-input input-mobile">
         <div class="title">
           <div class="name required">브랜드 로고</div>
-          <div class="move-product">
+          <div class="move-product" @click="router.push('/shop')">
             광고신청
             <i class="fa-solid fa-angle-right"></i>
           </div>
@@ -40,10 +42,55 @@
           </div>
         </div>
       </div>
+      <!-- mobile -->
+
+      <!-- desktop -->
+      <div class="brand-info-input input-desktop">
+        <div class="title">
+          <div class="name required">브랜드 로고</div>
+          <div class="size">250 X 100</div>
+        </div>
+        <div class="image">
+          <div class="previewer upload-image" v-if="brand?.brandLogoImg">
+            <img :src="brand.brandLogoImg" :alt="brand?.brandName" />
+            <div class="img-button">
+              <button @click="deleteImg('logoImage')">삭제</button>
+            </div>
+          </div>
+          <div class="previewer thumbnail" v-else-if="logoImg">
+            <img :src="logoImg.url" :alt="brand?.brandName" />
+            <div class="img-button">
+              <button @click="deleteThumbnail('logoImage', logoImg?.key)">
+                삭제
+              </button>
+            </div>
+          </div>
+          <div class="add-image one" v-else>
+            <input
+              type="file"
+              name="logoImage"
+              id="logoImage"
+              @change="fileUpload"
+            />
+            <label for="logoImage">
+              <div>
+                <img src="../../assets/management/add_circle.png" alt="add" />
+              </div>
+              <div>[필수등록]</div>
+            </label>
+          </div>
+        </div>
+        <div class="standard-size">
+          <div>- 가로 250px 세로 100px 이미지를 등록해주세요</div>
+          <div>- jpg, png 파일만 등록이 가능합니다</div>
+        </div>
+      </div>
+      <!-- desktop -->
       <!-- 브랜드 로고 -->
 
       <!-- 브랜드 대표 이미지 -->
-      <div class="brand-info-input">
+      <!-- mobile -->
+      <div class="brand-info-input input-mobile">
         <div class="title">
           <div class="name required">브랜드 대표이미지</div>
         </div>
@@ -78,25 +125,294 @@
           </div>
         </div>
       </div>
+      <!-- mobile -->
+
+      <!-- desktop -->
+      <div class="brand-info-input input-desktop">
+        <div class="title">
+          <div class="name required">브랜드 대표이미지</div>
+          <div class="size">500 X 250</div>
+        </div>
+
+        <div class="image">
+          <div class="previewer upload-image" v-if="brand?.brandImg">
+            <img :src="brand.brandImg" :alt="brand?.brandName" />
+            <div class="img-button">
+              <button @click="deleteImg('brandImage')">삭제</button>
+            </div>
+          </div>
+          <div class="previewer thumbnail" v-else-if="brandImg">
+            <img :src="brandImg.url" :alt="brand?.brandName" />
+            <div class="img-button">
+              <button @click="deleteThumbnail('brandImage', brandImg?.key)">
+                삭제
+              </button>
+            </div>
+          </div>
+          <div class="add-image one" v-else>
+            <input
+              type="file"
+              name="brandImage"
+              id="brandImage"
+              @change="fileUpload"
+            />
+            <label for="brandImage">
+              <div>
+                <img src="../../assets/management/add_circle.png" alt="add" />
+              </div>
+              <div>[필수등록]</div>
+            </label>
+          </div>
+        </div>
+        <div class="standard-size">
+          <div>- 가로 500px 세로 250px 이미지를 등록해주세요</div>
+          <div>- jpg, png 파일만 등록이 가능합니다</div>
+        </div>
+      </div>
+      <!-- desktop -->
       <!-- 브랜드 대표 이미지 -->
 
       <!-- 프로모션 -->
-      <div class="brand-info-input">
+      <!-- mobile -->
+      <div class="brand-info-input input-mobile">
         <div class="title">
           <div class="name">프로모션</div>
+        </div>
+        <div class="promotion-icon">
+          <div class="icon-item">
+            <input
+              v-model="promotionIcon"
+              value="가맹비할인"
+              type="checkbox"
+              id="icon1"
+            />
+            <label for="icon1">
+              <img
+                src="../../assets/management/가맹비할인.png"
+                alt="가맹비할인"
+              />
+            </label>
+          </div>
+          <div class="icon-item">
+            <input
+              v-model="promotionIcon"
+              value="가맹비면제"
+              type="checkbox"
+              id="icon2"
+            />
+            <label for="icon2">
+              <img
+                src="../../assets/management/가맹비면제.png"
+                alt="가맹비면제"
+              />
+            </label>
+          </div>
+          <div class="icon-item">
+            <input
+              v-model="promotionIcon"
+              value="교육비할인"
+              type="checkbox"
+              id="icon3"
+            />
+            <label for="icon3">
+              <img
+                src="../../assets/management/교육비할인.png"
+                alt="교육비할인"
+              />
+            </label>
+          </div>
+          <div class="icon-item">
+            <input
+              v-model="promotionIcon"
+              value="교육비면제"
+              type="checkbox"
+              id="icon4"
+            />
+            <label for="icon4">
+              <img
+                src="../../assets/management/교육비면제.png"
+                alt="교육비면제"
+              />
+            </label>
+          </div>
+          <div class="icon-item">
+            <input
+              v-model="promotionIcon"
+              value="물품지원"
+              type="checkbox"
+              id="icon5"
+            />
+            <label for="icon5">
+              <img src="../../assets/management/물품지원.png" alt="물품지원" />
+            </label>
+          </div>
+          <div class="icon-item">
+            <input
+              v-model="promotionIcon"
+              value="장비지원"
+              type="checkbox"
+              id="icon6"
+            />
+            <label for="icon6">
+              <img src="../../assets/management/장비지원.png" alt="장비지원" />
+            </label>
+          </div>
+          <div class="icon-item">
+            <input
+              v-model="promotionIcon"
+              value="인테리어비용지원"
+              type="checkbox"
+              id="icon7"
+            />
+            <label for="icon7">
+              <img
+                src="../../assets/management/인테리어비용지원.png"
+                alt="인테리어비용지원"
+              />
+            </label>
+          </div>
+        </div>
+        <div class="check-box">
+          <input v-model="isPromotionWrite" type="checkbox" id="write" />
+          <label for="write">직접입력</label>
         </div>
         <div class="text-input">
           <input
             v-model="promotion"
             type="text"
-            placeholder="프로모션 사항 입력시 최상단 한줄 노출"
+            placeholder="비용노출 최소하하여 작성"
+            :disabled="!isPromotionWrite"
           />
         </div>
       </div>
+      <!-- mobile -->
+
+      <!-- desktop -->
+      <div class="brand-info-input input-desktop promotion">
+        <div class="title">
+          <div class="name">프로모션</div>
+        </div>
+        <div class="right-input">
+          <div class="promotion-icon">
+            <div class="icon-item">
+              <input
+                v-model="promotionIcon"
+                value="가맹비할인"
+                type="checkbox"
+                id="icon1"
+              />
+              <label for="icon1">
+                <img
+                  src="../../assets/management/가맹비할인.png"
+                  alt="가맹비할인"
+                />
+              </label>
+            </div>
+            <div class="icon-item">
+              <input
+                v-model="promotionIcon"
+                value="가맹비면제"
+                type="checkbox"
+                id="icon2"
+              />
+              <label for="icon2">
+                <img
+                  src="../../assets/management/가맹비면제.png"
+                  alt="가맹비면제"
+                />
+              </label>
+            </div>
+            <div class="icon-item">
+              <input
+                v-model="promotionIcon"
+                value="교육비할인"
+                type="checkbox"
+                id="icon3"
+              />
+              <label for="icon3">
+                <img
+                  src="../../assets/management/교육비할인.png"
+                  alt="교육비할인"
+                />
+              </label>
+            </div>
+            <div class="icon-item">
+              <input
+                v-model="promotionIcon"
+                value="교육비면제"
+                type="checkbox"
+                id="icon4"
+              />
+              <label for="icon4">
+                <img
+                  src="../../assets/management/교육비면제.png"
+                  alt="교육비면제"
+                />
+              </label>
+            </div>
+            <div class="icon-item">
+              <input
+                v-model="promotionIcon"
+                value="물품지원"
+                type="checkbox"
+                id="icon5"
+              />
+              <label for="icon5">
+                <img
+                  src="../../assets/management/물품지원.png"
+                  alt="물품지원"
+                />
+              </label>
+            </div>
+            <div class="icon-item">
+              <input
+                v-model="promotionIcon"
+                value="장비지원"
+                type="checkbox"
+                id="icon6"
+              />
+              <label for="icon6">
+                <img
+                  src="../../assets/management/장비지원.png"
+                  alt="장비지원"
+                />
+              </label>
+            </div>
+            <div class="icon-item">
+              <input
+                v-model="promotionIcon"
+                value="인테리어비용지원"
+                type="checkbox"
+                id="icon7"
+              />
+              <label for="icon7">
+                <img
+                  src="../../assets/management/인테리어비용지원.png"
+                  alt="인테리어비용지원"
+                />
+              </label>
+            </div>
+          </div>
+          <div class="check-box">
+            <input v-model="isPromotionWrite" type="checkbox" id="write" />
+            <label for="write">직접입력</label>
+          </div>
+          <div class="text-input">
+            <input
+              v-model="promotion"
+              type="text"
+              placeholder="비용노출 최소하하여 작성"
+              :disabled="!isPromotionWrite"
+            />
+          </div>
+        </div>
+      </div>
+      <!-- desktop -->
       <!-- 프로모션 -->
 
       <!-- 홈페이지 -->
-      <div class="brand-info-input">
+      <!-- mobile -->
+      <div class="brand-info-input input-mobile">
         <div class="title">
           <div class="name">홈페이지</div>
         </div>
@@ -104,10 +420,23 @@
           <input v-model="webUrl" type="text" placeholder="홈페이지 URL 작성" />
         </div>
       </div>
+      <!-- mobile -->
+
+      <!-- desktop -->
+      <div class="brand-info-input input-desktop homepage">
+        <div class="title">
+          <div class="name">홈페이지</div>
+        </div>
+        <div class="text-input">
+          <input v-model="webUrl" type="text" placeholder="홈페이지 URL 작성" />
+        </div>
+      </div>
+      <!-- desktop -->
       <!-- 홈페이지 -->
 
       <!-- 유튜브 영상 -->
-      <div class="brand-info-input">
+      <!-- mobile -->
+      <div class="brand-info-input input-mobile">
         <div class="title">
           <div class="name">유튜브 영상</div>
         </div>
@@ -147,10 +476,58 @@
           <i class="fa-solid fa-plus"></i> 추가
         </div>
       </div>
+      <!-- mobile -->
+
+      <!-- desktop -->
+      <div class="brand-info-input input-desktop youtube">
+        <div class="title">
+          <div class="name">유튜브 영상</div>
+          <div class="size">영상을 자유롭게 추가해주세요</div>
+        </div>
+        <div class="youtube-input-zone">
+          <div
+            class="text-input"
+            v-for="(youtube, i) in brand?.brandYoutube"
+            :key="i"
+          >
+            <input
+              v-model="youtube.youtubeUrl"
+              type="text"
+              placeholder="유튜브 URL 작성"
+            />
+            <div class="delete-circle">
+              <img
+                src="../../assets/x-circle-fill.png"
+                alt="delete"
+                @click="deleteYoutube(youtube.id)"
+              />
+            </div>
+          </div>
+          <div class="text-input" v-for="(youtube, i) in youtubeUrl" :key="i">
+            <input
+              v-model="youtube.url"
+              type="text"
+              placeholder="유튜브 URL 작성"
+            />
+            <div class="delete-circle" v-if="i > 0">
+              <img
+                src="../../assets/x-circle-fill.png"
+                alt="delete"
+                @click="youtubeUrl.splice(i, 1)"
+              />
+            </div>
+          </div>
+          <div class="add-input" @click="youtubeUrl.push({ url: '' })">
+            <i class="fa-solid fa-plus"></i> 추가
+          </div>
+        </div>
+      </div>
+      <!-- desktop -->
       <!-- 유튜브 영상 -->
 
       <!-- 브랜드 소개 이미지 -->
-      <div class="brand-info-input">
+      <!-- mobile -->
+      <div class="brand-info-input input-mobile">
         <div class="title">
           <div class="name">브랜드 소개 이미지</div>
         </div>
@@ -193,10 +570,62 @@
           </div>
         </div>
       </div>
+      <!-- mobile -->
+
+      <!-- desktop -->
+      <div class="brand-info-input input-desktop brand-intro">
+        <div class="title">
+          <div class="name">브랜드 소개 이미지</div>
+          <div class="size">가로 840px 이상</div>
+        </div>
+        <div class="image">
+          <div
+            class="previewer upload-image"
+            v-for="item in brand?.brandIntroImg"
+            :key="item.id"
+          >
+            <img :src="item.introImgUrl" :alt="brand?.brandName" />
+            <div class="img-button">
+              <button @click="deleteImg('introImage', item.id)">삭제</button>
+            </div>
+          </div>
+          <div
+            class="previewer thumbnail"
+            v-for="(item, i) in introImg"
+            :key="item.key"
+          >
+            <img :src="item.url" :alt="brand?.brandName" />
+            <div class="img-button">
+              <button @click="deleteThumbnail('introImage', item?.key, i)">
+                삭제
+              </button>
+            </div>
+          </div>
+          <div class="bottom-zone">
+            <div class="add-image">
+              <input
+                type="file"
+                name="introImage"
+                id="introImage"
+                @change="fileUpload"
+              />
+              <label for="introImage">
+                <i class="fa-solid fa-plus"></i> 추가
+              </label>
+            </div>
+            <div class="standard-size">
+              <div>- 가로 840px 이상 이미지를 등록해주세요</div>
+              <div>- jpg, png 파일만 등록이 가능합니다</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- desktop -->
       <!-- 브랜드 소개 이미지 -->
 
       <!-- 대표 메뉴 이미지 -->
-      <div class="brand-info-input">
+      <!-- mobile -->
+      <div class="brand-info-input input-mobile">
         <div class="title">
           <div class="name">대표 메뉴 이미지</div>
         </div>
@@ -269,10 +698,86 @@
           </div>
         </div>
       </div>
+      <!-- mobile -->
+
+      <!-- desktop -->
+      <div class="brand-info-input input-desktop brand-menu">
+        <div class="title">
+          <div class="name">대표 메뉴 이미지</div>
+          <div class="size">180 X 180</div>
+        </div>
+        <div class="image">
+          <div
+            class="previewer upload-image menu"
+            v-for="item in brand?.brandMenuImg"
+            :key="item.id"
+          >
+            <div class="menu-edit">
+              <img :src="item.menuImgUrl" :alt="brand?.brandName" />
+              <div class="menu-input">
+                <input
+                  type="text"
+                  :value="item.menuName"
+                  readonly
+                  placeholder="메뉴 이름"
+                />
+                <input
+                  type="text"
+                  :value="item.menuPrice"
+                  readonly
+                  placeholder="메뉴 가격"
+                />
+              </div>
+            </div>
+            <div class="img-button">
+              <button @click="deleteImg('menuImage', item.id)">삭제</button>
+            </div>
+          </div>
+          <div
+            class="previewer thumbnail menu"
+            v-for="(item, i) in menuImg"
+            :key="item.menuImgUrlKey"
+          >
+            <div class="menu-edit">
+              <img :src="item.menuImgUrl" :alt="brand?.brandName" />
+              <div class="menu-input">
+                <input
+                  v-model="item.menuName"
+                  type="text"
+                  placeholder="메뉴 이름"
+                />
+                <input
+                  v-model="item.menuPrice"
+                  type="text"
+                  placeholder="메뉴 가격"
+                />
+              </div>
+            </div>
+            <div class="img-button">
+              <button
+                @click="deleteThumbnail('menuImage', item?.menuImgUrlKey, i)"
+              >
+                삭제
+              </button>
+            </div>
+          </div>
+          <div class="add-image">
+            <input
+              type="file"
+              name="menuImage"
+              id="menuImage"
+              @change="fileUpload"
+            />
+            <label for="menuImage"><i class="fa-solid fa-plus"></i> 추가</label>
+          </div>
+        </div>
+      </div>
+      <!-- desktop -->
       <!-- 대표 메뉴 이미지 -->
 
       <!-- 시설 및 인테리어 이미지 -->
-      <div class="brand-info-input">
+      <!-- mobile -->
+      <div class="brand-info-input input-mobile">
         <div class="title">
           <div class="name">시설 및 인테리어 이미지</div>
         </div>
@@ -315,10 +820,56 @@
           </div>
         </div>
       </div>
+      <!-- mobile -->
+
+      <!-- desktop -->
+      <div class="brand-info-input input-desktop brand-interior">
+        <div class="title">
+          <div class="name">시설 및 인테리어 이미지</div>
+          <div class="size">840 X 560</div>
+        </div>
+        <div class="image">
+          <div
+            class="previewer upload-image"
+            v-for="item in brand?.brandInteriorImg"
+            :key="item.id"
+          >
+            <img :src="item.interiorImgUrl" :alt="brand?.brandName" />
+            <div class="img-button">
+              <button @click="deleteImg('interiorImage', item.id)">삭제</button>
+            </div>
+          </div>
+          <div
+            class="previewer thumbnail"
+            v-for="(item, i) in interiorImg"
+            :key="item.key"
+          >
+            <img :src="item.url" :alt="brand?.brandName" />
+            <div class="img-button">
+              <button @click="deleteThumbnail('interiorImage', item?.key, i)">
+                삭제
+              </button>
+            </div>
+          </div>
+          <div class="add-image">
+            <input
+              type="file"
+              name="interiorImage"
+              id="interiorImage"
+              @change="fileUpload"
+            />
+            <label for="interiorImage"
+              ><i class="fa-solid fa-plus"></i> 추가</label
+            >
+          </div>
+        </div>
+      </div>
+      <!-- desktop -->
       <!-- 시설 및 인테리어 이미지 -->
 
       <!-- 창업비용 및 절차 이미지 -->
-      <div class="brand-info-input">
+      <!-- mobile -->
+      <div class="brand-info-input input-mobile">
         <div class="title">
           <div class="name">창업비용 및 절차 이미지</div>
         </div>
@@ -361,6 +912,51 @@
           </div>
         </div>
       </div>
+      <!-- mobile -->
+
+      <!-- desktop -->
+      <div class="brand-info-input input-desktop brand-start">
+        <div class="title">
+          <div class="name">창업비용 및 절차 이미지</div>
+          <div class="size">가로 840px 이상</div>
+        </div>
+        <div class="image">
+          <div
+            class="previewer upload-image"
+            v-for="item in brand?.brandStartCostImg"
+            :key="item.id"
+          >
+            <img :src="item.startCostImgUrl" :alt="brand?.brandName" />
+            <div class="img-button">
+              <button @click="deleteImg('startImage', item.id)">삭제</button>
+            </div>
+          </div>
+          <div
+            class="previewer thumbnail"
+            v-for="(item, i) in startImg"
+            :key="item.key"
+          >
+            <img :src="item.url" :alt="brand?.brandName" />
+            <div class="img-button">
+              <button @click="deleteThumbnail('startImage', item?.key, i)">
+                삭제
+              </button>
+            </div>
+          </div>
+          <div class="add-image">
+            <input
+              type="file"
+              name="startImage"
+              id="startImage"
+              @change="fileUpload"
+            />
+            <label for="startImage"
+              ><i class="fa-solid fa-plus"></i> 추가</label
+            >
+          </div>
+        </div>
+      </div>
+      <!-- desktop -->
       <!-- 창업비용 및 절차 이미지 -->
 
       <div class="save-button">
@@ -369,11 +965,14 @@
     </div>
   </main>
   <BottomNav />
+  <Footer />
 </template>
 
 <script lang="ts" setup>
 import MobileHeader from '../common/MobileHeader.vue'
+import Header from '../common/Header.vue'
 import BottomNav from '../common/BottomNav.vue'
+import Footer from '../common/Footer.vue'
 import api from '../../config/axios.config'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
@@ -381,6 +980,7 @@ import { Brand } from '../../types/brand'
 import { confirmAlert, toastAlert } from '../../functions/alert'
 import { SweetAlertResult } from 'sweetalert2'
 import { AxiosResponse } from 'axios'
+import { useRouter } from 'vue-router'
 
 interface Image {
   key: string
@@ -404,6 +1004,7 @@ interface BrandYoutube {
 }
 
 const store = useStore()
+const router = useRouter()
 
 const brand = ref<Brand>()
 const isLoading = ref<boolean>(true)
@@ -411,6 +1012,8 @@ const isLoading = ref<boolean>(true)
 const logoImg = ref<Image>()
 const brandImg = ref<Image>()
 const promotion = ref<string>('')
+const isPromotionWrite = ref<boolean>(false)
+const promotionIcon = ref<string[]>([])
 const webUrl = ref<string>('')
 const youtubeUrl = ref<Youtube[]>([{ url: '' }])
 const youtube = ref<BrandYoutube[]>([])
@@ -433,6 +1036,10 @@ const getBrandInfo = async () => {
     promotion.value = brand.value?.brandPromotion
       ? brand.value.brandPromotion
       : ''
+
+    promotionIcon.value = brand.value?.brandPromotionIcon
+      ? brand.value.brandPromotionIcon.split(',')
+      : []
 
     webUrl.value = brand.value?.webUrl ? brand.value.webUrl : ''
 
@@ -621,6 +1228,8 @@ const saveSubmit = async () => {
     brandImg: brandImg.value?.url,
     brandImgKey: brandImg.value?.key,
     brandPromotion: promotion.value,
+    brandPromotionIcon:
+      promotionIcon.value.length > 0 ? promotionIcon.value.toString() : null,
     webUrl: webUrl.value,
     brandYoutube: youtube.value,
     brandIntroImg: introImg.value,
@@ -633,6 +1242,17 @@ const saveSubmit = async () => {
 
   if (saveResult.data.success) {
     toastAlert('수정 되었습니다')
+
+    logoImg.value = undefined
+    brandImg.value = undefined
+    isPromotionWrite.value = false
+    promotionIcon.value = []
+    youtubeUrl.value = []
+    introImg.value = []
+    menuImg.value = []
+    interiorImg.value = []
+    startImg.value = []
+
     getBrandInfo()
   } else {
     toastAlert(saveResult.data.errorMessage)
@@ -645,6 +1265,344 @@ getBrandInfo()
 <style lang="scss" scoped>
 @import '@/scss/main';
 
+@include desktop {
+  .management {
+    .brand-info-input {
+      @include pc-container();
+      padding: 60px 0 60px 30px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+
+      &.input-mobile {
+        display: none;
+      }
+
+      .title {
+        width: 267px;
+        line-height: 1.3;
+
+        .name {
+          font-size: 1.8rem;
+          color: #353535;
+
+          &.required {
+            &::after {
+              content: '*';
+              color: #fa5252;
+            }
+          }
+        }
+
+        .size {
+          font-size: 1.4rem;
+          color: #c7c7c7;
+        }
+      }
+
+      .image {
+        .previewer {
+          display: flex;
+          align-items: center;
+
+          img {
+            width: 250px;
+            height: 100px;
+          }
+
+          .img-button {
+            margin-left: 12px;
+
+            button {
+              width: 88px;
+              height: 45px;
+              background-color: #f1f1f1;
+              font-size: 1.8rem;
+              color: #888;
+              border-radius: 10px;
+              cursor: pointer;
+            }
+          }
+        }
+
+        .add-image {
+          input[type='file'] {
+            width: 0;
+            height: 0;
+          }
+          &.one {
+            label {
+              display: flex;
+              flex-direction: column;
+              width: 250px;
+              height: 100px;
+              border: 1px solid $primary;
+              justify-content: center;
+              align-items: center;
+              box-sizing: border-box;
+              font-size: 1.6rem;
+              color: $primary;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+
+      .standard-size {
+        font-size: 1.4rem;
+        color: #c7c7c7;
+        line-height: 1.3;
+        margin-left: 94px;
+      }
+
+      .text-input {
+        input {
+          width: 840px;
+          height: 50px;
+          border: 1px solid #cfcfcf;
+          background-color: #fff;
+          font-size: 1.6rem;
+          padding: 0 20px;
+
+          &::placeholder {
+            color: #c7c7c7;
+          }
+        }
+      }
+
+      .right-input {
+        .promotion-icon {
+          width: 650px;
+          display: flex;
+          flex-wrap: wrap;
+
+          .icon-item {
+            display: flex;
+            align-items: center;
+            margin-right: 30px;
+            margin-bottom: 20px;
+
+            input[type='checkbox'] {
+              width: 20px;
+              height: 20px;
+              margin-right: 4px;
+            }
+
+            label {
+              img {
+                height: 27px;
+              }
+            }
+          }
+        }
+
+        .check-box {
+          display: flex;
+          align-items: center;
+          margin-bottom: 9px;
+
+          input[type='checkbox'] {
+            width: 20px;
+            height: 20px;
+            margin-right: 4px;
+          }
+
+          label {
+            font-size: 1.6rem;
+            color: #353535;
+          }
+        }
+      }
+    }
+
+    .promotion {
+      align-items: flex-start;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .homepage,
+    .youtube {
+      padding-bottom: 0;
+      padding-top: 30px;
+      border-bottom: none;
+    }
+
+    .youtube {
+      align-items: flex-start;
+      padding-bottom: 60px;
+      border-bottom: 1px solid #eee;
+
+      .youtube-input-zone {
+        .text-input {
+          display: flex;
+          align-items: center;
+          position: relative;
+          padding-bottom: 30px;
+
+          .delete-circle {
+            position: absolute;
+            right: 20px;
+
+            img {
+              width: 20px;
+              cursor: pointer;
+            }
+          }
+        }
+        .add-input {
+          text-align: center;
+          font-size: 1.6rem;
+          color: $primary;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .brand-intro {
+      flex-wrap: wrap;
+      .image {
+        .previewer {
+          margin-bottom: 16px;
+
+          img {
+            width: 756px;
+            height: 216px;
+          }
+        }
+
+        .bottom-zone {
+          width: 756px;
+          display: flex;
+          justify-content: space-between;
+
+          .standard-size {
+            margin: 0;
+          }
+
+          .add-image {
+            label {
+              font-size: 1.6rem;
+              color: $primary;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+
+    .brand-menu {
+      .image {
+        flex: 1 1 0;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        .previewer {
+          margin-right: 12px;
+          margin-bottom: 20px;
+          display: flex;
+          flex-direction: column;
+
+          .menu-edit {
+            img {
+              width: 180px;
+              height: 180px;
+            }
+
+            .menu-input {
+              display: flex;
+              flex-direction: column;
+
+              input {
+                width: 100%;
+                border: 1px solid #cfcfcf;
+                margin-top: 10px;
+                height: 32px;
+                padding: 0 17px;
+              }
+            }
+          }
+
+          .img-button {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+            margin-left: 0;
+
+            button {
+              width: 88px;
+              height: 45px;
+            }
+          }
+        }
+
+        .add-image {
+          label {
+            font-size: 1.6rem;
+            color: $primary;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .brand-interior,
+    .brand-start {
+      .image {
+        flex: 1 1 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        .previewer {
+          display: flex;
+          flex-direction: column;
+          margin-right: 12px;
+          margin-bottom: 20px;
+
+          img {
+            width: 372px;
+            height: 216px;
+          }
+
+          .img-button {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+            margin-left: 0;
+          }
+        }
+
+        .add-image {
+          label {
+            font-size: 1.6rem;
+            color: $primary;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .save-button {
+      @include pc-container();
+      margin-top: 38px;
+      margin-bottom: 80px;
+
+      button {
+        width: 100%;
+        height: 70px;
+        background-color: $primary;
+        color: #fff;
+        font-size: 2.2rem;
+        border-radius: 50px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
 @include mobile {
   .management {
     padding: 24px;
@@ -652,9 +1610,14 @@ getBrandInfo()
     input[type='file'] {
       display: none;
     }
+
     .brand-info-input {
       &:not(:first-child) {
         margin-top: 40px;
+      }
+
+      &.input-desktop {
+        display: none;
       }
       .title {
         display: flex;
@@ -797,6 +1760,47 @@ getBrandInfo()
         height: 40px;
         cursor: pointer;
       }
+
+      .promotion-icon {
+        margin-top: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        .icon-item {
+          flex: 1 1 0;
+          display: flex;
+          align-items: center;
+          margin-bottom: 12px;
+
+          input[type='checkbox'] {
+            width: 25px;
+            height: 25px;
+            margin-right: 6px;
+          }
+
+          label {
+            img {
+              height: 29px;
+            }
+          }
+        }
+      }
+
+      .check-box {
+        display: flex;
+        align-items: center;
+
+        input[type='checkbox'] {
+          width: 25px;
+          height: 25px;
+        }
+
+        label {
+          font-size: 1.4rem;
+          color: #353535;
+          margin-left: 7px;
+        }
+      }
     }
 
     .save-button {
@@ -812,6 +1816,10 @@ getBrandInfo()
         border-radius: 5px;
       }
     }
+  }
+
+  footer {
+    display: none;
   }
 }
 </style>

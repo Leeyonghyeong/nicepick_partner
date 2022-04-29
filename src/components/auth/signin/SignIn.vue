@@ -1,6 +1,9 @@
 <template>
   <main>
     <div class="signin-box">
+      <div class="mobile-header">
+        <img src="../../../assets/main_logo.png" alt="logo" />
+      </div>
       <div class="main-image">
         <img src="../../../assets/signin/main.jpg" alt="main-image" />
       </div>
@@ -88,7 +91,7 @@
       </div>
     </div>
   </main>
-  <Footer v-if="!checkMobile" />
+  <Footer />
 </template>
 
 <script lang="ts" setup>
@@ -110,14 +113,6 @@ const email = ref<string>('')
 const emailRef = ref<HTMLInputElement>()
 const password = ref<string>('')
 const passwordRef = ref<HTMLInputElement>()
-
-const checkWidth = () => {
-  if (window.innerWidth < 765) {
-    checkMobile.value = true
-  } else {
-    checkMobile.value = false
-  }
-}
 
 const signinSubmit = async () => {
   if (!email.value) {
@@ -168,6 +163,14 @@ const signinSubmit = async () => {
   }
 }
 
+const checkWidth = () => {
+  if (window.innerWidth < 765) {
+    checkMobile.value = true
+  } else {
+    checkMobile.value = false
+  }
+}
+
 checkWidth()
 
 onMounted(() => {
@@ -188,6 +191,10 @@ onUnmounted(() => {
     margin-top: 30px;
     display: flex;
     justify-content: space-between;
+
+    .mobile-header {
+      display: none;
+    }
 
     .main-image {
       img {
@@ -362,6 +369,10 @@ onUnmounted(() => {
   .signin-box {
     width: 100%;
 
+    .mobile-header {
+      display: none;
+    }
+
     .main-image {
       width: 100%;
       img {
@@ -526,6 +537,17 @@ onUnmounted(() => {
   .signin-box {
     width: 100%;
 
+    .mobile-header {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 100px;
+      }
+    }
+
     .main-image {
       img {
         width: 100%;
@@ -662,6 +684,10 @@ onUnmounted(() => {
     .app {
       display: none;
     }
+  }
+
+  footer {
+    display: none;
   }
 }
 </style>

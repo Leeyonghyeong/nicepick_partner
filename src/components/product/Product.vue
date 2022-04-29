@@ -1,5 +1,6 @@
 <template>
   <MobileHeader title="유료 서비스 이용내역" :cart="false" :back="false" />
+  <Header />
   <main>
     <div class="product">
       <!-- 결제내역 조회 -->
@@ -31,6 +32,12 @@
             <button @click="getPayList">조회</button>
           </div>
         </div>
+        <div class="list-header">
+          <div class="date">결제일</div>
+          <div class="product-name">상품명</div>
+          <div class="pay-price">결제금액</div>
+          <div class="pay-status">결제상태</div>
+        </div>
         <div class="list-body">
           <div class="no-content" v-if="payList.length === 0">
             결제 내역이 없습니다.
@@ -60,6 +67,12 @@
         <div class="list-top">
           <div class="title">결제상품 관리</div>
         </div>
+        <div class="list-header">
+          <div class="date">이용기간</div>
+          <div class="product-name">상품명</div>
+          <div class="pay-price">금액</div>
+          <div class="pay-status">선택사항</div>
+        </div>
         <div class="list-body" v-if="productList.length === 0">
           <div class="no-content">결제 상품이 없습니다.</div>
         </div>
@@ -75,10 +88,13 @@
               </div>
             </div>
             <div class="product-button">
-              <button v-if="item.categoryName !== '프리미엄서비스'">
+              <button
+                v-if="item.categoryName !== '프리미엄서비스'"
+                @click="extensionProduct(item.payProductId)"
+              >
                 연장신청
               </button>
-              <button v-else>정기결제 해지</button>
+              <button v-else @click="bookCancel">정기결제 해지</button>
             </div>
           </div>
         </div>
@@ -91,7 +107,16 @@
           <div class="title">추천 상품</div>
         </div>
         <div class="recommend-image">
-          <img src="../../assets/product/recommend_product.png" alt="" />
+          <img
+            class="recommend_pc"
+            src="../../assets/product/recommend_product_pc.png"
+            alt="추천상품"
+          />
+          <img
+            class="recommend_mobile"
+            src="../../assets/product/recommend_product_mobile.png"
+            alt="추천상품"
+          />
         </div>
         <div class="move-shop-button">
           <button @click="router.push('/shop')">신청하러가기</button>
@@ -100,19 +125,23 @@
       <!-- 추천 상품 -->
     </div>
   </main>
+  <Footer />
   <BottomNav />
 </template>
 
 <script lang="ts" setup>
 import MobileHeader from '../common/MobileHeader.vue'
+import Header from '../common/Header.vue'
 import BottomNav from '../common/BottomNav.vue'
+import Footer from '../common/Footer.vue'
 import { computed, ref } from 'vue'
-import { PayStatus, CurrentProduct } from '../../types/pay'
+import { PayStatus, CurrentProduct, PayTermPrice } from '../../types/pay'
 import api from '../../config/axios.config'
 import { useStore } from 'vuex'
-import { toastAlert } from '../../functions/alert'
+import { checkAlert, confirmAlert, toastAlert } from '../../functions/alert'
 import { dateFormat } from '../../functions/commons'
 import { useRouter } from 'vue-router'
+import { SweetAlertResult } from 'sweetalert2'
 
 const router = useRouter()
 const store = useStore()
@@ -185,6 +214,44 @@ const getProductList = async () => {
   }
 }
 
+const extensionProduct = async (payProductId: string) => {
+  const alert: SweetAlertResult = await confirmAlert(
+    '연장신청은 30일 단위로 가능합니다. 남은 기간은 결제 완료시 자동으로 연장처리 됩니다.'
+  )
+
+  if (alert.isConfirmed) {
+    const product = await api.get(`/pay/extension/${payProductId}`)
+
+    const selectTermPrice: PayTermPrice[] = []
+    selectTermPrice.push(product.data.payTermPrice)
+
+    store.commit('pay/updateState', {
+      payTermPrice: selectTermPrice,
+    })
+
+    router.push('/pay/product')
+  }
+}
+
+const bookCancel = async () => {
+  const alert: SweetAlertResult = await confirmAlert(
+    '다음 결제 예정일에 결제가 되지 않으며 기간 만료시 상품 해제됩니다.'
+  )
+  if (alert.isConfirmed) {
+    const cancelResult = await api.post('/pay/book/cancel', {
+      brandId: store.state.auth.brand,
+    })
+
+    if (cancelResult.data.success) {
+      checkAlert('자동결제 해지가 정상적으로 처리되었습니다.')
+    } else {
+      checkAlert(cancelResult.data.errorMessage)
+    }
+  } else {
+    return
+  }
+}
+
 calcDate()
 getPayList()
 getProductList()
@@ -192,6 +259,188 @@ getProductList()
 
 <style lang="scss" scoped>
 @import '@/scss/main';
+
+@include desktop {
+  .product {
+    .pay-list,
+    .product-list,
+    .recommend-product {
+      @include pc-container();
+      margin-top: 54px;
+
+      .list-top {
+        display: flex;
+        justify-content: space-between;
+
+        .title {
+          font-size: 2rem;
+          color: #353535;
+          margin-bottom: 17px;
+        }
+
+        .list-search {
+          select {
+            height: 30px;
+            width: 100px;
+          }
+
+          span {
+            margin: 0 10px;
+          }
+
+          button {
+            height: 30px;
+            width: 100px;
+            background-color: #f2f4f6;
+            border-radius: 10px;
+            margin-left: 12px;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .list-header {
+        display: flex;
+        background-color: #f9f9f9;
+        height: 50px;
+        align-items: center;
+
+        .date,
+        .product-name,
+        .pay-price,
+        .pay-status {
+          text-align: center;
+          font-size: 1.6rem;
+          color: #353535;
+        }
+
+        .date {
+          width: 200px;
+        }
+
+        .product-name {
+          width: 500px;
+        }
+
+        .pay-price,
+        .pay-status {
+          width: 290px;
+        }
+      }
+
+      .list-body {
+        .no-content {
+          height: 63px;
+          text-align: center;
+          line-height: 63px;
+          border-bottom: 1px solid #ececec;
+          font-size: 1.4rem;
+          color: #7a7a7a;
+          margin-bottom: 100px;
+        }
+
+        .pay-item {
+          display: flex;
+          align-items: center;
+          text-align: center;
+          font-size: 1.4rem;
+          color: #353535;
+          height: 50px;
+          border-bottom: 1px solid #ececec;
+
+          .date {
+            width: 200px;
+          }
+
+          .info {
+            display: flex;
+
+            div {
+              width: 290px;
+              &:nth-child(1) {
+                width: 500px;
+              }
+            }
+          }
+        }
+
+        .product-item {
+          display: flex;
+          text-align: center;
+          align-items: center;
+          font-size: 1.4rem;
+          color: #353535;
+          height: 50px;
+          border-bottom: 1px solid #ececec;
+
+          .expire-date {
+            width: 200px;
+          }
+
+          .info {
+            display: flex;
+
+            div {
+              width: 290px;
+              &:nth-child(1) {
+                width: 500px;
+              }
+            }
+          }
+
+          .product-button {
+            width: 290px;
+
+            button {
+              width: 125px;
+              height: 40px;
+              background-color: #ededed;
+              font-size: 1.6rem;
+              color: #191919;
+              border-radius: 10px;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+
+      .recommend-image {
+        margin-top: 12px;
+
+        .recommend_mobile {
+          display: none;
+        }
+
+        img {
+          width: 100%;
+        }
+      }
+    }
+
+    .recommend-product {
+      width: 100%;
+
+      .title {
+        @include pc-container();
+      }
+
+      .move-shop-button {
+        @include pc-container();
+
+        button {
+          margin: 150px 0 200px 0;
+          width: 100%;
+          height: 100px;
+          border-radius: 100px;
+          font-size: 3rem;
+          color: #fff;
+          background-color: $primary;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
 
 @include mobile {
   .product {
@@ -232,6 +481,10 @@ getProductList()
             cursor: pointer;
           }
         }
+      }
+
+      .list-header {
+        display: none;
       }
 
       .list-body {
@@ -322,6 +575,11 @@ getProductList()
       }
       .recommend-image {
         margin-top: 12px;
+
+        .recommend_pc {
+          display: none;
+        }
+
         img {
           width: 100%;
         }
@@ -342,6 +600,10 @@ getProductList()
         }
       }
     }
+  }
+
+  footer {
+    display: none;
   }
 }
 </style>

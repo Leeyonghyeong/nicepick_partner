@@ -4,6 +4,7 @@
     :cart="false"
     :back="true"
   />
+  <Header />
   <main>
     <div class="findpw" v-if="!isChangePassword">
       <div class="noti">
@@ -11,7 +12,9 @@
         <div>통해 비밀번호를 변경할 수 있습니다</div>
       </div>
 
-      <div class="input-zone">
+      <div class="top">비밀번호 찾기</div>
+
+      <div class="input-zone input-zone-mobile">
         <div class="email-input">
           <input
             v-model="email"
@@ -31,6 +34,33 @@
         </div>
       </div>
 
+      <div class="input-zone input-zone-desktop">
+        <div class="email-input">
+          <div class="title">이메일 입력</div>
+          <div class="input-box">
+            <input
+              v-model="email"
+              type="text"
+              placeholder="이메일 주소 입력"
+              @keypress.enter="checkEmail"
+            />
+            <button @click="checkEmail">전송</button>
+          </div>
+        </div>
+        <div class="certification-input">
+          <div class="title">인증번호 입력</div>
+          <div class="input-box">
+            <input
+              v-model="certificationNumber"
+              type="text"
+              placeholder="인증번호 입력"
+              @keypress.enter="checkCertificationNumber"
+            />
+            <button @click="checkCertificationNumber">확인</button>
+          </div>
+        </div>
+      </div>
+
       <div class="submit-button">
         <button @click="checkCertificationNumber">확인</button>
       </div>
@@ -38,7 +68,8 @@
 
     <!-- 비밀번호 재설정 -->
     <div class="change-password" v-else>
-      <div class="input-zone">
+      <div class="top">비밀번호 재설정</div>
+      <div class="input-zone input-zone-mobile">
         <div class="password-input input">
           <input
             v-model="password"
@@ -73,17 +104,62 @@
         </div>
       </div>
 
+      <div class="input-zone input-zone-desktop">
+        <div class="password-input input">
+          <div class="title">새로운 비밀번호</div>
+          <div class="input-box">
+            <input
+              v-model="password"
+              type="password"
+              placeholder="새 비밀번호 입력(영문+숫자+특수문자 8~16자)"
+              @keyup="checkPasswordImg"
+            />
+            <div class="validation-password">
+              <img
+                v-if="passwordImgName === 'default'"
+                src="../../../assets/signup/default_password.png"
+                alt="default_password"
+              />
+              <img
+                v-else-if="passwordImgName === 'danger'"
+                src="../../../assets/signup/danger_password.png"
+                alt="danger_password"
+              />
+              <img
+                v-else
+                src="../../../assets/signup/safe_password.png"
+                alt="safe_password"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="rePassword-input input">
+          <div class="title">새로운 비밀번호 재확인</div>
+          <div class="input-box">
+            <input
+              v-model="rePassword"
+              type="password"
+              placeholder="새 비밀번호 입력(영문+숫자+특수문자 8~16자)"
+            />
+            <button @click="modifyPassword">확인</button>
+          </div>
+        </div>
+      </div>
+
       <div class="submit-button">
         <button @click="modifyPassword">확인</button>
       </div>
     </div>
   </main>
+  <Footer />
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { checkAlert, toastAlert } from '../../../functions/alert'
+import Header from '../../common/Header.vue'
 import MobileHeader from '../../common/MobileHeader.vue'
+import Footer from '../../common/Footer.vue'
 import api from '../../../config/axios.config'
 import { SweetAlertResult } from 'sweetalert2'
 import { useRouter } from 'vue-router'
@@ -170,6 +246,11 @@ const modifyPassword = async () => {
     return
   }
 
+  if (!email.value) {
+    toastAlert('이메일 주소가 올바르지 않습니다')
+    return
+  }
+
   const result = await api.patch('/auth/find/password', {
     email: email.value,
     password: password.value,
@@ -195,6 +276,91 @@ const modifyPassword = async () => {
 <style lang="scss" scoped>
 @import '@/scss/main';
 
+@include desktop {
+  .findpw,
+  .change-password {
+    @include pc-container();
+    .noti {
+      display: none;
+    }
+
+    .top {
+      padding: 67px 0 11px 15px;
+      border-bottom: 1px solid #eee;
+      font-size: 2rem;
+      color: #353535;
+    }
+
+    .input-zone-mobile {
+      display: none;
+    }
+
+    .input-zone-desktop {
+      padding-left: 55px;
+      padding-right: 310px;
+      margin-top: 40px;
+      height: 500px;
+      box-sizing: border-box;
+      .email-input,
+      .certification-input,
+      .password-input,
+      .rePassword-input {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+
+        .title {
+          font-size: 1.8rem;
+          color: #353535;
+        }
+
+        .input-box {
+          position: relative;
+          display: flex;
+          align-items: center;
+
+          input {
+            width: 400px;
+            height: 50px;
+            padding: 0 20px;
+            border: 1px solid #cfcfcf;
+            background-color: #fff;
+          }
+
+          button {
+            width: 130px;
+            height: 50px;
+            color: #fff;
+            font-size: 1.8rem;
+            border-radius: 10px;
+            background-color: $primary;
+            margin-left: 11px;
+            cursor: pointer;
+          }
+
+          .validation-password {
+            position: absolute;
+            right: 13px;
+
+            img {
+              height: 19px;
+            }
+          }
+        }
+      }
+
+      .password-input {
+        padding-right: 141px;
+      }
+    }
+
+    .submit-button {
+      display: none;
+    }
+  }
+}
+
 @include mobile {
   .findpw {
     .noti {
@@ -203,6 +369,14 @@ const modifyPassword = async () => {
       font-size: 1.6rem;
       color: #191919;
       line-height: 1.3;
+    }
+
+    .top {
+      display: none;
+    }
+
+    .input-zone-desktop {
+      display: none;
     }
 
     .input-zone {
@@ -253,8 +427,15 @@ const modifyPassword = async () => {
   }
 
   .change-password {
+    .top {
+      display: none;
+    }
     .input-zone {
       padding: 40px 24px 0;
+
+      &.input-zone-desktop {
+        display: none;
+      }
 
       .input {
         position: relative;
@@ -308,6 +489,10 @@ const modifyPassword = async () => {
         border-radius: 5px;
       }
     }
+  }
+
+  footer {
+    display: none;
   }
 }
 </style>

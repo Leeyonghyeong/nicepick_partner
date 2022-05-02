@@ -4,6 +4,7 @@ import { PayTermPrice } from '../types/pay'
 
 export interface PayModuleState {
   payTermPrice: PayTermPrice[]
+  serviceType: string
 }
 
 export const payModule: Module<PayModuleState, RootState> = {
@@ -11,11 +12,15 @@ export const payModule: Module<PayModuleState, RootState> = {
 
   state: () => ({
     payTermPrice: [],
+    serviceType: 'premium',
   }),
 
   mutations: {
-    updateState(state: PayModuleState, payload: PayModuleState) {
-      state['payTermPrice'] = payload['payTermPrice']
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    updateState(state: any, payload: any) {
+      Object.keys(payload).forEach((key) => {
+        state[key] = payload[key]
+      })
     },
   },
 }

@@ -1,76 +1,102 @@
 <template>
   <MobileHeader title="프리미엄 서비스 가입" :cart="false" :back="true" />
+  <Header />
   <main>
     <div class="premium-service-pay" v-if="!isLoading">
-      <div class="service-info">
-        <div class="title">{{ productName }}</div>
-        <div class="price">
-          <div>한달 0원</div>
-          <div>{{ price.toLocaleString() }}원</div>
+      <div class="left-pay-info">
+        <div class="top desktop">프리미엄 서비스 가입</div>
+        <div class="service-info">
+          <div class="title">{{ productName }}</div>
+          <div class="price">
+            <div>한달 0원</div>
+            <div>{{ price.toLocaleString() }}원</div>
+          </div>
+        </div>
+
+        <div class="notice desktop">
+          <div class="top">프리미엄 서비스 유의사항</div>
+          <div>
+            - 무료체험 기간 이후 매월
+            <span>구독기간 마지막 날 자동 결제</span> 되며, 언제든 해지
+            가능합니다.
+          </div>
+          <div>
+            - 정기 구독(결제) 갱신을 중단하고자 할 경우,
+            <span>구독기간 종료 하루 전 구독을 해지</span>하셔야 합니다.
+          </div>
+          <div>
+            - 멤버십 이용 등 기타 문의는 [창업픽 > 고객센터]를 이용해주세요.
+          </div>
         </div>
       </div>
 
-      <div class="pay-zone">
-        <div class="title">결제 금액</div>
-        <div class="pay-info-box">
-          <div class="service-price">
-            <div>멤버십 금액</div>
-            <div>
-              매월
-              {{ price.toLocaleString() }}원
+      <div class="right-pay-info">
+        <div class="pay-zone">
+          <div class="title">결제 금액</div>
+          <div class="pay-info-box">
+            <div class="service-price info-item">
+              <div>멤버십 금액</div>
+              <div>
+                매월
+                {{ price.toLocaleString() }}원
+              </div>
+            </div>
+            <div class="pay-free-term info-item">
+              <div>무료 기간</div>
+              <div>한달</div>
+            </div>
+            <div class="pay-price info-item">
+              <div>오늘 결제 금액</div>
+              <div><span>0</span>원</div>
+            </div>
+            <div class="next-pay">
+              <div>다음 결제</div>
+              <div>{{ calcNextMonth() }} ({{ price.toLocaleString() }}원)</div>
             </div>
           </div>
-          <div class="pay-free-term">
-            <div>무료 기간</div>
-            <div>한달</div>
+        </div>
+
+        <div class="line"></div>
+
+        <div class="agree-zone">
+          <div class="all-agree">
+            <input
+              v-model="isAllCheck"
+              type="checkbox"
+              id="allCheck"
+              @change="allCheck"
+            />
+            <label for="allCheck">전체 동의하기</label>
           </div>
-          <div class="pay-price">
-            <div>오늘 결제 금액</div>
-            <div><span>0</span>원</div>
-          </div>
-          <div class="next-pay">
-            <div>다음 결제</div>
-            <div>{{ calcNextMonth() }} ({{ price.toLocaleString() }}원)</div>
+          <div class="required-agree">
+            <div>
+              <input
+                v-model="isPayAgree"
+                type="checkbox"
+                id="payAgree"
+                @change="allCheckStatus"
+              />
+              <label for="payAgree">[필수] 주문 및 결제 관련 약관동의</label>
+            </div>
+            <div>
+              <input
+                v-model="isRefundAgree"
+                type="checkbox"
+                id="refundAgree"
+                @change="allCheckStatus"
+              />
+              <label for="refundAgree">환불 정책 동의</label>
+              <a
+                href="https://nicepick.notion.site/f6319949c3254de0bf1e0196b3561f16"
+                target="_blank"
+                >보기</a
+              >
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="line"></div>
-
-      <div class="agree-zone">
-        <div class="all-agree">
-          <input
-            v-model="isAllCheck"
-            type="checkbox"
-            id="allCheck"
-            @change="allCheck"
-          />
-          <label for="allCheck">전체 동의하기</label>
-        </div>
-        <div class="required-agree">
-          <div>
-            <input
-              v-model="isPayAgree"
-              type="checkbox"
-              id="payAgree"
-              @change="allCheckStatus"
-            />
-            <label for="payAgree">[필수] 주문 및 결제 관련 약관동의</label>
-          </div>
-          <div>
-            <input
-              v-model="isRefundAgree"
-              type="checkbox"
-              id="refundAgree"
-              @change="allCheckStatus"
-            />
-            <label for="refundAgree">환불 정책 동의</label>
-            <a
-              href="https://nicepick.notion.site/f6319949c3254de0bf1e0196b3561f16"
-              target="_blank"
-              >보기</a
-            >
-          </div>
+        <div class="pay-button">
+          <button @click="startFree">0원 결제하기</button>
         </div>
       </div>
 
@@ -100,6 +126,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import MobileHeader from '../common/MobileHeader.vue'
+import Header from '../common/Header.vue'
 import Footer from '../common/Footer.vue'
 import { PayCategory } from '../../types/pay'
 import api from '../../config/axios.config'
@@ -262,164 +289,399 @@ getPayCategory()
 <style lang="scss" scoped>
 @import '@/scss/main';
 
+@include desktop {
+  .premium-service-pay {
+    @include pc-container();
+    display: flex;
+    justify-content: space-between;
+
+    .left-pay-info {
+      width: 750px;
+
+      .top {
+        padding-top: 40px;
+        font-size: 2.4rem;
+        color: #353535;
+        padding-bottom: 15px;
+      }
+
+      .service-info {
+        display: flex;
+        background-color: #3c3c3c;
+        width: 100%;
+        height: 144px;
+        align-items: center;
+        padding: 0 68px;
+        justify-content: space-between;
+        box-sizing: border-box;
+
+        .title {
+          font-size: 4rem;
+          color: $primary;
+          font-weight: bold;
+        }
+
+        .price {
+          display: flex;
+          align-items: center;
+
+          div {
+            font-size: 4rem;
+            color: #fff;
+            font-weight: bold;
+
+            &:last-child {
+              margin-left: 19px;
+              font-size: 3.2rem;
+              color: #999;
+              text-decoration: line-through;
+            }
+          }
+        }
+      }
+
+      .notice {
+        display: block;
+
+        div {
+          font-size: 1.4rem;
+          color: #777;
+          line-height: 1.5;
+        }
+
+        .top {
+          font-size: 1.6rem;
+          color: #353535;
+          padding-top: 30px;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .right-pay-info {
+      width: 425px;
+      border-left: 1px solid #ececec;
+      padding-left: 25px;
+      box-sizing: border-box;
+      padding-top: 40px;
+      padding-bottom: 370px;
+
+      .pay-zone {
+        .title {
+          font-size: 2.4rem;
+          color: #353535;
+          padding-bottom: 15px;
+          border-bottom: 1px solid #a7a7a7;
+        }
+
+        .pay-info-box {
+          .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 2rem;
+            color: #353535;
+
+            &:first-child {
+              padding: 21px 20px 14px;
+            }
+
+            &:nth-child(2) {
+              padding: 0 20px 19px;
+            }
+
+            &:nth-child(3) {
+              padding: 17px 20px;
+              background-color: #f9f9f9;
+
+              div {
+                color: #2b2b2b;
+
+                &:last-child {
+                  font-size: 2.4rem;
+                  color: $primary;
+                  font-weight: bold;
+                }
+              }
+            }
+          }
+
+          .next-pay {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            margin-top: 16px;
+
+            div {
+              font-size: 2rem;
+              color: #353535;
+
+              &:last-child {
+                font-size: 1.6rem;
+              }
+            }
+          }
+        }
+      }
+
+      .agree-zone {
+        margin-top: 60px;
+
+        input[type='checkbox'] {
+          position: absolute;
+          width: 0px;
+          height: 0px;
+        }
+
+        input[type='checkbox'] + label::before {
+          content: '\2713';
+          color: #fff;
+          font-weight: bold;
+          width: 1.5rem;
+          height: 1.5rem;
+          background: #dcdcdc;
+          text-align: center;
+          line-height: 1.5rem;
+          border-radius: 50%;
+          font-size: 1.2rem;
+          display: inline-block;
+          margin-right: 8px;
+        }
+
+        input[type='checkbox']:checked + label::before {
+          content: '\2713';
+          color: #fff;
+          font-weight: bold;
+          background: $primary;
+        }
+
+        .all-agree {
+          font-size: 1.8rem;
+          color: #353535;
+          font-weight: bold;
+          border-bottom: 1px solid #ededed;
+          padding-bottom: 12px;
+        }
+
+        .required-agree {
+          div {
+            font-size: 1.4rem;
+            color: #353535;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+
+            &:last-child {
+              margin-top: 17px;
+            }
+
+            a {
+              text-decoration: none;
+              color: #9b9b9b;
+            }
+          }
+        }
+      }
+
+      .pay-button {
+        display: block;
+        margin-top: 40px;
+
+        button {
+          width: 100%;
+          height: 59px;
+          background-color: #fa5252;
+          font-size: 2.2rem;
+          color: #fff;
+          border-radius: 10px;
+          cursor: pointer;
+
+          span {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+
+    .notice {
+      display: none;
+    }
+  }
+
+  .pay-button {
+    display: none;
+  }
+}
+
 @include mobile {
   main {
     min-height: 0;
   }
   .premium-service-pay {
-    .service-info {
-      margin: 24px 24px 0 24px;
-      background-color: #3c3c3c;
-      border-radius: 5px;
-      padding: 20px;
-
-      .title,
-      .price {
-        font-size: 2rem;
-        color: $primary;
-        font-weight: bold;
+    .left-pay-info {
+      .top.desktop {
+        display: none;
       }
-
-      .price {
-        margin-top: 15px;
-        display: flex;
-        align-items: flex-end;
-
-        div {
-          color: #fff;
-
-          &:last-child {
-            font-size: 1.6rem;
-            color: #999;
-            margin-left: 12px;
-            text-decoration: line-through;
-          }
-        }
-      }
-    }
-
-    .pay-zone {
-      margin: 0 24px 0 24px;
-      margin-top: 40px;
-
-      .title {
-        font-size: 1.8rem;
-        color: #191919;
-        font-weight: bold;
-      }
-
-      .pay-info-box {
-        margin-top: 12px;
-        background-color: #f9f9f9;
+      .service-info {
+        margin: 24px 24px 0 24px;
+        background-color: #3c3c3c;
         border-radius: 5px;
+        padding: 20px;
 
-        div {
-          font-size: 1.4rem;
-          color: #191919;
-        }
-
-        .service-price {
-          display: flex;
-          justify-content: space-between;
-          padding: 16px 20px 6px 20px;
-        }
-
-        .pay-free-term {
-          display: flex;
-          justify-content: space-between;
-          padding: 6px 20px 12px 20px;
-        }
-
-        .pay-price {
-          background-color: #e8e8e8;
-          border-radius: 5px;
-          padding: 12px 20px;
+        .title,
+        .price {
+          font-size: 2rem;
+          color: $primary;
           font-weight: bold;
+        }
+
+        .price {
+          margin-top: 15px;
           display: flex;
-          justify-content: space-between;
           align-items: flex-end;
 
           div {
-            span {
-              font-size: 1.8rem;
-              font-weight: bold;
-            }
+            color: #fff;
 
             &:last-child {
-              font-weight: normal;
+              font-size: 1.6rem;
+              color: #999;
+              margin-left: 12px;
+              text-decoration: line-through;
             }
           }
         }
+      }
 
-        .next-pay {
-          display: flex;
-          justify-content: space-between;
-          padding: 12px 20px 16px 20px;
+      .notice.desktop {
+        display: none;
+      }
+    }
+
+    .right-pay-info {
+      .pay-zone {
+        margin: 0 24px 0 24px;
+        margin-top: 40px;
+
+        .title {
+          font-size: 1.8rem;
+          color: #191919;
+          font-weight: bold;
         }
-      }
-    }
 
-    .line {
-      width: 100%;
-      height: 12px;
-      background-color: #f8f8f8;
-      margin: 20px 0;
-    }
+        .pay-info-box {
+          margin-top: 12px;
+          background-color: #f9f9f9;
+          border-radius: 5px;
 
-    .agree-zone {
-      padding: 0 24px;
-
-      input[type='checkbox'] {
-        position: absolute;
-        width: 0px;
-        height: 0px;
-      }
-
-      input[type='checkbox'] + label::before {
-        content: '\2713';
-        color: #fff;
-        width: 2rem;
-        height: 2rem;
-        background-color: #dcdcdc;
-        text-align: center;
-        line-height: 2rem;
-        border-radius: 50%;
-        font-size: 1.6rem;
-        display: inline-block;
-        margin-right: 12px;
-      }
-
-      input[type='checkbox']:checked + label::before {
-        content: '\2713';
-        color: #fff;
-        font-weight: bold;
-        background: $primary;
-      }
-
-      .all-agree {
-        font-size: 1.8rem;
-        color: #191919;
-        font-weight: bold;
-        padding-bottom: 16px;
-        border-bottom: 1px solid #ededed;
-      }
-
-      .required-agree {
-        margin-top: 16px;
-        font-size: 1.4rem;
-        color: #191919;
-
-        div {
-          display: flex;
-          justify-content: space-between;
-
-          &:first-child {
-            margin-bottom: 12px;
+          div {
+            font-size: 1.4rem;
+            color: #191919;
           }
 
-          a {
-            color: #767676;
-            text-decoration: none;
+          .service-price {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 20px 6px 20px;
+          }
+
+          .pay-free-term {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 20px 12px 20px;
+          }
+
+          .pay-price {
+            background-color: #e8e8e8;
+            border-radius: 5px;
+            padding: 12px 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+
+            div {
+              span {
+                font-size: 1.8rem;
+                font-weight: bold;
+              }
+
+              &:last-child {
+                font-weight: normal;
+              }
+            }
+          }
+
+          .next-pay {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 20px 16px 20px;
+          }
+        }
+      }
+
+      .line {
+        width: 100%;
+        height: 12px;
+        background-color: #f8f8f8;
+        margin: 20px 0;
+      }
+
+      .agree-zone {
+        padding: 0 24px;
+
+        input[type='checkbox'] {
+          position: absolute;
+          width: 0px;
+          height: 0px;
+        }
+
+        input[type='checkbox'] + label::before {
+          content: '\2713';
+          color: #fff;
+          width: 2rem;
+          height: 2rem;
+          background-color: #dcdcdc;
+          text-align: center;
+          line-height: 2rem;
+          border-radius: 50%;
+          font-size: 1.6rem;
+          display: inline-block;
+          margin-right: 12px;
+        }
+
+        input[type='checkbox']:checked + label::before {
+          content: '\2713';
+          color: #fff;
+          font-weight: bold;
+          background: $primary;
+        }
+
+        .all-agree {
+          font-size: 1.8rem;
+          color: #191919;
+          font-weight: bold;
+          padding-bottom: 16px;
+          border-bottom: 1px solid #ededed;
+        }
+
+        .required-agree {
+          margin-top: 16px;
+          font-size: 1.4rem;
+          color: #191919;
+
+          div {
+            display: flex;
+            justify-content: space-between;
+
+            &:first-child {
+              margin-bottom: 12px;
+            }
+
+            a {
+              color: #767676;
+              text-decoration: none;
+            }
           }
         }
       }

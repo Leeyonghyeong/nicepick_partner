@@ -8,14 +8,14 @@
           <div
             class="premium"
             :class="{ active: serviceType === 'premium' }"
-            @click="serviceType = 'premium'"
+            @click="changeServiceType('premium')"
           >
             프리미엄 서비스
           </div>
           <div
             class="ad"
             :class="{ active: serviceType === 'ad' }"
-            @click="serviceType = 'ad'"
+            @click="changeServiceType('ad')"
           >
             광고 서비스
           </div>
@@ -37,9 +37,20 @@ import BottomNav from '../common/BottomNav.vue'
 import Footer from '../common/Footer.vue'
 import PremiumService from './PremiumService.vue'
 import AdService from './AdService.vue'
-import { ref } from 'vue'
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
-const serviceType = ref<string>('premium')
+const store = useStore()
+
+const serviceType = computed(() => {
+  return store.state.pay.serviceType as string
+})
+
+const changeServiceType = (type: string) => {
+  store.commit('pay/updateState', {
+    serviceType: type,
+  })
+}
 </script>
 
 <style lang="scss" scoped>

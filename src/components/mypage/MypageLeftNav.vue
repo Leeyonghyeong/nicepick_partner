@@ -49,9 +49,6 @@
 </template>
 
 <script lang="ts" setup>
-import MobileHeader from '../common/MobileHeader.vue'
-import Footer from '../common/Footer.vue'
-import BottomNav from '../common/BottomNav.vue'
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import api from '../../config/axios.config'

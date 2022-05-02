@@ -411,7 +411,6 @@ getUserInfo()
     @include pc-container();
 
     .account {
-      margin-left: 60px;
       .user-info {
         padding-top: 50px;
         padding-bottom: 40px;

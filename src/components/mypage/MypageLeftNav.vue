@@ -1,8 +1,17 @@
 <template>
-  <div class="mypage">
+  <div class="mypage" v-if="!isLoading">
     <div class="current-brand-user-info">
       <div class="left-brand">
-        <img :src="brand?.brandLogoImg" :alt="brand?.brandName" />
+        <img
+          v-if="brand?.brandLogoImg"
+          :src="brand?.brandLogoImg"
+          :alt="brand?.brandName"
+        />
+        <img
+          v-else
+          :src="loadCategoryImage(brand?.smallCategoryName)"
+          :alt="brand?.brandName"
+        />
       </div>
       <div class="right-brand-user-info">
         <div class="brand-name">
@@ -50,7 +59,7 @@
 
 <script lang="ts" setup>
 import { useStore } from 'vuex'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import api from '../../config/axios.config'
 import { Brand } from '../../types/brand'
 import { toastAlert } from '../../functions/alert'
@@ -61,16 +70,19 @@ const router = useRouter()
 const route = useRoute()
 
 const brand = ref<Brand>()
+const isLoading = ref<boolean>(true)
 
 const brandId = computed(() => {
   return store.state.auth.brandId
 })
 
 const getBrandInfo = async () => {
+  isLoading.value = true
   const result = await api.get(`/brand/detail/${brandId.value}`)
 
   if (result.data.success) {
     brand.value = result.data.brand
+    isLoading.value = false
   } else {
     toastAlert(result.data.errorMessage)
   }
@@ -88,6 +100,22 @@ const logout = () => {
   router.push('/')
 }
 
+const loadCategoryImage = (categoryName: string): string => {
+  const imgUrl = new URL(
+    `../../assets/category/${categoryName
+      .replaceAll(' ', '')
+      .replaceAll('/', '')}.png`,
+    import.meta.url
+  )
+
+  return imgUrl.href
+}
+
+watch(
+  () => store.state.auth.brandId,
+  () => getBrandInfo()
+)
+
 getBrandInfo()
 </script>
 
@@ -97,6 +125,8 @@ getBrandInfo()
 @include desktop {
   .mypage {
     width: 315px;
+    margin-right: 60px;
+    margin-bottom: 300px;
 
     .current-brand-user-info {
       .left-brand {

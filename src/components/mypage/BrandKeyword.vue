@@ -1,6 +1,8 @@
 <template>
   <MobileHeader title="대표 키워드 추가" :cart="false" :back="true" />
+  <Header />
   <main>
+    <MypageLeftNav />
     <div class="brand-keyword">
       <div class="keyword-count">
         <div>
@@ -31,11 +33,15 @@
       </div>
     </div>
   </main>
+  <Footer />
 </template>
 
 <script lang="ts" setup>
 import { useStore } from 'vuex'
 import MobileHeader from '../common/MobileHeader.vue'
+import Header from '../common/Header.vue'
+import MypageLeftNav from './MypageLeftNav.vue'
+import Footer from '../common/Footer.vue'
 import api from '../../config/axios.config'
 import { ref } from 'vue'
 import { confirmAlert, toastAlert } from '../../functions/alert'
@@ -104,6 +110,86 @@ getTagList()
 
 <style lang="scss" scoped>
 @import '@/scss/main';
+
+@include desktop {
+  main {
+    @include pc-container();
+    display: flex;
+
+    .brand-keyword {
+      padding-top: 90px;
+
+      .keyword-count {
+        display: flex;
+        font-size: 2rem;
+        color: #353535;
+
+        div {
+          margin-right: 8px;
+
+          &:last-child {
+            color: #9d9d9d;
+          }
+
+          span {
+            color: $primary;
+          }
+        }
+      }
+
+      .keyword-input {
+        position: relative;
+        margin-top: 25px;
+        display: flex;
+        align-items: center;
+
+        input {
+          width: 857px;
+          height: 64px;
+          border: 1px solid #b9b9b9;
+          font-size: 2rem;
+          padding: 0 34px;
+
+          &::placeholder {
+            color: #9d9d9d;
+          }
+        }
+
+        .submit {
+          position: absolute;
+          right: 70px;
+          cursor: pointer;
+          font-size: 2rem;
+          color: #9d9d9d;
+        }
+      }
+
+      .keyword-list {
+        margin-top: 50px;
+        display: flex;
+        flex-wrap: wrap;
+
+        .keyword-item {
+          padding: 18px 20px 18px 34px;
+          background-color: #f3f3f3;
+          border-radius: 50px;
+          font-size: 2rem;
+          color: #232323;
+          display: flex;
+          align-items: center;
+          margin-right: 20px;
+          margin-bottom: 20px;
+
+          img {
+            margin-left: 20px;
+            width: 34px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
 
 @include mobile {
   .brand-keyword {
@@ -178,6 +264,10 @@ getTagList()
         }
       }
     }
+  }
+
+  footer {
+    display: none;
   }
 }
 </style>

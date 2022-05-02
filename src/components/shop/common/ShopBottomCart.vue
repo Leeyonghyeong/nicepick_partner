@@ -61,7 +61,7 @@
             <div>
               비용<span
                 >(<span v-if="item.sale > 0">{{ item.sale }}% DC, </span
-                >부가세별도)</span
+                >부가세포함)</span
               >
             </div>
             <div v-if="item.sale > 0" class="origin">

@@ -1,5 +1,6 @@
 <template>
   <MobileHeader title="장바구니" :cart="false" :back="true" />
+  <Header />
   <main>
     <div class="cart">
       <div class="cart-top">
@@ -15,6 +16,12 @@
         <div class="check-delete" @click="deleteCheckCart(checkCartList)">
           선택삭제
         </div>
+      </div>
+
+      <div class="cart-header">
+        <div class="header-item product-name">상품명</div>
+        <div class="header-item pay-price">결제금액</div>
+        <div class="header-item cart-delete">상품삭제</div>
       </div>
 
       <div class="cart-body">
@@ -35,17 +42,19 @@
               <label :for="item.id" class="custom-label"></label>
             </div>
             <div class="right-cart-info">
-              <div class="name-price cart-info">
-                <div>{{ item.payProductName }}({{ item.term }}일)</div>
-                <div>{{ item.price.toLocaleString() }}원</div>
-              </div>
+              <div class="price-sale-price">
+                <div class="name-price cart-info">
+                  <div>{{ item.payProductName }}({{ item.term }}일)</div>
+                  <div>{{ item.price.toLocaleString() }}원</div>
+                </div>
 
-              <div class="noti-origin cart-info">
-                <div>({{ item.payCategoryName }})</div>
-                <div v-if="item.sale > 0" class="origin-price">
-                  {{
-                    calcOriginPrice(item.price, item.sale).toLocaleString()
-                  }}원
+                <div class="noti-origin cart-info">
+                  <div>({{ item.payCategoryName }})</div>
+                  <div v-if="item.sale > 0" class="origin-price">
+                    {{
+                      calcOriginPrice(item.price, item.sale).toLocaleString()
+                    }}원
+                  </div>
                 </div>
               </div>
 
@@ -60,12 +69,14 @@
       <div class="cart-bottom">
         <div class="pay-info">
           <div>총 선택 상품금액</div>
-          <div>{{ calcOriginTotalPrice(cartList).toLocaleString() }}원</div>
+          <div class="origin-price">
+            {{ calcOriginTotalPrice(checkCartList).toLocaleString() }}원
+          </div>
         </div>
         <div class="pay-info">
           <div>할인예상금액</div>
           <div class="sale-price">
-            - {{ calcTotalSale(cartList).toLocaleString() }}원
+            - {{ calcTotalSale(checkCartList).toLocaleString() }}원
           </div>
         </div>
         <div class="pay-info">
@@ -73,7 +84,8 @@
           <div class="pay-price">
             {{
               (
-                calcOriginTotalPrice(cartList) - calcTotalSale(cartList)
+                calcOriginTotalPrice(checkCartList) -
+                calcTotalSale(checkCartList)
               ).toLocaleString()
             }}원
           </div>
@@ -81,11 +93,30 @@
       </div>
 
       <div class="cart-noti">
-        <div>- 장바구니 상품은 <span>최대30일간</span> 저장됩니다.</div>
-        <div>- 가격, 옵션 등 정보가 변경된 경우 주문이 불가할 수 있습니다.</div>
+        <div class="noti">
+          <div>- 장바구니 상품은 <span>최대30일간</span> 저장됩니다.</div>
+          <div>
+            - 가격, 옵션 등 정보가 변경된 경우 주문이 불가할 수 있습니다.
+          </div>
+        </div>
+
+        <div class="pay-button">
+          <button @click="movePay">
+            총 <span>{{ checkCartList.length }}</span
+            >개 |
+            <span>{{
+              (
+                calcOriginTotalPrice(checkCartList) -
+                calcTotalSale(checkCartList)
+              ).toLocaleString()
+            }}</span
+            >원
+          </button>
+        </div>
       </div>
     </div>
   </main>
+  <Footer />
   <div class="pay-button">
     <button @click="movePay">
       총 <span>{{ checkCartList.length }}</span
@@ -102,6 +133,8 @@
 
 <script lang="ts" setup>
 import MobileHeader from '../common/MobileHeader.vue'
+import Header from '../common/Header.vue'
+import Footer from '../common/Footer.vue'
 import api from '../../config/axios.config'
 import { useStore } from 'vuex'
 import { toastAlert } from '../../functions/alert'
@@ -250,6 +283,267 @@ getCartList()
 <style lang="scss" scoped>
 @import '@/scss/main';
 
+@include desktop {
+  .cart {
+    input[type='checkbox'] {
+      position: absolute;
+      width: 0px;
+      height: 0px;
+    }
+
+    input[type='checkbox'] + label::before {
+      content: '\2713';
+      color: #fff;
+      font-weight: bold;
+      width: 20px;
+      height: 20px;
+      background: #dcdcdc;
+      text-align: center;
+      line-height: 2rem;
+      border-radius: 50%;
+      font-size: 1.6rem;
+      display: inline-block;
+      margin-right: 12px;
+    }
+
+    input[type='checkbox']:checked + label::before {
+      content: '\2713';
+      color: #fff;
+      font-weight: bold;
+      background: $primary;
+    }
+    .cart-top {
+      @include pc-container();
+      margin-top: 80px;
+      padding-left: 100px;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+
+      .all-check {
+        display: flex;
+        align-items: center;
+        font-size: 2rem;
+        color: #353535;
+      }
+
+      .check-delete {
+        margin-left: 23px;
+        font-size: 1.8rem;
+        color: #9b9b9b;
+        cursor: pointer;
+      }
+    }
+
+    .cart-header {
+      @include pc-container();
+      height: 50px;
+      display: flex;
+      align-items: center;
+      background-color: #f9f9f9;
+      margin-top: 22px;
+      padding-left: 132px;
+      box-sizing: border-box;
+
+      .header-item {
+        text-align: center;
+        font-size: 2rem;
+        color: #353535;
+
+        &.product-name,
+        &.pay-price {
+          width: 400px;
+        }
+
+        &.cart-delete {
+          width: 348px;
+        }
+      }
+    }
+
+    .cart-body {
+      @include pc-container();
+
+      .cart-list {
+        .no-content {
+          width: 100%;
+          height: 100px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 1.6rem;
+          color: #353535;
+        }
+
+        .cart-item {
+          display: flex;
+          align-items: center;
+          height: 130px;
+          border-bottom: 1px solid #ececec;
+          box-sizing: border-box;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          .left-input-check {
+            padding-left: 100px;
+          }
+
+          .right-cart-info {
+            display: flex;
+            align-items: center;
+
+            .price-sale-price {
+              .cart-info {
+                display: flex;
+                font-size: 2rem;
+                color: #353535;
+                line-height: 1.3;
+
+                div {
+                  width: 400px;
+                  text-align: center;
+                }
+
+                &.noti-origin {
+                  font-size: 1.8rem;
+                  color: #959595;
+
+                  .origin-price {
+                    text-decoration: line-through;
+                  }
+                }
+              }
+            }
+            .button {
+              width: 348px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              button {
+                width: 100px;
+                height: 50px;
+                background-color: #fff;
+                border: 1px solid #c9c9c9;
+                cursor: pointer;
+                border-radius: 10px;
+                font-size: 1.5rem;
+                color: #888;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .cart-bottom {
+      @include pc-container();
+      height: 80px;
+      border-width: 1px 0 1px 0;
+      border-style: solid;
+      border-color: #c8c8c8;
+      display: flex;
+      align-items: center;
+      padding: 0 150px;
+      box-sizing: border-box;
+      background-color: #f9f9f9;
+
+      .pay-info {
+        font-size: 2.2rem;
+        color: #353535;
+        display: flex;
+        align-items: center;
+
+        div {
+          &:last-child {
+            font-weight: bold;
+          }
+        }
+
+        .origin-price {
+          display: flex;
+          align-items: center;
+          margin-left: 20px;
+
+          &::after {
+            content: '';
+            background-image: url('../../assets/shop/plus.png');
+            width: 28px;
+            height: 28px;
+            margin: 0 20px;
+          }
+        }
+
+        .sale-price {
+          color: #fa5252;
+          margin-left: 20px;
+          display: flex;
+          align-items: center;
+
+          &::after {
+            content: '';
+            background-image: url('../../assets/shop/result.png');
+            width: 28px;
+            height: 28px;
+            margin: 0 20px;
+          }
+        }
+
+        .pay-price {
+          color: $primary;
+          margin-left: 20px;
+        }
+      }
+    }
+
+    .cart-noti {
+      @include pc-container();
+      display: flex;
+      justify-content: space-between;
+      padding-left: 92px;
+      box-sizing: border-box;
+      margin-top: 60px;
+      margin-bottom: 130px;
+
+      .noti {
+        line-height: 1.3;
+        div {
+          font-size: 1.6rem;
+          color: #767676;
+
+          span {
+            color: $primary;
+          }
+        }
+      }
+
+      .pay-button {
+        display: block;
+
+        button {
+          width: 400px;
+          height: 59px;
+          background-color: #fa5252;
+          color: #fff;
+          font-size: 2.2rem;
+          border-radius: 10px;
+          cursor: pointer;
+
+          span {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+
+  .pay-button {
+    display: none;
+  }
+}
+
 @include mobile {
   .cart {
     background-color: #f8f8fa;
@@ -310,6 +604,10 @@ getCartList()
         font-size: 1.4rem;
         color: #767676;
       }
+    }
+
+    .cart-header {
+      display: none;
     }
 
     .cart-body {
@@ -436,6 +734,10 @@ getCartList()
           color: $primary;
         }
       }
+
+      .pay-button {
+        display: none;
+      }
     }
   }
 
@@ -454,6 +756,10 @@ getCartList()
         font-weight: bold;
       }
     }
+  }
+
+  footer {
+    display: none;
   }
 }
 </style>

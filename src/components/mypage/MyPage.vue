@@ -3,7 +3,7 @@
   <main>
     <div class="mypage">
       <div class="current-brand-user-info">
-        <div class="left-brand">
+        <div class="left-brand mobile">
           {{ brand?.brandName.slice(0, 1) }}
         </div>
         <div class="right-brand-user-info">

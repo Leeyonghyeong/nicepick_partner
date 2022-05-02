@@ -1,18 +1,20 @@
 <template>
   <MobileHeader title="내 정보관리" :cart="false" :back="true" />
+  <Header />
   <main>
+    <MypageLeftNav />
     <div class="account">
       <div class="user-info">
         <div class="top">기본 정보</div>
         <div class="info-input-box">
           <div class="email info-item">
-            <div>이메일</div>
+            <div class="title">이메일</div>
             <input type="text" :value="store.state.auth.user.email" readonly />
           </div>
 
-          <div class="email info-item">
-            <div>담당자 명</div>
-            <input v-model="userName" type="text" :readonly="!isModUserName" />
+          <div class="user-name info-item">
+            <div class="title">담당자 명</div>
+            <input v-model="userName" type="text" :disabled="!isModUserName" />
             <button
               v-if="!isModUserName"
               class="mod-button"
@@ -30,12 +32,12 @@
             </div>
           </div>
 
-          <div class="email info-item">
-            <div>연락처</div>
+          <div class="phoneNumber info-item">
+            <div class="title">연락처</div>
             <input
               type="text"
               v-model="phoneNumber"
-              :readonly="!isModPhoneNumber"
+              :disabled="!isModPhoneNumber"
             />
             <button
               v-if="!isModPhoneNumber"
@@ -54,8 +56,8 @@
             </div>
           </div>
 
-          <div class="email info-item">
-            <div>비밀번호</div>
+          <div class="password info-item">
+            <div class="title">비밀번호</div>
             <div class="password-input" v-if="isModPassword">
               <div class="password">
                 <input
@@ -139,8 +141,8 @@
 
       <div class="delete-user" @click="submitDeleteUser">회원탈퇴</div>
     </div>
-    <Footer />
   </main>
+  <Footer />
 </template>
 
 <script lang="ts" setup>
@@ -148,6 +150,8 @@ import api from '../../config/axios.config'
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 import MobileHeader from '../../components/common/MobileHeader.vue'
+import Header from '../common/Header.vue'
+import MypageLeftNav from './MypageLeftNav.vue'
 import Footer from '../common/Footer.vue'
 import { checkAlert, confirmAlert, toastAlert } from '../../functions/alert'
 import { SweetAlertResult } from 'sweetalert2'
@@ -401,7 +405,191 @@ getUserInfo()
 <style lang="scss" scoped>
 @import '@/scss/main';
 
+@include desktop {
+  main {
+    display: flex;
+    @include pc-container();
+
+    .account {
+      margin-left: 60px;
+      .user-info {
+        padding-top: 50px;
+        padding-bottom: 40px;
+        border-bottom: 1px solid #eee;
+        .top {
+          font-size: 2rem;
+          color: #353535;
+          padding-bottom: 10px;
+          padding-left: 15px;
+          border-bottom: 1px solid #eee;
+          margin-bottom: 40px;
+        }
+
+        .info-input-box {
+          .info-item {
+            padding-left: 55px;
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            color: #353535;
+            margin-bottom: 30px;
+
+            &:last-child {
+              margin: 0;
+            }
+
+            .title {
+              width: 133px;
+            }
+
+            input {
+              width: 400px;
+              height: 50px;
+              border: 1px solid #cfcfcf;
+              font-size: 1.6rem;
+              margin-right: 10px;
+              padding: 0 20px;
+
+              &::placeholder {
+                color: #888;
+              }
+            }
+
+            .mod-button {
+              width: 197px;
+              height: 50px;
+              background-color: #777;
+              color: #fff;
+              font-size: 1.8rem;
+              border-radius: 10px;
+              cursor: pointer;
+            }
+
+            .mod-button-box {
+              button {
+                width: 95px;
+                height: 50px;
+                border-radius: 10px;
+                font-size: 1.8rem;
+                cursor: pointer;
+              }
+              .cancel-button {
+                background-color: #fff;
+                border: 1px solid #cfcfcf;
+                color: #777;
+                margin-right: 7px;
+              }
+
+              .submit-button {
+                background-color: $primary;
+                color: #fff;
+              }
+            }
+
+            &.password {
+              .password-input {
+                position: relative;
+
+                .validation-password {
+                  position: absolute;
+                  top: 16px;
+                  right: 20px;
+
+                  img {
+                    height: 18px;
+                  }
+                }
+
+                .re-password {
+                  margin-top: 7px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .marketing-box {
+        margin-top: 40px;
+
+        .noti {
+          font-size: 1.8rem;
+          color: #353535;
+          font-weight: bold;
+          line-height: 1.3;
+
+          div {
+            &:last-child {
+              font-size: 1.6rem;
+              color: #acacac;
+              font-weight: normal;
+            }
+          }
+        }
+
+        .check-box {
+          display: flex;
+          margin-top: 22px;
+
+          input[type='checkbox'] {
+            position: absolute;
+            width: 0px;
+            height: 0px;
+          }
+
+          input[type='checkbox'] + label::before {
+            content: '\2713';
+            color: #fff;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            background: #dcdcdc;
+            text-align: center;
+            line-height: 2rem;
+            border-radius: 50%;
+            font-size: 1.6rem;
+            display: inline-block;
+            margin-right: 12px;
+          }
+
+          input[type='checkbox']:checked + label::before {
+            content: '\2713';
+            color: #fff;
+            font-weight: bold;
+            background: $primary;
+          }
+
+          .check {
+            display: flex;
+            align-items: center;
+
+            &:last-child {
+              margin-left: 82px;
+            }
+
+            label {
+              font-size: 2rem;
+              color: #353535;
+            }
+          }
+        }
+      }
+
+      .delete-user {
+        margin-top: 54px;
+        font-size: 1.8rem;
+        color: #999;
+        margin-bottom: 180px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
 @include mobile {
+  main {
+    min-height: 0;
+  }
   .account {
     .user-info {
       padding: 24px 24px 0;

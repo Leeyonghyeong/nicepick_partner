@@ -36,7 +36,7 @@
               </div>
               <div
                 class="menu-item"
-                @click="router.push('/mypage')"
+                @click="router.push('/mypage/user/management')"
                 :class="{ active: route.fullPath.includes('/mypage') }"
               >
                 마이페이지
@@ -65,9 +65,11 @@
                 {{ userEmail }}
               </div>
               <div class="account-menu">
-                <div @click="router.push('/mypage/account')">내 정보관리</div>
+                <div @click="router.push('/mypage/user/management')">
+                  내 정보관리
+                </div>
                 <div>문의내역</div>
-                <div>장바구니</div>
+                <div @click="router.push('/cart')">장바구니</div>
                 <div @click="logout">로그아웃</div>
               </div>
             </div>

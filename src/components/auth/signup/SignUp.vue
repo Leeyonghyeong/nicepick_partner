@@ -709,13 +709,13 @@ getAllCategory()
       @include pc-container();
 
       .register-top {
-        margin-top: 67px;
+        margin-top: 32px;
         border-bottom: 1px solid #eee;
-        font-size: 2rem;
+        font-size: 1.8rem;
         color: #353535;
         padding-bottom: 11px;
         padding-left: 15px;
-        margin-bottom: 40px;
+        margin-bottom: 30px;
       }
 
       .register-item {
@@ -724,11 +724,11 @@ getAllCategory()
         justify-content: space-between;
         flex-wrap: wrap;
         padding-left: 55px;
-        padding-right: 345px;
-        padding-bottom: 30px;
+        padding-right: 329px;
+        padding-bottom: 26px;
 
         &.no-button {
-          padding-right: 451px;
+          padding-right: 435px;
         }
 
         &:last-child {
@@ -738,7 +738,7 @@ getAllCategory()
         .item-top {
           line-height: 1.3;
           .title {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: #353535;
 
             &::after {
@@ -760,15 +760,15 @@ getAllCategory()
 
           &.rePassword {
             margin-top: 7px;
-            margin-left: 374px;
+            margin-left: 390px;
           }
 
           input {
             width: 400px;
-            height: 50px;
+            height: 40px;
             border: 1px solid #cfcfcf;
             background-color: #fff;
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             padding: 0 20px;
 
             &::placeholder {
@@ -779,8 +779,8 @@ getAllCategory()
           button,
           label {
             width: 95px;
-            height: 50px;
-            font-size: 1.8rem;
+            height: 40px;
+            font-size: 1.4rem;
             color: #fff;
             background-color: $primary;
             border-radius: 10px;
@@ -799,7 +799,7 @@ getAllCategory()
 
           select {
             width: 195px;
-            height: 50px;
+            height: 40px;
             border: 1px solid #cfcfcf;
 
             &:first-child {
@@ -812,7 +812,7 @@ getAllCategory()
             right: 13px;
 
             img {
-              width: 19px;
+              width: 100%;
             }
           }
         }
@@ -822,7 +822,7 @@ getAllCategory()
       @include pc-container();
       border-top: 1px solid #eee;
       padding-top: 40px;
-      padding-left: 429px;
+      padding-left: 445px;
       box-sizing: border-box;
 
       &.agree-mobile {
@@ -860,7 +860,7 @@ getAllCategory()
         align-items: flex-end;
 
         label {
-          font-size: 1.4rem;
+          font-size: 1.2rem;
           color: #888;
         }
 
@@ -881,13 +881,14 @@ getAllCategory()
       @include pc-container();
       margin-top: 70px;
       margin-bottom: 80px;
+      text-align: center;
 
       button {
-        width: 100%;
+        width: 400px;
         background-color: $primary;
         color: #fff;
-        font-size: 2.6rem;
-        height: 70px;
+        font-size: 2rem;
+        height: 50px;
         border-radius: 50px;
         cursor: pointer;
       }
@@ -996,7 +997,7 @@ getAllCategory()
             top: 16px;
 
             img {
-              height: 100%;
+              width: 100%;
             }
           }
         }

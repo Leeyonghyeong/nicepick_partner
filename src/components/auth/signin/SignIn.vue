@@ -8,7 +8,7 @@
         <img src="../../../assets/signin/main.jpg" alt="main-image" />
       </div>
       <div class="signin-zone">
-        <div class="signin-top-title">브랜드 관리자 로그인</div>
+        <div class="signin-top-title">기업회원 로그인</div>
         <div class="signin-input-box">
           <div class="input-zone">
             <input
@@ -188,7 +188,6 @@ onUnmounted(() => {
 @include desktop {
   .signin-box {
     @include pc-container();
-    margin-top: 30px;
     display: flex;
     justify-content: space-between;
 
@@ -198,24 +197,24 @@ onUnmounted(() => {
 
     .main-image {
       img {
-        width: 845px;
+        width: 890px;
       }
     }
 
     .signin-zone {
-      width: 380px;
-      height: 500px;
+      width: 340px;
+      height: 285px;
       background-color: #f3f8ff;
       padding: 0 20px;
 
       .signin-top-title {
-        margin-top: 48px;
-        font-size: 2rem;
+        margin-top: 26px;
+        font-size: 1.6rem;
         color: #191919;
       }
 
       .signin-input-box {
-        margin-top: 40px;
+        margin-top: 20px;
         display: flex;
 
         .input-zone {
@@ -226,9 +225,9 @@ onUnmounted(() => {
           input {
             width: 100%;
             padding: 0 10px;
-            height: 65px;
+            height: 40px;
             border: 1px solid #e8e8e8;
-            font-size: 1.6rem;
+            font-size: 1.2rem;
 
             &:last-child {
               margin-top: -1px;
@@ -243,7 +242,7 @@ onUnmounted(() => {
             width: 100%;
             height: 100%;
             background: $primary;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: #fff;
             cursor: pointer;
           }
@@ -251,7 +250,7 @@ onUnmounted(() => {
       }
 
       .find-password {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         color: #999;
         padding: 6px;
         cursor: pointer;
@@ -259,16 +258,16 @@ onUnmounted(() => {
 
       .signup-button {
         display: flex;
-        margin-top: 90px;
+        margin-top: 25px;
 
         button {
           cursor: pointer;
           background-color: #fff;
           border: 1px solid $primary;
           width: 100%;
-          height: 50px;
+          height: 40px;
           color: $primary;
-          font-size: 2rem;
+          font-size: 1.6rem;
         }
       }
 
@@ -276,7 +275,7 @@ onUnmounted(() => {
         margin-top: 14px;
         display: flex;
         justify-content: center;
-        font-size: 1.6rem;
+        font-size: 1.5rem;
         color: #444;
       }
     }
@@ -284,14 +283,15 @@ onUnmounted(() => {
 
   .brand-logo-box {
     @include pc-container();
-    margin-top: 30px;
+    margin-top: 8px;
+    overflow: hidden;
   }
 
   .noti-qna {
     @include pc-container();
     display: flex;
-    margin-top: 35px;
-    margin-bottom: 45px;
+    margin-top: 8px;
+    margin-bottom: 20px;
 
     .noti,
     .qna,
@@ -301,7 +301,8 @@ onUnmounted(() => {
       .top {
         display: flex;
         justify-content: space-between;
-        font-size: 2rem;
+        font-size: 1.8rem;
+        font-weight: bold;
         color: #191919;
 
         div {
@@ -313,13 +314,13 @@ onUnmounted(() => {
       }
 
       .list {
-        margin-top: 17px;
-        font-size: 1.6rem;
+        margin-top: 20px;
+        font-size: 1.4rem;
         color: #888;
-        line-height: 2;
+        line-height: 1.5;
 
         .item {
-          margin-bottom: 5px;
+          margin-bottom: 1px;
           cursor: pointer;
 
           &:last-child {
@@ -336,20 +337,21 @@ onUnmounted(() => {
     }
 
     .app {
-      padding: 40px;
+      padding: 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
 
       .left {
         div {
-          font-size: 1.6rem;
+          font-size: 1.5rem;
           color: #888;
           line-height: 1.25;
 
           &:first-child {
             cursor: pointer;
-            font-size: 2.6rem;
+            font-size: 2.2rem;
+            font-weight: bold;
             color: #191919;
             margin-bottom: 7px;
           }
@@ -358,7 +360,7 @@ onUnmounted(() => {
 
       .right {
         img {
-          width: 108px;
+          width: 100px;
         }
       }
     }

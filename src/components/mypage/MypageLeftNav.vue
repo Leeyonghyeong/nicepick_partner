@@ -9,7 +9,11 @@
         />
         <img
           v-else
-          :src="loadCategoryImage(brand?.smallCategoryName)"
+          :src="
+            loadCategoryImage(
+              brand?.smallCategoryName ? brand.smallCategoryName : ''
+            )
+          "
           :alt="brand?.brandName"
         />
       </div>

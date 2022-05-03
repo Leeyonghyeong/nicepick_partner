@@ -188,7 +188,7 @@
             />
             <label for="icon1">
               <img
-                src="../../assets/management/가맹비할인.png"
+                src="../../assets/management/가맹비할인.png"
                 alt="가맹비할인"
               />
             </label>
@@ -303,7 +303,7 @@
               />
               <label for="icon1">
                 <img
-                  src="../../assets/management/가맹비할인.png"
+                  src="../../assets/management/가맹비할인.png"
                   alt="가맹비할인"
                 />
               </label>

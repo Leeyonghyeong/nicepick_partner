@@ -150,16 +150,16 @@ getBrandInfo()
 
 @include desktop {
   .header {
-    height: 160px;
+    height: 100px;
     .header-contents {
-      height: 160px;
+      height: 100px;
       border-bottom: 1px solid #eee;
       box-sizing: border-box;
 
       .header-menu-box {
         @include pc-container();
         padding-bottom: 16px;
-        height: 160px;
+        height: 100px;
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
@@ -169,10 +169,10 @@ getBrandInfo()
           display: flex;
           align-items: flex-end;
           .header-logo {
-            margin-right: 85px;
+            margin-right: 40px;
             img {
-              width: 150px;
-              height: 60px;
+              width: 120px;
+              height: 48px;
               cursor: pointer;
             }
           }
@@ -181,9 +181,9 @@ getBrandInfo()
             display: flex;
 
             .menu-item {
-              font-size: 2.2rem;
+              font-size: 1.6rem;
               color: #191919;
-              margin-right: 80px;
+              margin-right: 50px;
               cursor: pointer;
 
               &:hover {

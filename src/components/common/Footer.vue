@@ -25,13 +25,13 @@
         <div class="company-info">
           <div class="company-owner-name">(주)삼화이노랩 대표이사 : 원용철</div>
           <div class="biz-number">사업자등록번호 : 242-87-02414</div>
+          <div class="company-biz-type">
+            통신판매업 제2022 - 서울강남 - 00663호
+          </div>
           <div class="company-address">
             서울특별시 강남구 테헤란로 82길15 디아이타워 6층 686
           </div>
           <div class="company-email">이메일 : nice1pick@gmail.com</div>
-          <div class="company-biz-type">
-            통신판매업 제2022 - 서울강남 - 00663호
-          </div>
           <div class="copyright">
             Copyright © nicepick.co.kr. All rights reserved.
           </div>
@@ -43,7 +43,7 @@
           <div>고객센터</div>
           <div>031-889-0142</div>
           <div class="working-time">
-            평일 : 10시 ~ 20시 점심시간 : 12시 ~ 14시
+            평일 : 10시 ~ 20시 점심시간 : 12시 ~ 13시
             <span>토요일,일요일,공휴일 : 휴무</span>
           </div>
         </div>
@@ -72,7 +72,7 @@
       .info-zone {
         .footer-menu-zone {
           display: flex;
-          margin-bottom: 40px;
+          margin-bottom: 20px;
 
           .footer-menu {
             font-size: 12px;
@@ -98,11 +98,11 @@
           line-height: 1.33;
 
           .company-address {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
           }
 
           .company-biz-type {
-            margin-bottom: 40px;
+            margin-bottom: 10px;
           }
         }
       }
@@ -122,7 +122,7 @@
             font-weight: bold;
 
             &:nth-child(2) {
-              margin-top: 20px;
+              margin-top: 10px;
               margin-bottom: 15px;
             }
 

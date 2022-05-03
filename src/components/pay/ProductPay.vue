@@ -3,18 +3,52 @@
   <Header />
   <main>
     <div class="pay-product">
-      <div class="pay-product-list">
-        <div class="top">신청 상품</div>
+      <div class="left-pay-info">
+        <div class="pay-product-list">
+          <div class="top">신청 상품</div>
 
-        <div class="pay-item" v-for="item in getPayList" :key="item.id">
-          <div class="name-price item-info">
-            <div>{{ item.payProductName }}({{ item.term }}일)</div>
-            <div>{{ item.price.toLocaleString() }}원</div>
+          <div class="pay-item" v-for="item in getPayList" :key="item.id">
+            <div class="name-price item-info">
+              <div>{{ item.payProductName }}({{ item.term }}일)</div>
+              <div>{{ item.price.toLocaleString() }}원</div>
+            </div>
+            <div class="noti-origin-price item-info">
+              <div>{{ item.payCategoryName }}</div>
+              <div class="origin-price">
+                {{ calcOriginPrice(item.price, item.sale).toLocaleString() }}원
+              </div>
+            </div>
           </div>
-          <div class="noti-origin-price item-info">
-            <div>{{ item.payCategoryName }}</div>
-            <div class="origin-price">
-              {{ calcOriginPrice(item.price, item.sale).toLocaleString() }}원
+        </div>
+
+        <div class="pay-type">
+          <div class="top">결제수단</div>
+          <div class="select-type">
+            <div
+              class="type"
+              :class="{ active: payType === 'card' }"
+              @click="payType = 'card'"
+            >
+              <img
+                v-if="payType === 'card'"
+                src="../../assets/pay/card_active.png"
+                alt="card"
+              />
+              <img v-else src="../../assets/pay/card.png" alt="card" />
+              신용카드
+            </div>
+            <div
+              class="type"
+              :class="{ active: payType === 'trans' }"
+              @click="payType = 'trans'"
+            >
+              <img
+                v-if="payType === 'trans'"
+                src="../../assets/pay/trans_active.png"
+                alt="trans"
+              />
+              <img v-else src="../../assets/pay/trans.png" alt="trans" />
+              실시간 계좌이체
             </div>
           </div>
         </div>
@@ -270,53 +304,93 @@ const pay = async () => {
     display: flex;
     justify-content: space-between;
 
-    .pay-product-list {
-      width: 750px;
+    .left-pay-info {
+      .pay-product-list {
+        width: 750px;
 
-      .top {
-        font-size: 2.4rem;
-        color: #353535;
-        padding-top: 40px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #a1a1a1;
-      }
-
-      .pay-item {
-        height: 100px;
-        border-bottom: 1px solid #ececec;
-        padding: 0 150px;
-        line-height: 1.3;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        .item-info {
-          display: flex;
-          font-size: 2rem;
+        .top {
+          font-size: 2.4rem;
           color: #353535;
+          padding-top: 40px;
+          padding-bottom: 15px;
+          border-bottom: 1px solid #a1a1a1;
+        }
 
-          &.name-price {
-            div {
-              text-align: center;
-              width: 300px;
+        .pay-item {
+          height: 100px;
+          border-bottom: 1px solid #ececec;
+          padding: 0 150px;
+          line-height: 1.3;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
 
-              &:last-child {
-                font-weight: bold;
+          .item-info {
+            display: flex;
+            font-size: 2rem;
+            color: #353535;
+
+            &.name-price {
+              div {
+                text-align: center;
+                width: 300px;
+
+                &:last-child {
+                  font-weight: bold;
+                }
+              }
+            }
+
+            &.noti-origin-price {
+              font-size: 1.8rem;
+              color: #959595;
+
+              div {
+                width: 300px;
+                text-align: center;
+                &:last-child {
+                  text-decoration: line-through;
+                }
               }
             }
           }
+        }
+      }
 
-          &.noti-origin-price {
-            font-size: 1.8rem;
-            color: #959595;
+      .pay-type {
+        .top {
+          font-size: 2.4rem;
+          color: #353535;
+          padding-top: 108px;
+          padding-bottom: 15px;
+          border-bottom: 1px solid #a1a1a1;
+        }
 
-            div {
-              width: 300px;
-              text-align: center;
-              &:last-child {
-                text-decoration: line-through;
-              }
+        .select-type {
+          margin-top: 37px;
+          display: flex;
+
+          .type {
+            width: calc(100% / 2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #c1c1c1;
+            box-sizing: border-box;
+            height: 60px;
+            font-size: 2.2rem;
+            color: #1c1c1c;
+            cursor: pointer;
+
+            &.active {
+              background-color: $primary;
+              color: #fff;
+              border: none;
+            }
+
+            img {
+              margin-right: 15px;
             }
           }
         }
@@ -467,44 +541,88 @@ const pay = async () => {
 @include mobile {
   .pay-product {
     background-color: #f8f8fa;
-    .pay-product-list {
-      background-color: #fff;
-      padding: 24px 24px 0;
-      .top {
-        font-size: 1.8rem;
-        color: #191919;
-        font-weight: bold;
-      }
 
-      .pay-item {
-        border: 1px solid #dbdbdb;
-        padding: 20px;
-        border-radius: 5px;
-        margin-top: 12px;
-
-        .item-info {
-          display: flex;
-          justify-content: space-between;
+    .left-pay-info {
+      .pay-product-list {
+        background-color: #fff;
+        padding: 24px 24px 20px;
+        .top {
+          font-size: 1.8rem;
+          color: #191919;
+          font-weight: bold;
         }
 
-        .name-price {
-          font-size: 1.6rem;
-          color: #191919;
+        .pay-item {
+          border: 1px solid #dbdbdb;
+          padding: 20px;
+          border-radius: 5px;
+          margin-top: 12px;
 
-          div {
-            &:last-child {
-              font-weight: bold;
+          .item-info {
+            display: flex;
+            justify-content: space-between;
+          }
+
+          .name-price {
+            font-size: 1.6rem;
+            color: #191919;
+
+            div {
+              &:last-child {
+                font-weight: bold;
+              }
+            }
+          }
+
+          .noti-origin-price {
+            margin-top: 8px;
+            font-size: 1.4rem;
+            color: #767676;
+
+            .origin-price {
+              text-decoration: line-through;
             }
           }
         }
+      }
 
-        .noti-origin-price {
-          margin-top: 8px;
-          font-size: 1.4rem;
-          color: #767676;
+      .pay-type {
+        margin: 12px 0;
+        background-color: #fff;
+        padding: 20px 24px;
 
-          .origin-price {
-            text-decoration: line-through;
+        .top {
+          font-size: 1.8rem;
+          color: #191919;
+          font-weight: bold;
+        }
+
+        .select-type {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 12px;
+
+          .type {
+            flex-grow: 0.48;
+            height: 44px;
+            border: 1px solid #dbdbdb;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.4rem;
+            color: #191919;
+
+            &.active {
+              background-color: $primary;
+              color: #fff;
+              border: none;
+            }
+
+            img {
+              margin-right: 18px;
+            }
           }
         }
       }

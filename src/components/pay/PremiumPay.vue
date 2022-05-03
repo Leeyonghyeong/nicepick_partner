@@ -685,6 +685,10 @@ getPayCategory()
           }
         }
       }
+
+      .pay-button {
+        display: none;
+      }
     }
 
     .notice {

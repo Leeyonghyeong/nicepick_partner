@@ -720,13 +720,61 @@ getAllCategory()
 
       .register-item {
         background-color: #f9f9f9;
+        position: relative;
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
         padding-left: 55px;
         padding-right: 329px;
         padding-top: 26px;
+
+        .brand-check-list {
+          width: 400px;
+          height: 300px;
+          margin-top: 10px;
+          margin-left: 390px;
+          border: 1px solid #dcdcdc;
+          background-color: #fff;
+          box-sizing: border-box;
+          overflow-y: scroll;
+          -ms-overflow-style: none; /* IE and Edge */
+          scrollbar-width: none; /* Firefox */
+
+          &::-webkit-scrollbar {
+            display: none;
+          }
+
+          label {
+            width: 100%;
+            height: 50px;
+            cursor: pointer;
+          }
+
+          .check-box {
+            font-size: 1.6rem;
+            padding: 0 20px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+
+            input {
+              width: 0px;
+              height: 0px;
+              position: absolute;
+              top: 0;
+              left: 0;
+            }
+
+            .brand-category {
+              color: #888;
+              font-size: 1.4rem;
+            }
+          }
+        }
 
         &.no-button {
           padding-right: 435px;

@@ -109,16 +109,15 @@ getBrandList()
     display: flex;
 
     .change-brand {
-      padding-top: 90px;
+      padding-top: 30px;
 
       .brand-list {
         display: flex;
-        flex-wrap: wrap;
         justify-content: space-between;
-        width: 820px;
+        width: 840px;
 
         .brand-item {
-          width: 400px;
+          width: 275px;
           border: 1px solid #cecece;
           margin-bottom: 20px;
           height: 200px;
@@ -136,8 +135,8 @@ getBrandList()
             }
 
             .logo {
-              width: 250px;
-              height: 100px;
+              width: 200px;
+              height: auto;
             }
 
             .category-img {
@@ -147,14 +146,14 @@ getBrandList()
           }
 
           .right-select {
-            height: 73px;
+            height: 70px;
             display: flex;
             align-items: center;
-            padding: 0 25px 0 44px;
+            padding: 0 25px 0 35px;
             justify-content: space-between;
 
             .brand-name {
-              font-size: 2.3rem;
+              font-size: 1.4rem;
               color: #353535;
             }
           }

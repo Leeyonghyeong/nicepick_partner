@@ -715,17 +715,18 @@ getAllCategory()
         color: #353535;
         padding-bottom: 11px;
         padding-left: 15px;
-        margin-bottom: 30px;
+        /*margin-bottom: 30px;*/
       }
 
       .register-item {
+        background-color: #f9f9f9;
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
         padding-left: 55px;
         padding-right: 329px;
-        padding-bottom: 26px;
+        padding-top: 26px;
 
         &.no-button {
           padding-right: 435px;

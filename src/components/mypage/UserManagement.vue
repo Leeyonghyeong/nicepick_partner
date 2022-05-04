@@ -412,11 +412,11 @@ getUserInfo()
 
     .account {
       .user-info {
-        padding-top: 50px;
+        padding-top: 30px;
         padding-bottom: 40px;
         border-bottom: 1px solid #eee;
         .top {
-          font-size: 2rem;
+          font-size: 1.8rem;
           color: #353535;
           padding-bottom: 10px;
           padding-left: 15px;
@@ -426,12 +426,12 @@ getUserInfo()
 
         .info-input-box {
           .info-item {
-            padding-left: 55px;
+            padding-left: 20px;
             display: flex;
             align-items: center;
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             color: #353535;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
 
             &:last-child {
               margin: 0;
@@ -443,11 +443,11 @@ getUserInfo()
 
             input {
               width: 400px;
-              height: 50px;
+              height: 40px;
               border: 1px solid #cfcfcf;
-              font-size: 1.6rem;
+              font-size: 1.4rem;
               margin-right: 10px;
-              padding: 0 20px;
+              padding: 0 15px;
 
               &::placeholder {
                 color: #888;
@@ -455,21 +455,21 @@ getUserInfo()
             }
 
             .mod-button {
-              width: 197px;
-              height: 50px;
+              width: 150px;
+              height: 40px;
               background-color: #777;
               color: #fff;
-              font-size: 1.8rem;
+              font-size: 1.4rem;
               border-radius: 10px;
               cursor: pointer;
             }
 
             .mod-button-box {
               button {
-                width: 95px;
-                height: 50px;
+                width: 70px;
+                height: 40px;
                 border-radius: 10px;
-                font-size: 1.8rem;
+                font-size: 1.4rem;
                 cursor: pointer;
               }
               .cancel-button {
@@ -491,11 +491,11 @@ getUserInfo()
 
                 .validation-password {
                   position: absolute;
-                  top: 16px;
-                  right: 20px;
+                  top: 13px;
+                  right: 22px;
 
                   img {
-                    height: 18px;
+                    height: 16px;
                   }
                 }
 
@@ -512,14 +512,14 @@ getUserInfo()
         margin-top: 40px;
 
         .noti {
-          font-size: 1.8rem;
+          font-size: 1.4rem;
           color: #353535;
           font-weight: bold;
-          line-height: 1.3;
+          line-height: 1.4;
 
           div {
             &:last-child {
-              font-size: 1.6rem;
+              font-size: 1.2rem;
               color: #acacac;
               font-weight: normal;
             }
@@ -528,7 +528,7 @@ getUserInfo()
 
         .check-box {
           display: flex;
-          margin-top: 22px;
+          margin-top: 20px;
 
           input[type='checkbox'] {
             position: absolute;
@@ -546,7 +546,7 @@ getUserInfo()
             text-align: center;
             line-height: 2rem;
             border-radius: 50%;
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             display: inline-block;
             margin-right: 12px;
           }
@@ -567,7 +567,7 @@ getUserInfo()
             }
 
             label {
-              font-size: 2rem;
+              font-size: 1.6rem;
               color: #353535;
             }
           }
@@ -575,9 +575,10 @@ getUserInfo()
       }
 
       .delete-user {
+        width: 60px;
         margin-top: 54px;
-        font-size: 1.8rem;
-        color: #999;
+        font-size: 1.4rem;
+        color: #888;
         margin-bottom: 180px;
         cursor: pointer;
       }
@@ -675,7 +676,8 @@ getUserInfo()
                 right: 12px;
 
                 img {
-                  height: 20px;
+                  margin-top: 10px;
+                  height: 16px;
                 }
               }
             }

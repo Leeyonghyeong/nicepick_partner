@@ -128,18 +128,20 @@ getBrandInfo()
 
 @include desktop {
   .mypage {
+    background-color: #f9f9f9;
     width: 315px;
+    height: 800px;
     margin-right: 60px;
-    margin-bottom: 300px;
 
     .current-brand-user-info {
       .left-brand {
-        padding: 90px 32px 24px;
+        padding: 30px 32px 24px;
         box-sizing: border-box;
 
         img {
           width: 250px;
           height: 100px;
+          border-radius: 20px;
         }
       }
 
@@ -147,7 +149,7 @@ getBrandInfo()
         line-height: 1.3;
         .brand-name {
           width: 100%;
-          font-size: 3.4rem;
+          font-size: 1.6rem;
           font-weight: bold;
           color: #353535;
           display: flex;
@@ -162,18 +164,22 @@ getBrandInfo()
           }
 
           img {
-            width: 38px;
-            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
           }
 
           span {
-            font-size: 2rem;
+            margin-top: 3px;
+            margin-left: 5px;
+            font-size: 1.2rem;
             color: #fa5252;
           }
         }
 
         .user-email {
-          font-size: 2.2rem;
+          font-size: 1.2rem;
+          margin-top: 5px;
           color: #888;
           text-align: center;
         }
@@ -181,22 +187,22 @@ getBrandInfo()
     }
 
     .mypage-menu {
-      margin-top: 100px;
+      margin-top: 50px;
 
       .menu-item {
         width: 100%;
-        height: 64px;
+        height: 40px;
         padding-left: 32px;
         box-sizing: border-box;
         display: flex;
         align-items: center;
-        font-size: 2.2rem;
+        font-size: 1.4rem;
         color: #353535;
         cursor: pointer;
 
         &.active {
-          background-color: #f9f9f9;
           font-weight: bold;
+          color: $primary;
         }
       }
     }

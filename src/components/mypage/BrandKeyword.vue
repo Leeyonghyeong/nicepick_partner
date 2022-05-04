@@ -117,11 +117,11 @@ getTagList()
     display: flex;
 
     .brand-keyword {
-      padding-top: 90px;
+      padding-top: 30px;
 
       .keyword-count {
         display: flex;
-        font-size: 2rem;
+        font-size: 1.6rem;
         color: #353535;
 
         div {
@@ -144,11 +144,12 @@ getTagList()
         align-items: center;
 
         input {
-          width: 857px;
-          height: 64px;
+          width: 860px;
+          height: 50px;
           border: 1px solid #b9b9b9;
-          font-size: 2rem;
-          padding: 0 34px;
+          border-radius: 30px;
+          font-size: 1.4rem;
+          padding: 0 20px;
 
           &::placeholder {
             color: #9d9d9d;
@@ -157,23 +158,23 @@ getTagList()
 
         .submit {
           position: absolute;
-          right: 70px;
+          right: 25px;
           cursor: pointer;
-          font-size: 2rem;
+          font-size: 1.4rem;
           color: #9d9d9d;
         }
       }
 
       .keyword-list {
-        margin-top: 50px;
+        margin-top: 30px;
         display: flex;
         flex-wrap: wrap;
 
         .keyword-item {
-          padding: 18px 20px 18px 34px;
+          padding: 5px 10px 5px 20px;
           background-color: #f3f3f3;
           border-radius: 50px;
-          font-size: 2rem;
+          font-size: 1.4rem;
           color: #232323;
           display: flex;
           align-items: center;
@@ -181,7 +182,7 @@ getTagList()
           margin-bottom: 20px;
 
           img {
-            margin-left: 20px;
+            margin-left: 5px;
             width: 34px;
             cursor: pointer;
           }

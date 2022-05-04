@@ -613,10 +613,6 @@
                 <i class="fa-solid fa-plus"></i> 추가
               </label>
             </div>
-            <div class="standard-size">
-              <div>- 가로 840px 이상 이미지를 등록해주세요</div>
-              <div>- jpg, png 파일만 등록이 가능합니다</div>
-            </div>
           </div>
         </div>
       </div>
@@ -1269,7 +1265,7 @@ getBrandInfo()
   .management {
     .brand-info-input {
       @include pc-container();
-      padding: 60px 0 60px 30px;
+      padding: 30px 0 30px 30px;
       border-bottom: 1px solid #eee;
       display: flex;
       align-items: center;
@@ -1284,7 +1280,7 @@ getBrandInfo()
         line-height: 1.3;
 
         .name {
-          font-size: 1.8rem;
+          font-size: 1.6rem;
           color: #353535;
 
           &.required {
@@ -1296,7 +1292,7 @@ getBrandInfo()
         }
 
         .size {
-          font-size: 1.4rem;
+          font-size: 1.2rem;
           color: #c7c7c7;
         }
       }
@@ -1315,10 +1311,10 @@ getBrandInfo()
             margin-left: 12px;
 
             button {
-              width: 88px;
-              height: 45px;
+              width: 60px;
+              height: 35px;
               background-color: #f1f1f1;
-              font-size: 1.8rem;
+              font-size: 1.4rem;
               color: #888;
               border-radius: 10px;
               cursor: pointer;
@@ -1350,7 +1346,7 @@ getBrandInfo()
       }
 
       .standard-size {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         color: #c7c7c7;
         line-height: 1.3;
         margin-left: 94px;
@@ -1359,10 +1355,10 @@ getBrandInfo()
       .text-input {
         input {
           width: 840px;
-          height: 50px;
+          height: 40px;
           border: 1px solid #cfcfcf;
           background-color: #fff;
-          font-size: 1.6rem;
+          font-size: 1.4rem;
           padding: 0 20px;
 
           &::placeholder {
@@ -1381,7 +1377,7 @@ getBrandInfo()
             display: flex;
             align-items: center;
             margin-right: 30px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
 
             input[type='checkbox'] {
               width: 20px;
@@ -1409,7 +1405,7 @@ getBrandInfo()
           }
 
           label {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             color: #353535;
           }
         }
@@ -1439,7 +1435,7 @@ getBrandInfo()
           display: flex;
           align-items: center;
           position: relative;
-          padding-bottom: 30px;
+          padding-bottom: 20px;
 
           .delete-circle {
             position: absolute;
@@ -1453,7 +1449,7 @@ getBrandInfo()
         }
         .add-input {
           text-align: center;
-          font-size: 1.6rem;
+          font-size: 1.4rem;
           color: $primary;
           cursor: pointer;
         }
@@ -1482,8 +1478,9 @@ getBrandInfo()
           }
 
           .add-image {
+            margin: auto;
             label {
-              font-size: 1.6rem;
+              font-size: 1.4rem;
               color: $primary;
               cursor: pointer;
             }
@@ -1519,7 +1516,7 @@ getBrandInfo()
                 border: 1px solid #cfcfcf;
                 margin-top: 10px;
                 height: 32px;
-                padding: 0 17px;
+                padding-left: 10px;
               }
             }
           }
@@ -1532,15 +1529,15 @@ getBrandInfo()
             margin-left: 0;
 
             button {
-              width: 88px;
-              height: 45px;
+              width: 60px;
+              height: 35px;
             }
           }
         }
 
         .add-image {
           label {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             color: $primary;
             cursor: pointer;
           }
@@ -1577,7 +1574,7 @@ getBrandInfo()
 
         .add-image {
           label {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             color: $primary;
             cursor: pointer;
           }
@@ -1589,13 +1586,14 @@ getBrandInfo()
       @include pc-container();
       margin-top: 38px;
       margin-bottom: 80px;
+      text-align: center;
 
       button {
-        width: 100%;
-        height: 70px;
+        width: 400px;
+        height: 50px;
         background-color: $primary;
         color: #fff;
-        font-size: 2.2rem;
+        font-size: 2rem;
         border-radius: 50px;
         cursor: pointer;
       }

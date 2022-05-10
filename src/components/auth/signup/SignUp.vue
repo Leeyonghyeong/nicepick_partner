@@ -834,6 +834,7 @@ getAllCategory()
             background-color: $primary;
             border-radius: 10px;
             margin-left: 11px;
+            cursor: pointer;
           }
 
           #fileUpload {

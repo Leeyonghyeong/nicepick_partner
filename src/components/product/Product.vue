@@ -266,14 +266,14 @@ getProductList()
     .product-list,
     .recommend-product {
       @include pc-container();
-      margin-top: 54px;
+      margin-top: 32px;
 
       .list-top {
         display: flex;
         justify-content: space-between;
 
         .title {
-          font-size: 2rem;
+          font-size: 1.8rem;
           color: #353535;
           margin-bottom: 17px;
         }
@@ -302,7 +302,7 @@ getProductList()
       .list-header {
         display: flex;
         background-color: #f9f9f9;
-        height: 50px;
+        height: 40px;
         align-items: center;
 
         .date,
@@ -392,10 +392,10 @@ getProductList()
             width: 290px;
 
             button {
-              width: 125px;
+              width: 120px;
               height: 40px;
               background-color: #ededed;
-              font-size: 1.6rem;
+              font-size: 1.4rem;
               color: #191919;
               border-radius: 10px;
               cursor: pointer;
@@ -426,13 +426,14 @@ getProductList()
 
       .move-shop-button {
         @include pc-container();
+        text-align: center;
 
         button {
-          margin: 150px 0 200px 0;
-          width: 100%;
-          height: 100px;
+          margin: 100px 0 100px 0;
+          width: 400px;
+          height: 50px;
           border-radius: 100px;
-          font-size: 3rem;
+          font-size: 2rem;
           color: #fff;
           background-color: $primary;
           cursor: pointer;

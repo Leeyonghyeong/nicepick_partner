@@ -190,7 +190,7 @@ const movePay = () => {
 
 @include desktop {
   .bottom-cart {
-    margin-top: 109px;
+    margin-top: 100px;
     &.mobile {
       display: none;
     }
@@ -199,29 +199,30 @@ const movePay = () => {
       @include pc_container();
       display: flex;
       justify-content: center;
-      margin-bottom: 158px;
+      margin-bottom: 150px;
 
       .product-item {
-        width: 424px;
-        height: 265px;
+        width: 420px;
+        height: 260px;
         border: 1px solid #dcdcdc;
         margin: 0 5px;
 
         .input-zone {
-          height: 105px;
+          height: 100px;
           padding: 0 52px;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          font-size: 2.4rem;
+          font-size: 2.2rem;
+          font-weight: 600;
           color: #353535;
           background-color: #f2f4f6;
           box-sizing: border-box;
           border-bottom: 1px solid #dcdcdc;
 
           input[type='radio'] {
-            width: 38px;
-            height: 37px;
+            width: 25px;
+            height: 25px;
           }
         }
 
@@ -276,7 +277,7 @@ const movePay = () => {
 
       .pay-price {
         display: flex;
-        font-size: 2.6rem;
+        font-size: 2.4rem;
         color: #353535;
 
         #price {
@@ -291,17 +292,17 @@ const movePay = () => {
       }
 
       .cart-button {
-        margin-top: 33px;
+        margin-top: 25px;
 
         button {
-          width: 170px;
-          height: 60px;
+          width: 130px;
+          height: 50px;
           background-color: #fff;
           border: 1px solid #fa5252;
           color: #fa5252;
           border-radius: 10px;
           margin: 0 2.5px;
-          font-size: 2.6rem;
+          font-size: 1.8rem;
           cursor: pointer;
 
           &:last-child {

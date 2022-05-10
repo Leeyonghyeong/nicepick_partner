@@ -285,9 +285,9 @@ const modifyPassword = async () => {
     }
 
     .top {
-      padding: 67px 0 11px 15px;
+      padding: 32px 0 11px 15px;
       border-bottom: 1px solid #eee;
-      font-size: 2rem;
+      font-size: 1.8rem;
       color: #353535;
     }
 
@@ -298,7 +298,7 @@ const modifyPassword = async () => {
     .input-zone-desktop {
       padding-left: 55px;
       padding-right: 310px;
-      margin-top: 40px;
+      margin-top: 26px;
       height: 500px;
       box-sizing: border-box;
       .email-input,
@@ -308,10 +308,10 @@ const modifyPassword = async () => {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 30px;
+        margin-bottom: 26px;
 
         .title {
-          font-size: 1.8rem;
+          font-size: 1.6rem;
           color: #353535;
         }
 
@@ -322,17 +322,17 @@ const modifyPassword = async () => {
 
           input {
             width: 400px;
-            height: 50px;
+            height: 40px;
             padding: 0 20px;
             border: 1px solid #cfcfcf;
             background-color: #fff;
           }
 
           button {
-            width: 130px;
-            height: 50px;
+            width: 90px;
+            height: 40px;
             color: #fff;
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             border-radius: 10px;
             background-color: $primary;
             margin-left: 11px;

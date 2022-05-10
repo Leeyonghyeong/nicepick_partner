@@ -199,18 +199,19 @@ getPayCategory()
 
 @include desktop {
   .premium-service {
-    margin-top: 90px;
+    margin-top: 80px;
 
     .service-box {
       text-align: center;
 
       .top {
-        font-size: 2.8rem;
+        font-size: 2.2rem;
+        font-weight: 500;
         color: #353535;
       }
 
       .premium-image {
-        margin: 39px 0;
+        margin: 40px 0;
       }
 
       .price {
@@ -218,7 +219,7 @@ getPayCategory()
         justify-content: center;
 
         div {
-          font-size: 3rem;
+          font-size: 2.6rem;
           color: #353535;
 
           &:last-child {
@@ -229,8 +230,8 @@ getPayCategory()
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 95px;
-            height: 34px;
+            width: 85px;
+            height: 30px;
             margin-left: 6px;
             font-weight: bold;
           }
@@ -238,9 +239,9 @@ getPayCategory()
       }
 
       .noti {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
         color: #777;
-        margin-top: 5px;
+        margin-top: 8px;
       }
 
       .start-button {
@@ -249,11 +250,11 @@ getPayCategory()
         button {
           cursor: pointer;
           width: 400px;
-          height: 90px;
+          height: 50px;
           border-radius: 100px;
           background-color: $primary;
           color: #fff;
-          font-size: 2.4rem;
+          font-size: 1.8rem;
         }
       }
     }
@@ -279,14 +280,15 @@ getPayCategory()
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 3rem;
+        font-size: 2.4rem;
+        font-weight: 600;
         color: #353535;
 
         &::before {
           content: '';
           background-image: url('../../assets/shop/smile.png');
-          width: 44px;
-          height: 44px;
+          width: 35px;
+          height: 35px;
           margin-right: 10px;
         }
       }
@@ -303,9 +305,9 @@ getPayCategory()
           }
           .qna-title {
             display: flex;
-            font-size: 2.4rem;
+            font-size: 1.8rem;
             color: #353535;
-            font-weight: bold;
+            font-weight: 500;
 
             &::before {
               content: 'Q';
@@ -319,9 +321,9 @@ getPayCategory()
 
           .qna-ans {
             padding-left: 24px;
-            font-size: 2.2rem;
+            font-size: 1.6rem;
             color: #777;
-            margin-top: 6px;
+            margin-top: 10px;
           }
         }
       }
@@ -332,14 +334,14 @@ getPayCategory()
       margin-top: 114px;
 
       .title {
-        font-size: 2.3rem;
+        font-size: 1.8rem;
         color: #353535;
         font-weight: bold;
       }
 
       .notice-list {
         margin-top: 27px;
-        font-size: 2rem;
+        font-size: 1.4rem;
         color: #777;
         line-height: 1.7;
 
@@ -357,15 +359,16 @@ getPayCategory()
     .move-pay-button {
       @include pc-container();
       margin-top: 126px;
-      margin-bottom: 170px;
+      margin-bottom: 150px;
+      text-align: center;
 
       button {
-        width: 100%;
-        height: 100px;
+        width: 400px;
+        height: 50px;
         background-color: $primary;
         border-radius: 100px;
         color: #fff;
-        font-size: 3rem;
+        font-size: 1.8rem;
         cursor: pointer;
       }
     }

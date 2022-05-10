@@ -79,8 +79,8 @@ getProduct()
 @include desktop {
   .ad-service {
     @include pc-container();
-    margin-top: 130px;
-    margin-bottom: 190px;
+    margin-top: 80px;
+    margin-bottom: 100px;
     display: flex;
     justify-content: space-between;
 
@@ -90,6 +90,7 @@ getProduct()
 
     img {
       cursor: pointer;
+      border-radius: 20px;
     }
   }
 }
@@ -107,7 +108,7 @@ getProduct()
       cursor: pointer;
 
       &:not(:first-child) {
-        margin-top: 20px;
+        margin-top: 5px;
       }
     }
   }

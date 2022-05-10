@@ -157,18 +157,18 @@ getSelectPayProduct()
       display: none;
     }
     .product-noti {
-      margin-top: 85px;
+      margin-top: 70px;
       display: flex;
       justify-content: center;
 
       .title {
-        width: 300px;
+        width: 200px;
         height: 50px;
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 40px;
-        font-size: 2.8rem;
+        font-size: 2rem;
         color: #fff;
       }
     }
@@ -179,7 +179,7 @@ getSelectPayProduct()
       .select-image {
         display: flex;
         justify-content: center;
-        font-size: 2.4rem;
+        font-size: 1.8rem;
         color: #353535;
         margin-bottom: 42px;
 

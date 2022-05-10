@@ -67,11 +67,11 @@ const changeServiceType = (type: string) => {
         .premium,
         .ad {
           flex: 1 1 0;
-          height: 107px;
+          height: 60px;
           display: flex;
           justify-content: center;
           align-items: center;
-          font-size: 2.6rem;
+          font-size: 1.8rem;
           color: #888;
           background-color: #f5f5f5;
           box-sizing: border-box;

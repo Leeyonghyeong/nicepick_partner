@@ -1337,7 +1337,7 @@ getBrandInfo()
               justify-content: center;
               align-items: center;
               box-sizing: border-box;
-              font-size: 1.6rem;
+              font-size: 1.4rem;
               color: $primary;
               cursor: pointer;
             }
@@ -1478,7 +1478,6 @@ getBrandInfo()
           }
 
           .add-image {
-            margin: auto;
             label {
               font-size: 1.4rem;
               color: $primary;

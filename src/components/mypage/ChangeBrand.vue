@@ -113,11 +113,12 @@ getBrandList()
 
       .brand-list {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
-        width: 840px;
+        width: 820px;
 
         .brand-item {
-          width: 275px;
+          width: 270px;
           border: 1px solid #cecece;
           margin-bottom: 20px;
           height: 200px;
@@ -135,8 +136,8 @@ getBrandList()
             }
 
             .logo {
-              width: 200px;
-              height: auto;
+              width: 250px;
+              height: 100px;
             }
 
             .category-img {
@@ -149,7 +150,7 @@ getBrandList()
             height: 70px;
             display: flex;
             align-items: center;
-            padding: 0 25px 0 35px;
+            padding: 0 20px 0 40px;
             justify-content: space-between;
 
             .brand-name {

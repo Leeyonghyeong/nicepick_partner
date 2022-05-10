@@ -135,13 +135,12 @@ getBrandInfo()
 
     .current-brand-user-info {
       .left-brand {
+        text-align: center;
         padding: 30px 32px 24px;
         box-sizing: border-box;
 
         img {
-          width: 250px;
           height: 100px;
-          border-radius: 20px;
         }
       }
 
@@ -149,7 +148,7 @@ getBrandInfo()
         line-height: 1.3;
         .brand-name {
           width: 100%;
-          font-size: 1.6rem;
+          font-size: 1.8rem;
           font-weight: bold;
           color: #353535;
           display: flex;
@@ -178,7 +177,7 @@ getBrandInfo()
         }
 
         .user-email {
-          font-size: 1.2rem;
+          font-size: 1.4rem;
           margin-top: 5px;
           color: #888;
           text-align: center;

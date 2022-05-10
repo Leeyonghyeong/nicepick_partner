@@ -309,15 +309,15 @@ const pay = async () => {
         width: 750px;
 
         .top {
-          font-size: 2.4rem;
+          font-size: 1.8rem;
           color: #353535;
-          padding-top: 40px;
+          padding-top: 32px;
           padding-bottom: 15px;
           border-bottom: 1px solid #a1a1a1;
         }
 
         .pay-item {
-          height: 100px;
+          height: 90px;
           border-bottom: 1px solid #ececec;
           padding: 0 150px;
           line-height: 1.3;
@@ -328,7 +328,7 @@ const pay = async () => {
 
           .item-info {
             display: flex;
-            font-size: 2rem;
+            font-size: 1.6rem;
             color: #353535;
 
             &.name-price {
@@ -343,7 +343,7 @@ const pay = async () => {
             }
 
             &.noti-origin-price {
-              font-size: 1.8rem;
+              font-size: 1.4rem;
               color: #959595;
 
               div {
@@ -360,7 +360,7 @@ const pay = async () => {
 
       .pay-type {
         .top {
-          font-size: 2.4rem;
+          font-size: 1.8rem;
           color: #353535;
           padding-top: 108px;
           padding-bottom: 15px;
@@ -368,7 +368,7 @@ const pay = async () => {
         }
 
         .select-type {
-          margin-top: 37px;
+          margin-top: 10px;
           display: flex;
 
           .type {
@@ -378,8 +378,8 @@ const pay = async () => {
             align-items: center;
             border: 1px solid #c1c1c1;
             box-sizing: border-box;
-            height: 60px;
-            font-size: 2.2rem;
+            height: 50px;
+            font-size: 1.6rem;
             color: #1c1c1c;
             cursor: pointer;
 
@@ -402,12 +402,12 @@ const pay = async () => {
       box-sizing: border-box;
       width: 425px;
       padding-left: 25px;
-      padding-top: 40px;
+      padding-top: 32px;
       padding-bottom: 370px;
 
       .pay-info {
         .top {
-          font-size: 2.4rem;
+          font-size: 1.8rem;
           color: #353535;
           padding-bottom: 15px;
           border-bottom: 1px solid #a7a7a7;
@@ -418,7 +418,7 @@ const pay = async () => {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 2rem;
+            font-size: 1.6rem;
             color: #353535;
 
             &:first-child {
@@ -443,7 +443,7 @@ const pay = async () => {
                 color: #2b2b2b;
 
                 &:last-child {
-                  font-size: 2.4rem;
+                  font-size: 2rem;
                   color: $primary;
                   font-weight: bold;
                 }
@@ -485,9 +485,9 @@ const pay = async () => {
         }
 
         .all-agree {
-          font-size: 1.8rem;
+          font-size: 1.6rem;
           color: #353535;
-          font-weight: bold;
+          font-weight: 500;
           border-bottom: 1px solid #ededed;
           padding-bottom: 12px;
         }
@@ -520,7 +520,7 @@ const pay = async () => {
           width: 100%;
           height: 59px;
           background-color: #fa5252;
-          font-size: 2.2rem;
+          font-size: 1.8rem;
           color: #fff;
           border-radius: 10px;
           cursor: pointer;

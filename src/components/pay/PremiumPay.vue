@@ -299,8 +299,8 @@ getPayCategory()
       width: 750px;
 
       .top {
-        padding-top: 40px;
-        font-size: 2.4rem;
+        padding-top: 32px;
+        font-size: 1.8rem;
         color: #353535;
         padding-bottom: 15px;
       }
@@ -309,14 +309,14 @@ getPayCategory()
         display: flex;
         background-color: #3c3c3c;
         width: 100%;
-        height: 144px;
+        height: 110px;
         align-items: center;
         padding: 0 68px;
         justify-content: space-between;
         box-sizing: border-box;
 
         .title {
-          font-size: 4rem;
+          font-size: 3rem;
           color: $primary;
           font-weight: bold;
         }
@@ -326,13 +326,13 @@ getPayCategory()
           align-items: center;
 
           div {
-            font-size: 4rem;
+            font-size: 3rem;
             color: #fff;
             font-weight: bold;
 
             &:last-child {
               margin-left: 19px;
-              font-size: 3.2rem;
+              font-size: 2.8rem;
               color: #999;
               text-decoration: line-through;
             }
@@ -344,7 +344,7 @@ getPayCategory()
         display: block;
 
         div {
-          font-size: 1.4rem;
+          font-size: 1.3rem;
           color: #777;
           line-height: 1.5;
         }
@@ -363,12 +363,12 @@ getPayCategory()
       border-left: 1px solid #ececec;
       padding-left: 25px;
       box-sizing: border-box;
-      padding-top: 40px;
+      padding-top: 32px;
       padding-bottom: 370px;
 
       .pay-zone {
         .title {
-          font-size: 2.4rem;
+          font-size: 1.8rem;
           color: #353535;
           padding-bottom: 15px;
           border-bottom: 1px solid #a7a7a7;
@@ -379,7 +379,7 @@ getPayCategory()
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 2rem;
+            font-size: 1.6rem;
             color: #353535;
 
             &:first-child {
@@ -398,7 +398,7 @@ getPayCategory()
                 color: #2b2b2b;
 
                 &:last-child {
-                  font-size: 2.4rem;
+                  font-size: 2rem;
                   color: $primary;
                   font-weight: bold;
                 }
@@ -413,7 +413,7 @@ getPayCategory()
             margin-top: 16px;
 
             div {
-              font-size: 2rem;
+              font-size: 1.6rem;
               color: #353535;
 
               &:last-child {
@@ -456,9 +456,9 @@ getPayCategory()
         }
 
         .all-agree {
-          font-size: 1.8rem;
+          font-size: 1.6rem;
           color: #353535;
-          font-weight: bold;
+          font-weight: 500;
           border-bottom: 1px solid #ededed;
           padding-bottom: 12px;
         }
@@ -489,9 +489,9 @@ getPayCategory()
 
         button {
           width: 100%;
-          height: 59px;
+          height: 60px;
           background-color: #fa5252;
-          font-size: 2.2rem;
+          font-size: 1.8rem;
           color: #fff;
           border-radius: 10px;
           cursor: pointer;

@@ -299,7 +299,7 @@ getCartList()
       height: 20px;
       background: #dcdcdc;
       text-align: center;
-      line-height: 2rem;
+      line-height: 1.6rem;
       border-radius: 50%;
       font-size: 1.6rem;
       display: inline-block;
@@ -314,7 +314,7 @@ getCartList()
     }
     .cart-top {
       @include pc-container();
-      margin-top: 80px;
+      margin-top: 40px;
       padding-left: 100px;
       display: flex;
       align-items: center;
@@ -323,13 +323,15 @@ getCartList()
       .all-check {
         display: flex;
         align-items: center;
-        font-size: 2rem;
+        font-size: 1.4rem;
+
         color: #353535;
       }
 
       .check-delete {
-        margin-left: 23px;
-        font-size: 1.8rem;
+        margin-left: 20px;
+        font-size: 1.4rem;
+        margin-bottom: 3px;
         color: #9b9b9b;
         cursor: pointer;
       }
@@ -337,7 +339,7 @@ getCartList()
 
     .cart-header {
       @include pc-container();
-      height: 50px;
+      height: 40px;
       display: flex;
       align-items: center;
       background-color: #f9f9f9;
@@ -347,7 +349,7 @@ getCartList()
 
       .header-item {
         text-align: center;
-        font-size: 2rem;
+        font-size: 1.8rem;
         color: #353535;
 
         &.product-name,
@@ -378,7 +380,7 @@ getCartList()
         .cart-item {
           display: flex;
           align-items: center;
-          height: 130px;
+          height: 80px;
           border-bottom: 1px solid #ececec;
           box-sizing: border-box;
 
@@ -397,7 +399,7 @@ getCartList()
             .price-sale-price {
               .cart-info {
                 display: flex;
-                font-size: 2rem;
+                font-size: 1.6rem;
                 color: #353535;
                 line-height: 1.3;
 
@@ -407,7 +409,7 @@ getCartList()
                 }
 
                 &.noti-origin {
-                  font-size: 1.8rem;
+                  font-size: 1.4rem;
                   color: #959595;
 
                   .origin-price {
@@ -423,13 +425,13 @@ getCartList()
               align-items: center;
 
               button {
-                width: 100px;
-                height: 50px;
+                width: 70px;
+                height: 35px;
                 background-color: #fff;
                 border: 1px solid #c9c9c9;
                 cursor: pointer;
                 border-radius: 10px;
-                font-size: 1.5rem;
+                font-size: 1.4rem;
                 color: #888;
               }
             }
@@ -446,12 +448,12 @@ getCartList()
       border-color: #c8c8c8;
       display: flex;
       align-items: center;
-      padding: 0 150px;
+      padding: 0 220px;
       box-sizing: border-box;
       background-color: #f9f9f9;
 
       .pay-info {
-        font-size: 2.2rem;
+        font-size: 2rem;
         color: #353535;
         display: flex;
         align-items: center;
@@ -504,13 +506,13 @@ getCartList()
       justify-content: space-between;
       padding-left: 92px;
       box-sizing: border-box;
-      margin-top: 60px;
-      margin-bottom: 130px;
+      margin-top: 40px;
+      margin-bottom: 150px;
 
       .noti {
-        line-height: 1.3;
+        line-height: 1.5;
         div {
-          font-size: 1.6rem;
+          font-size: 1.4rem;
           color: #767676;
 
           span {
@@ -524,10 +526,10 @@ getCartList()
 
         button {
           width: 400px;
-          height: 59px;
+          height: 60px;
           background-color: #fa5252;
           color: #fff;
-          font-size: 2.2rem;
+          font-size: 1.8rem;
           border-radius: 10px;
           cursor: pointer;
 

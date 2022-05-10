@@ -227,7 +227,7 @@ onUnmounted(() => {
             padding: 0 10px;
             height: 40px;
             border: 1px solid #e8e8e8;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
 
             &:last-child {
               margin-top: -1px;
@@ -460,9 +460,11 @@ onUnmounted(() => {
   .brand-logo-box {
     margin-top: 25px;
     width: 100%;
+    overflow: hidden;
 
     img {
-      width: 100%;
+      height: 100px;
+      width: auto;
     }
   }
 
@@ -514,11 +516,11 @@ onUnmounted(() => {
       .left {
         margin-right: 120px;
         div {
-          font-size: 2rem;
+          font-size: 1.8rem;
           color: #888;
 
           &:first-child {
-            font-size: 3.2rem;
+            font-size: 2.8rem;
             color: #191919;
             margin-bottom: 22px;
             cursor: pointer;
@@ -528,7 +530,7 @@ onUnmounted(() => {
 
       .right {
         img {
-          width: 158px;
+          width: 120px;
         }
       }
     }
@@ -629,8 +631,10 @@ onUnmounted(() => {
 
   .brand-logo-box {
     width: 100%;
+    overflow: hidden;
     img {
-      width: 100%;
+      height: 100px;
+      width: auto;
     }
   }
 

@@ -405,6 +405,11 @@
               :disabled="!isPromotionWrite"
             />
           </div>
+
+          <div class="premium-modal">
+            <div>프리미엄 회원 전용 서비스</div>
+            <div @click="router.push('/shop')">신청하기</div>
+          </div>
         </div>
       </div>
       <!-- desktop -->
@@ -1368,6 +1373,7 @@ getBrandInfo()
       }
 
       .right-input {
+        position: relative;
         .promotion-icon {
           width: 650px;
           display: flex;
@@ -1407,6 +1413,31 @@ getBrandInfo()
           label {
             font-size: 1.4rem;
             color: #353535;
+          }
+        }
+
+        .premium-modal {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.6);
+          display: flex;
+          flex-direction: column;
+          line-height: 1.5;
+          justify-content: center;
+          align-items: center;
+          top: 0;
+          left: 0;
+          font-size: 2.4rem;
+          font-weight: bold;
+          color: #fff;
+
+          div {
+            &:last-child {
+              font-size: 1.8rem;
+              color: red;
+              cursor: pointer;
+            }
           }
         }
       }

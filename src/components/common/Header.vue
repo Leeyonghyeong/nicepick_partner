@@ -19,7 +19,13 @@
               >
                 브랜드 관리
               </div>
-              <div class="menu-item">고객문의</div>
+              <div
+                class="menu-item"
+                @click="router.push('/qna')"
+                :class="{ active: route.fullPath === '/qna' }"
+              >
+                고객문의
+              </div>
               <div
                 class="menu-item"
                 @click="router.push('/product')"

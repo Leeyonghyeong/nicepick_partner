@@ -53,6 +53,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/management/BrandManagement.vue'),
   },
   {
+    path: '/qna',
+    name: 'QnaChat',
+    component: () => import('../views/qna/QnaChat.vue'),
+  },
+  {
     path: '/product',
     name: 'Product',
     component: () => import('../views/product/Product.vue'),

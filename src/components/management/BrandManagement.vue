@@ -406,7 +406,7 @@
             />
           </div>
 
-          <div class="premium-modal">
+          <div class="premium-modal" v-if="!brand?.isPremium">
             <div>프리미엄 회원 전용 서비스</div>
             <div @click="router.push('/shop')">신청하기</div>
           </div>

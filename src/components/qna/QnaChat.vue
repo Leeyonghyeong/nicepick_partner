@@ -38,15 +38,15 @@
         <div class="left-room-list">
           <div class="room-list-top">
             <div class="list-type">
-              <div class="top-menu" @click="listType = 0">
+              <div class="top-menu" @click="getFindRoomList(0)">
                 <img src="../../assets/qna/all.png" alt="전체" />
                 <div class="top-text" :class="{ active: listType === 0 }">
                   전체
                 </div>
               </div>
               <div class="line"></div>
-              <div class="top-menu" @click="listType = 1">
-                <div class="read-count">2</div>
+              <div class="top-menu" @click="getFindRoomList(1)">
+                <div class="read-count">{{ noReadCount }}</div>
                 <div class="top-text" :class="{ active: listType === 1 }">
                   안읽음
                 </div>
@@ -54,7 +54,13 @@
             </div>
 
             <div class="search-brand">
-              <input type="text" placeholder="고객명 검색" />
+              <input
+                v-model="userName"
+                type="text"
+                placeholder="고객명 검색"
+                ref="searchInput"
+                @input="getFindRoomList(listType)"
+              />
               <img
                 src="../../assets/qna/search.png"
                 alt="search"
@@ -65,14 +71,31 @@
 
           <div class="room-list-body">
             <div class="room-list">
-              <div v-if="isEmpty" class="empty-room">
-                새로운 문의 내역이 없습니다
+              <div
+                v-if="
+                  (listType === 0 && chatRoomList.length === 0) ||
+                  (listType === 1 && chatNoReadRoomList.length === 0) ||
+                  (userName !== '' && findRoomList.length === 0)
+                "
+                class="empty-room"
+              >
+                {{
+                  userName !== '' && findRoomList.length === 0
+                    ? '검색 결과가 존재하지 않습니다'
+                    : '새로운 문의 내역이 없습니다'
+                }}
               </div>
 
               <div v-else class="room-items">
                 <div
                   class="room-item"
-                  v-for="item in chatRoomList"
+                  v-for="item in listType === 0 && userName === ''
+                    ? chatRoomList
+                    : listType === 0 && userName !== ''
+                    ? findRoomList
+                    : listType === 1 && userName === ''
+                    ? chatNoReadRoomList
+                    : findRoomList"
                   :key="item.id"
                   :class="{ active: item.id === roomId }"
                   @click="getChatMessageList(item.id, item.user.id)"
@@ -84,13 +107,15 @@
                     <div class="right-brand-chat">
                       <div class="brand-name">
                         <div id="brandName">{{ item.user.userName }}</div>
-                        <div id="time">{{ convertDate(item.updateAt) }}</div>
+                        <div id="time">{{ calcDate(item.updateAt) }}</div>
                       </div>
                       <div class="last-chat">
                         <div id="chatText">
                           {{ item.lastChatMessage }}
                         </div>
-                        <div id="newCount">2</div>
+                        <div id="newCount" v-if="item.newMessageCount > 0">
+                          {{ item.newMessageCount }}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -104,18 +129,43 @@
           <div class="top-chat-list">
             <div class="chat-list-body">
               <div class="chat-item-list">
-                <div id="chatDate">2022.03.30(수)</div>
                 <div
-                  class="chatText"
-                  v-for="item in chatMessageList"
+                  class="chat-item"
+                  v-for="(item, i) in chatMessageList"
                   :key="item.id"
-                  :class="{
-                    me: item.senderId === brandId,
-                    you: item.senderId !== brandId,
-                  }"
                 >
-                  <div id="date">{{ convertDate(item.createAt) }}</div>
-                  <div id="text">{{ item.message }}</div>
+                  <div
+                    id="chatDate"
+                    v-if="
+                      compareDate(
+                        item.createAt,
+                        chatMessageList[i === 0 ? i : i - 1].createAt,
+                        i
+                      )
+                    "
+                  >
+                    {{ chatDateString(item.createAt) }}
+                  </div>
+                  <div
+                    class="chatText"
+                    :class="{
+                      me: item.senderId === brandId,
+                      you: item.senderId !== brandId,
+                    }"
+                  >
+                    <div id="date">{{ convertDate(item.createAt) }}</div>
+                    <div id="text" v-if="item.type === 'text'">
+                      {{ item.message }}
+                    </div>
+                    <div id="text" v-else-if="item.type === 'image'">
+                      <a :href="item.message" target="_blank">
+                        <img :src="item.message" :alt="item.fileOriginName" />
+                      </a>
+                    </div>
+                    <div id="text" v-else>
+                      <a :href="item.message">{{ item.fileOriginName }}</a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -129,7 +179,12 @@
                 @keypress.enter="sendMessage"
               />
               <div class="input-file">
-                <input type="file" id="fileUpload" />
+                <input
+                  type="file"
+                  id="fileUpload"
+                  @change="sendFile"
+                  multiple
+                />
                 <label for="fileUpload">
                   <img src="../../assets/qna/add.png" alt="add" />
                 </label>
@@ -165,9 +220,11 @@ const currentBrand = ref<Brand>()
 
 const isBrandSelect = ref<boolean>(false)
 const listType = ref<number>(0)
-const isEmpty = ref<boolean>(false)
+const noReadCount = ref<number>(0)
 
 const chatRoomList = ref<ChatRoom[]>([])
+const chatNoReadRoomList = ref<ChatRoom[]>([])
+const findRoomList = ref<ChatRoom[]>([])
 const roomId = ref<string>('')
 const receiverId = ref<string>('')
 
@@ -175,6 +232,8 @@ const chatMessageList = ref<ChatMessage[]>([])
 const page = ref<number>(1)
 const pageView = ref<Page>()
 
+const userName = ref<string>('')
+const searchInput = ref<HTMLInputElement>()
 const message = ref<string>('')
 
 const brandId = computed(() => {
@@ -211,8 +270,39 @@ const getRoomList = async () => {
 
   if (result.data.success) {
     chatRoomList.value = result.data.chatRoom
+
+    for (const room of chatRoomList.value) {
+      const newMessageCount = await api.get(
+        `/chat/new/message/${room.id}/COMPANY`
+      )
+
+      if (newMessageCount.data.success) {
+        room.newMessageCount = newMessageCount.data.count
+      } else {
+        room.newMessageCount = 0
+      }
+    }
+
+    chatNoReadRoomList.value = chatRoomList.value.filter(
+      (e) => e.newMessageCount > 0
+    )
   } else {
     checkAlert(result.data.errorMessage)
+  }
+}
+
+const getFindRoomList = async (type: number) => {
+  if (searchInput.value) userName.value = searchInput.value.value
+
+  listType.value = type
+  if (listType.value === 0) {
+    findRoomList.value = chatRoomList.value.filter((e) =>
+      e.user.userName.toLowerCase().includes(userName.value.toLowerCase())
+    )
+  } else {
+    findRoomList.value = chatNoReadRoomList.value.filter((e) =>
+      e.user.userName.toLowerCase().includes(userName.value.toLowerCase())
+    )
   }
 }
 
@@ -227,6 +317,9 @@ const getChatMessageList = async (id: string, userId: string) => {
   if (getMessageList.data.success) {
     chatMessageList.value = getMessageList.data.chatMessage.reverse()
     pageView.value = getMessageList.data.page
+
+    getNoReadCount()
+    getRoomList()
 
     setTimeout(() => {
       chatBottom()
@@ -250,6 +343,7 @@ const sendMessage = async () => {
 
     if (addChatMessage.data.success) {
       getChatMessageList(roomId.value, receiverId.value)
+      getRoomList()
       setTimeout(() => {
         chatBottom()
       }, 100)
@@ -265,17 +359,67 @@ const sendMessage = async () => {
   message.value = ''
 }
 
+const sendFile = async (e: Event) => {
+  const input: HTMLInputElement = e.target as HTMLInputElement
+  const files = input.files
+
+  if (roomId.value === '') {
+    checkAlert('대화방을 선택해 주세요')
+    return
+  }
+
+  if (files && files.length > 0) {
+    const formData = new FormData()
+
+    for (let i = 0; i < files.length; i++) {
+      formData.append('files', files[i])
+    }
+
+    formData.append('senderId', brandId.value)
+    formData.append('chatRoomId', roomId.value)
+    formData.append('isBrandRead', 'true')
+
+    const addChatFile = await api.post(`/chat/file`, formData)
+
+    if (addChatFile.data.success) {
+      getChatMessageList(roomId.value, receiverId.value)
+      getRoomList()
+      setTimeout(() => {
+        chatBottom()
+      }, 100)
+
+      socket.emit('message', {
+        receiverId: receiverId.value,
+      })
+    } else {
+      checkAlert(addChatFile.data.errorMessage)
+    }
+  }
+}
+
+const getNoReadCount = async () => {
+  const result = await api.get(`/chat/read/count/${brandId.value}/COMPANY`)
+
+  if (result.data.success) {
+    noReadCount.value = result.data.count.count
+  } else {
+    checkAlert(result.data.errorMessage)
+  }
+}
+
 const convertDate = (date: Date): string => {
   const messageDate = new Date(date)
 
-  const ampm = messageDate.getHours() > 12 ? '오후' : '오전'
+  const ampm = messageDate.getHours() >= 12 ? '오후' : '오전'
 
   const hour =
     ampm === '오전'
-      ? messageDate.getHours() < 10
-        ? '0' + messageDate.getHours()
+      ? messageDate.getHours() === 0
+        ? '12'
         : messageDate.getHours()
-      : messageDate.getHours() - 12
+      : messageDate.getHours() > 12
+      ? messageDate.getHours() - 12
+      : messageDate.getHours()
 
   const minute =
     messageDate.getMinutes() < 10
@@ -285,6 +429,76 @@ const convertDate = (date: Date): string => {
   return ampm + ' ' + hour + ':' + minute
 }
 
+const calcDate = (date: Date): string => {
+  const today = new Date()
+  const chatDate = new Date(date)
+
+  const calcTodayDate = today.getFullYear() + today.getMonth() + today.getDate()
+  const calcChatDate =
+    chatDate.getFullYear() + chatDate.getMonth() + chatDate.getDate()
+
+  const calcDate = calcTodayDate - calcChatDate
+
+  if (today.getFullYear() === chatDate.getFullYear()) {
+    if (calcDate === 0) {
+      return convertDate(date)
+    } else {
+      return chatDate.getMonth() + 1 + '월 ' + chatDate.getDate() + '일'
+    }
+  } else {
+    return (
+      chatDate.getFullYear +
+      '. ' +
+      chatDate.getMonth() +
+      1 +
+      '. ' +
+      chatDate.getDate()
+    )
+  }
+}
+
+const compareDate = (
+  currentDate: Date,
+  beforeDate: Date,
+  index: number
+): boolean => {
+  if (index === 0) {
+    return true
+  } else {
+    const current = new Date(currentDate)
+    const before = new Date(beforeDate)
+
+    const calcCurrentDate =
+      current.getFullYear() + current.getMonth() + current.getDate()
+    const calcBeforeDate =
+      before.getFullYear() + before.getMonth() + before.getDate()
+    const calcDate = calcCurrentDate - calcBeforeDate
+
+    if (calcDate === 0) {
+      return false
+    } else {
+      return true
+    }
+  }
+}
+
+const chatDateString = (date: Date): string => {
+  const chatDate = new Date(date)
+
+  const weekArr: string[] = ['일', '월', '화', '수', '목', '금', '토']
+
+  const year = chatDate.getFullYear()
+  const month =
+    chatDate.getMonth() + 1 < 10
+      ? '0' + (chatDate.getMonth() + 1)
+      : chatDate.getMonth() + 1
+  const dayOfMonth =
+    chatDate.getDate() < 10 ? '0' + chatDate.getDate() : chatDate.getDate()
+  const dayOfWeek = weekArr[chatDate.getDay()]
+
+  return year + '. ' + month + '. ' + dayOfMonth + ' (' + dayOfWeek + ')'
+}
+
 const chatBottom = () => {
   const height = document.querySelector('.chat-item-list')?.scrollHeight
   document.querySelector('.chat-item-list')?.scrollTo({ top: height })
@@ -292,6 +506,7 @@ const chatBottom = () => {
 
 const chatInit = () => {
   getRoomList()
+  getNoReadCount()
 }
 
 watch(
@@ -315,7 +530,7 @@ getBrandList()
 chatInit()
 
 // socket
-const socket = io('ws://api.nicepick.co.kr')
+const socket = io('https://api.nicepick.co.kr')
 
 socket.on('connect', () => {
   socket.emit('add_socket', {
@@ -655,46 +870,52 @@ onUnmounted(() => socket.disconnect())
                 display: none;
               }
 
-              #chatDate {
-                display: flex;
-                justify-content: center;
-                font-size: 14px;
-                color: #999;
-              }
-
-              .chatText {
-                margin-top: 23px;
-                padding: 13px 18px;
-                display: flex;
-                align-items: flex-end;
-                justify-content: flex-end;
-
-                #date {
+              .chat-item {
+                #chatDate {
+                  display: flex;
+                  justify-content: center;
                   font-size: 14px;
-                  color: #c8c8c8;
+                  color: #999;
                 }
 
-                #text {
+                .chatText {
+                  margin-top: 23px;
                   padding: 13px 18px;
-                  max-width: 330px;
-                  font-size: 1.6rem;
-                }
+                  display: flex;
+                  align-items: flex-end;
+                  justify-content: flex-end;
 
-                &.me {
-                  #text {
-                    margin-left: 12px;
-                    background-color: #ffdc51;
-                    border-radius: 15px 0 15px 15px;
+                  #date {
+                    font-size: 14px;
+                    color: #c8c8c8;
                   }
-                }
-
-                &.you {
-                  flex-direction: row-reverse;
 
                   #text {
-                    background-color: #fff;
-                    border-radius: 0 15px 15px 15px;
-                    margin-right: 12px;
+                    padding: 13px 18px;
+                    max-width: 330px;
+                    font-size: 1.6rem;
+
+                    img {
+                      max-width: 330px;
+                    }
+                  }
+
+                  &.me {
+                    #text {
+                      margin-left: 12px;
+                      background-color: #ffdc51;
+                      border-radius: 15px 0 15px 15px;
+                    }
+                  }
+
+                  &.you {
+                    flex-direction: row-reverse;
+
+                    #text {
+                      background-color: #fff;
+                      border-radius: 0 15px 15px 15px;
+                      margin-right: 12px;
+                    }
                   }
                 }
               }

@@ -6,6 +6,7 @@ export interface ChatRoom {
   brandId: string
   userId: string
   lastChatMessage: string
+  newMessageCount: number
   createAt: Date
   updateAt: Date
   brand: Brand
@@ -19,6 +20,7 @@ export interface ChatMessage {
   isBrandRead: boolean
   senderId: string
   type: string
+  fileOriginName: string
   createAt: Date
   chatRoomId: string
 }

@@ -1,6 +1,6 @@
 <template>
   <Header />
-  <main>
+  <main id="desktop">
     <div class="qna-chat">
       <div class="chat-top">
         <div class="select-brand">
@@ -162,8 +162,13 @@
                         <img :src="item.message" :alt="item.fileOriginName" />
                       </a>
                     </div>
-                    <div id="text" v-else>
-                      <a :href="item.message">{{ item.fileOriginName }}</a>
+                    <div
+                      id="text"
+                      class="file-download"
+                      v-else
+                      @click="fileDownLoad(item.fileOriginName, item.message)"
+                    >
+                      {{ item.fileOriginName }}
                     </div>
                   </div>
                 </div>
@@ -199,11 +204,131 @@
     </div>
   </main>
   <Footer />
+
+  <main id="mobile">
+    <div class="main" v-if="!isMessageComponent">
+      <MobileHeader title="고객 문의 관리" :back="true" :cart="false" />
+      <div class="qna-chat">
+        <div class="qna-chat-body">
+          <div class="qna-chat-body-top">
+            <div class="list-type">
+              <div
+                class="top-menu"
+                @click="getFindRoomList(0)"
+                :class="{ active: listType === 0 }"
+              >
+                <div>전체</div>
+              </div>
+              <div class="line"></div>
+              <div
+                class="top-menu"
+                @click="getFindRoomList(1)"
+                :class="{ active: listType === 1 }"
+              >
+                <div>{{ noReadCount }}</div>
+                <div>안읽음</div>
+              </div>
+            </div>
+
+            <div class="search-brand">
+              <div class="search-input">
+                <input
+                  v-model="userName"
+                  type="text"
+                  placeholder="고객명을 검색해 주세요"
+                  ref="searchInput"
+                  @input="getFindRoomList(listType)"
+                />
+                <img
+                  src="../../assets/qna/search.png"
+                  alt="search"
+                  id="search"
+                />
+                <img
+                  src="../../assets/qna/cancel.png"
+                  alt="cancel"
+                  id="cancel"
+                  @click="userName = ''"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="qna-chat-body-room-list">
+            <div class="room-list">
+              <div
+                class="empty-room"
+                v-if="
+                  (listType === 0 && chatRoomList.length === 0) ||
+                  (listType === 1 && chatNoReadRoomList.length === 0) ||
+                  (userName !== '' && findRoomList.length === 0)
+                "
+              >
+                {{
+                  userName !== '' && findRoomList.length === 0
+                    ? '검색 결과가 존재하지 않습니다'
+                    : '새로운 문의 내역이 없습니다'
+                }}
+              </div>
+
+              <div class="room-items" v-else>
+                <div
+                  class="room-item"
+                  v-for="item in listType === 0 && userName === ''
+                    ? chatRoomList
+                    : listType === 0 && userName !== ''
+                    ? findRoomList
+                    : listType === 1 && userName === ''
+                    ? chatNoReadRoomList
+                    : findRoomList"
+                  :key="item.id"
+                  @click="
+                    changeChatRoom(item.id, item.user.id, item.user.userName)
+                  "
+                  :class="{ active: item.id === roomId }"
+                >
+                  <div class="left-logo-image">
+                    {{ item.user.userName.slice(0, 1) }}
+                  </div>
+                  <div class="right-brand-chat">
+                    <div class="brand-name">
+                      <div id="brandName">{{ item.user.userName }}</div>
+                      <div id="time">{{ calcDate(item.updateAt) }}</div>
+                    </div>
+                    <div class="last-chat">
+                      <div id="chatText">
+                        {{ item.lastChatMessage }}
+                      </div>
+                      <div id="newCount" v-if="item.newMessageCount > 0">
+                        {{ item.newMessageCount }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <QnaChatMessage
+      v-else
+      :brandId="brandId"
+      :currentUserName="currentUserName"
+      :chatMessageList="chatMessageList"
+      :roomId="roomId"
+      @sendMessage="mobileSendMessage"
+      @sendFile="sendFile"
+    />
+  </main>
+  <BottomNav v-if="!isMessageComponent" />
 </template>
 
 <script lang="ts" setup>
 import Header from '../common/Header.vue'
+import MobileHeader from '../common/MobileHeader.vue'
 import Footer from '../common/Footer.vue'
+import BottomNav from '../common/BottomNav.vue'
 import { useStore } from 'vuex'
 import api from '../../config/axios.config'
 import { Brand } from '../../types/brand'
@@ -212,6 +337,14 @@ import { checkAlert, toastAlert } from '../../functions/alert'
 import { ChatRoom, ChatMessage } from '../../types/chat'
 import { Page } from '../../types/page'
 import { io } from 'socket.io-client'
+import axios from 'axios'
+import {
+  calcDate,
+  chatDateString,
+  compareDate,
+  convertDate,
+} from '../../functions/chat'
+import QnaChatMessage from './QnaChatMessage.vue'
 
 const store = useStore()
 
@@ -233,8 +366,11 @@ const page = ref<number>(1)
 const pageView = ref<Page>()
 
 const userName = ref<string>('')
+const currentUserName = ref<string>('')
 const searchInput = ref<HTMLInputElement>()
 const message = ref<string>('')
+
+const isMessageComponent = ref<boolean>(false)
 
 const brandId = computed(() => {
   return store.state.auth.brandId as string
@@ -310,6 +446,10 @@ const getChatMessageList = async (id: string, userId: string) => {
   roomId.value = id
   receiverId.value = userId
 
+  if (roomId.value === '') {
+    return
+  }
+
   const getMessageList = await api.get(
     `/chat/message/${roomId.value}/${page.value}/COMPANY`
   )
@@ -329,7 +469,24 @@ const getChatMessageList = async (id: string, userId: string) => {
   }
 }
 
+const changeChatRoom = (id: string, userId: string, userName: string) => {
+  getChatMessageList(id, userId)
+  currentUserName.value = userName
+  window.history.pushState({ page: 'chat' }, '', '#chat')
+  isMessageComponent.value = true
+}
+
+const closeMessageComponent = () => {
+  roomId.value = ''
+  currentUserName.value = ''
+  isMessageComponent.value = false
+}
+
 const sendMessage = async () => {
+  if (message.value === '') {
+    return
+  }
+
   if (roomId.value === '') {
     checkAlert('대화방을 선택해 주세요')
   } else {
@@ -357,6 +514,38 @@ const sendMessage = async () => {
   }
 
   message.value = ''
+}
+
+const mobileSendMessage = async (msg: string) => {
+  if (msg === '') {
+    return
+  }
+
+  if (roomId.value === '') {
+    checkAlert('대화방을 선택해 주세요')
+  } else {
+    const addChatMessage = await api.post('/chat/message', {
+      message: msg,
+      senderId: brandId.value,
+      type: 'text',
+      chatRoomId: roomId.value,
+      isBrandRead: true,
+    })
+
+    if (addChatMessage.data.success) {
+      getChatMessageList(roomId.value, receiverId.value)
+      getRoomList()
+      setTimeout(() => {
+        chatBottom()
+      }, 100)
+
+      socket.emit('message', {
+        receiverId: receiverId.value,
+      })
+    } else {
+      checkAlert(addChatMessage.data.errorMessage)
+    }
+  }
 }
 
 const sendFile = async (e: Event) => {
@@ -397,6 +586,28 @@ const sendFile = async (e: Event) => {
   }
 }
 
+const fileDownLoad = (originName: string, filePath: string) => {
+  axios({
+    url: filePath,
+    method: 'GET',
+    responseType: 'blob',
+  }).then((res) => {
+    const blob = new Blob([res.data])
+    const fileObjectUrl = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = fileObjectUrl
+    link.style.display = 'none'
+
+    link.download = originName
+
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+
+    window.URL.revokeObjectURL(fileObjectUrl)
+  })
+}
+
 const getNoReadCount = async () => {
   const result = await api.get(`/chat/read/count/${brandId.value}/COMPANY`)
 
@@ -405,98 +616,6 @@ const getNoReadCount = async () => {
   } else {
     checkAlert(result.data.errorMessage)
   }
-}
-
-const convertDate = (date: Date): string => {
-  const messageDate = new Date(date)
-
-  const ampm = messageDate.getHours() >= 12 ? '오후' : '오전'
-
-  const hour =
-    ampm === '오전'
-      ? messageDate.getHours() === 0
-        ? '12'
-        : messageDate.getHours()
-      : messageDate.getHours() > 12
-      ? messageDate.getHours() - 12
-      : messageDate.getHours()
-
-  const minute =
-    messageDate.getMinutes() < 10
-      ? '0' + messageDate.getMinutes()
-      : messageDate.getMinutes()
-
-  return ampm + ' ' + hour + ':' + minute
-}
-
-const calcDate = (date: Date): string => {
-  const today = new Date()
-  const chatDate = new Date(date)
-
-  const calcTodayDate = today.getFullYear() + today.getMonth() + today.getDate()
-  const calcChatDate =
-    chatDate.getFullYear() + chatDate.getMonth() + chatDate.getDate()
-
-  const calcDate = calcTodayDate - calcChatDate
-
-  if (today.getFullYear() === chatDate.getFullYear()) {
-    if (calcDate === 0) {
-      return convertDate(date)
-    } else {
-      return chatDate.getMonth() + 1 + '월 ' + chatDate.getDate() + '일'
-    }
-  } else {
-    return (
-      chatDate.getFullYear +
-      '. ' +
-      chatDate.getMonth() +
-      1 +
-      '. ' +
-      chatDate.getDate()
-    )
-  }
-}
-
-const compareDate = (
-  currentDate: Date,
-  beforeDate: Date,
-  index: number
-): boolean => {
-  if (index === 0) {
-    return true
-  } else {
-    const current = new Date(currentDate)
-    const before = new Date(beforeDate)
-
-    const calcCurrentDate =
-      current.getFullYear() + current.getMonth() + current.getDate()
-    const calcBeforeDate =
-      before.getFullYear() + before.getMonth() + before.getDate()
-    const calcDate = calcCurrentDate - calcBeforeDate
-
-    if (calcDate === 0) {
-      return false
-    } else {
-      return true
-    }
-  }
-}
-
-const chatDateString = (date: Date): string => {
-  const chatDate = new Date(date)
-
-  const weekArr: string[] = ['일', '월', '화', '수', '목', '금', '토']
-
-  const year = chatDate.getFullYear()
-  const month =
-    chatDate.getMonth() + 1 < 10
-      ? '0' + (chatDate.getMonth() + 1)
-      : chatDate.getMonth() + 1
-  const dayOfMonth =
-    chatDate.getDate() < 10 ? '0' + chatDate.getDate() : chatDate.getDate()
-  const dayOfWeek = weekArr[chatDate.getDay()]
-
-  return year + '. ' + month + '. ' + dayOfMonth + ' (' + dayOfWeek + ')'
 }
 
 const chatBottom = () => {
@@ -544,13 +663,21 @@ socket.on('received', () => {
   getChatMessageList(roomId.value, receiverId.value)
 })
 
-onUnmounted(() => socket.disconnect())
+window.addEventListener('popstate', closeMessageComponent)
+
+onUnmounted(() => {
+  socket.disconnect()
+  window.removeEventListener('popstate', closeMessageComponent)
+})
 </script>
 
 <style lang="scss" scoped>
 @import '@/scss/main';
 
 @include desktop {
+  #mobile {
+    display: none;
+  }
   .qna-chat {
     @include pc-container();
 
@@ -884,6 +1011,7 @@ onUnmounted(() => socket.disconnect())
                   display: flex;
                   align-items: flex-end;
                   justify-content: flex-end;
+                  word-break: break-all;
 
                   #date {
                     font-size: 14px;
@@ -894,6 +1022,12 @@ onUnmounted(() => socket.disconnect())
                     padding: 13px 18px;
                     max-width: 330px;
                     font-size: 1.6rem;
+
+                    &.file-download {
+                      color: #0000ee;
+                      text-decoration: underline;
+                      cursor: pointer;
+                    }
 
                     img {
                       max-width: 330px;
@@ -968,6 +1102,212 @@ onUnmounted(() => socket.disconnect())
             height: 60px;
             background-color: #ffdc51;
             border: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+@include mobile {
+  #desktop {
+    display: none;
+  }
+
+  footer {
+    display: none;
+  }
+
+  .main {
+    position: relative;
+    .qna-chat {
+      position: relative;
+
+      .qna-chat-top {
+        @include flex-center();
+        position: sticky;
+        width: 100%;
+        top: 0;
+        background-color: $primary;
+        height: 60px;
+        font-size: 2rem;
+        color: #fff;
+        z-index: 100;
+
+        .home {
+          position: absolute;
+          width: 28px;
+          right: 24px;
+        }
+      }
+
+      .qna-chat-body {
+        .qna-chat-body-top {
+          .list-type {
+            display: flex;
+            height: 60px;
+            padding: 15px 0;
+            box-sizing: border-box;
+
+            .top-menu {
+              display: flex;
+              flex: 1 1 0;
+              justify-content: center;
+              align-items: center;
+              font-size: 1.8rem;
+              color: #767676;
+              cursor: pointer;
+
+              &.active {
+                color: #191919;
+                font-weight: bold;
+              }
+            }
+
+            .line {
+              border-left: 1px solid #d2e4ff;
+            }
+          }
+
+          .search-brand {
+            height: 70px;
+            background-color: #f8f8fa;
+            padding: 12px 24px;
+            box-sizing: border-box;
+
+            .search-input {
+              width: 100%;
+              height: 100%;
+              position: relative;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              input[type='text'] {
+                width: 100%;
+                height: 100%;
+                border: none;
+                padding: 0 56px;
+                font-size: 1.6rem;
+                color: #191919;
+                box-sizing: border-box;
+
+                &::placeholder {
+                  color: #767676;
+                }
+              }
+
+              img {
+                position: absolute;
+
+                &#search {
+                  left: 20px;
+                  width: 20px;
+                }
+
+                &#cancel {
+                  right: 20px;
+                  width: 20px;
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+
+        .qna-chat-body-room-list {
+          .room-list {
+            .empty-room {
+              display: flex;
+              justify-content: center;
+              padding-top: 150px;
+              font-size: 1.6rem;
+              color: #191919;
+            }
+
+            .room-items {
+              padding: 0 24px;
+              width: 100%;
+              box-sizing: border-box;
+              .room-item {
+                display: flex;
+                align-items: center;
+                padding: 20px 0;
+                border-bottom: 1px solid #ededed;
+
+                .left-logo-image {
+                  width: 50px;
+                  height: 50px;
+                  border-radius: 50%;
+                  background-color: $primary;
+                  color: #fff;
+                  font-size: 2.4rem;
+                  margin-right: 12px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                }
+
+                .right-brand-chat {
+                  flex: 1 1 0;
+                  .brand-name {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    margin-bottom: 5px;
+
+                    #brandName {
+                      font-size: 1.4rem;
+                      color: #191919;
+                      font-weight: bold;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      height: 16px;
+                      line-height: 16px;
+                      word-wrap: break-word;
+                      display: -webkit-box;
+                      -webkit-line-clamp: 1;
+                      -webkit-box-orient: vertical;
+                    }
+
+                    #time {
+                      font-size: 1.2rem;
+                      color: #767676;
+                    }
+                  }
+
+                  .last-chat {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    #chatText {
+                      font-size: 1.2rem;
+                      color: #767676;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      height: 16px;
+                      line-height: 16px;
+                      word-wrap: break-word;
+                      display: -webkit-box;
+                      -webkit-line-clamp: 1;
+                      -webkit-box-orient: vertical;
+                    }
+
+                    #newCount {
+                      background-color: #fe3d3d;
+                      color: #fff;
+                      font-size: 1.2rem;
+                      border-radius: 10px;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      padding: 2px 4px;
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

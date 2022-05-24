@@ -9,6 +9,7 @@ export interface Brand {
   brandPromotion: string
   brandPromotionIcon: string
   isPremium: boolean
+  largeCategoryName: string
   smallCategoryName: string
   brandIntroImg: BrandIntroImg[]
   brandStartCostImg: BrandStartCostImg[]

@@ -8,8 +8,13 @@
       />
       <img v-else src="../../assets/nav/brand.png" alt="브랜드관리" />
     </div>
-    <div class="nav-item">
-      <img src="../../assets/nav/qna.png" alt="고객문의" />
+    <div class="nav-item" @click="router.push('/qna')">
+      <img
+        v-if="route.path === '/qna'"
+        src="../../assets/nav/qna_active.png"
+        alt="고객문의"
+      />
+      <img v-else src="../../assets/nav/qna.png" alt="" />
     </div>
     <div class="nav-item" @click="router.push('/product')">
       <img

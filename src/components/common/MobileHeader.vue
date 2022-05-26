@@ -16,6 +16,13 @@
         alt="back"
         @click="router.back()"
       />
+      <img
+        v-if="title === '마이페이지'"
+        src="../../assets/mypage/nicepick_home.png"
+        alt="nicepick_home"
+        class="mypage"
+        @click="moveNicepick"
+      />
     </div>
   </header>
 </template>
@@ -30,6 +37,10 @@ defineProps<{
 }>()
 
 const router = useRouter()
+
+const moveNicepick = () => {
+  window.location.href = 'https://nicepick.co.kr'
+}
 </script>
 
 <style lang="scss" scoped>
@@ -78,6 +89,13 @@ const router = useRouter()
         left: 30px;
         cursor: pointer;
         width: 28px;
+      }
+
+      .mypage {
+        position: absolute;
+        right: 24px;
+        cursor: pointer;
+        width: 34px;
       }
     }
   }

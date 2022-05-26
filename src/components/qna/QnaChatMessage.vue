@@ -107,25 +107,38 @@ const sendFile = (e: Event) => {
 }
 
 const fileDownLoad = (originName: string, filePath: string) => {
-  axios({
-    url: filePath,
-    method: 'GET',
-    responseType: 'blob',
-  }).then((res) => {
-    const blob = new Blob([res.data])
-    const fileObjectUrl = window.URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = fileObjectUrl
-    link.style.display = 'none'
+  const uAgent = navigator.userAgent.toLocaleLowerCase()
 
+  if (uAgent.search('android') > -1) {
+    const link = document.createElement('a')
+    link.href = filePath
+    link.style.display = 'none'
     link.download = originName
 
     document.body.appendChild(link)
     link.click()
     link.remove()
+  } else {
+    axios({
+      url: filePath,
+      method: 'GET',
+      responseType: 'blob',
+    }).then((res) => {
+      const blob = new Blob([res.data])
+      const fileObjectUrl = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = fileObjectUrl
+      link.style.display = 'none'
 
-    window.URL.revokeObjectURL(fileObjectUrl)
-  })
+      link.download = originName
+
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+
+      window.URL.revokeObjectURL(fileObjectUrl)
+    })
+  }
 }
 
 const chatBottom = () => {

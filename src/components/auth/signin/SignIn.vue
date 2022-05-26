@@ -2,7 +2,13 @@
   <main>
     <div class="signin-box">
       <div class="mobile-header">
-        <img src="../../../assets/main_logo.png" alt="logo" />
+        <img src="../../../assets/mobile_main_logo.png" alt="logo" />
+        <img
+          src="../../../assets/mypage/nicepick_home.png"
+          alt="nicepick_home"
+          class="nicepick-home"
+          @click="moveNicepick"
+        />
       </div>
       <div class="main-image">
         <img src="../../../assets/signin/main.jpg" alt="main-image" />
@@ -169,6 +175,10 @@ const checkWidth = () => {
   } else {
     checkMobile.value = false
   }
+}
+
+const moveNicepick = () => {
+  window.location.href = 'https://nicepick.co.kr'
 }
 
 checkWidth()
@@ -542,13 +552,19 @@ onUnmounted(() => {
     width: 100%;
 
     .mobile-header {
+      padding: 0 24px;
       height: 60px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
 
       img {
-        width: 100px;
+        height: 35px;
+
+        &.nicepick-home {
+          width: 34px;
+          height: auto;
+        }
       }
     }
 

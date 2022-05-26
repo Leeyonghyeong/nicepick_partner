@@ -6,7 +6,7 @@
           <div class="menu">
             <div class="header-logo">
               <img
-                src="../../assets/main_logo.png"
+                src="../../assets/desktop_main_logo.png"
                 alt="logo"
                 @click="isLogin ? router.push('/management') : router.push('/')"
               />
@@ -176,9 +176,9 @@ getBrandInfo()
           align-items: flex-end;
           .header-logo {
             margin-right: 40px;
+            margin-bottom: -7px;
             img {
-              width: 120px;
-              height: 48px;
+              width: 140px;
               cursor: pointer;
             }
           }

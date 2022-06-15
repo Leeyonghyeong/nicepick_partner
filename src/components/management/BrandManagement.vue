@@ -178,111 +178,124 @@
         <div class="title">
           <div class="name">프로모션</div>
         </div>
-        <div class="promotion-icon">
-          <div class="icon-item">
-            <input
-              v-model="promotionIcon"
-              value="가맹비할인"
-              type="checkbox"
-              id="icon1"
-            />
-            <label for="icon1">
-              <img
-                src="../../assets/management/가맹비할인.png"
-                alt="가맹비할인"
+        <div class="promotion-input">
+          <div class="promotion-icon">
+            <div class="icon-item">
+              <input
+                v-model="promotionIcon"
+                value="가맹비할인"
+                type="checkbox"
+                id="icon1"
               />
-            </label>
-          </div>
-          <div class="icon-item">
-            <input
-              v-model="promotionIcon"
-              value="가맹비면제"
-              type="checkbox"
-              id="icon2"
-            />
-            <label for="icon2">
-              <img
-                src="../../assets/management/가맹비면제.png"
-                alt="가맹비면제"
+              <label for="icon1">
+                <img
+                  src="../../assets/management/가맹비할인.png"
+                  alt="가맹비할인"
+                />
+              </label>
+            </div>
+            <div class="icon-item">
+              <input
+                v-model="promotionIcon"
+                value="가맹비면제"
+                type="checkbox"
+                id="icon2"
               />
-            </label>
-          </div>
-          <div class="icon-item">
-            <input
-              v-model="promotionIcon"
-              value="교육비할인"
-              type="checkbox"
-              id="icon3"
-            />
-            <label for="icon3">
-              <img
-                src="../../assets/management/교육비할인.png"
-                alt="교육비할인"
+              <label for="icon2">
+                <img
+                  src="../../assets/management/가맹비면제.png"
+                  alt="가맹비면제"
+                />
+              </label>
+            </div>
+            <div class="icon-item">
+              <input
+                v-model="promotionIcon"
+                value="교육비할인"
+                type="checkbox"
+                id="icon3"
               />
-            </label>
-          </div>
-          <div class="icon-item">
-            <input
-              v-model="promotionIcon"
-              value="교육비면제"
-              type="checkbox"
-              id="icon4"
-            />
-            <label for="icon4">
-              <img
-                src="../../assets/management/교육비면제.png"
-                alt="교육비면제"
+              <label for="icon3">
+                <img
+                  src="../../assets/management/교육비할인.png"
+                  alt="교육비할인"
+                />
+              </label>
+            </div>
+            <div class="icon-item">
+              <input
+                v-model="promotionIcon"
+                value="교육비면제"
+                type="checkbox"
+                id="icon4"
               />
-            </label>
-          </div>
-          <div class="icon-item">
-            <input
-              v-model="promotionIcon"
-              value="물품지원"
-              type="checkbox"
-              id="icon5"
-            />
-            <label for="icon5">
-              <img src="../../assets/management/물품지원.png" alt="물품지원" />
-            </label>
-          </div>
-          <div class="icon-item">
-            <input
-              v-model="promotionIcon"
-              value="장비지원"
-              type="checkbox"
-              id="icon6"
-            />
-            <label for="icon6">
-              <img src="../../assets/management/장비지원.png" alt="장비지원" />
-            </label>
-          </div>
-          <div class="icon-item">
-            <input
-              v-model="promotionIcon"
-              value="인테리어비용지원"
-              type="checkbox"
-              id="icon7"
-            />
-            <label for="icon7">
-              <img
-                src="../../assets/management/인테리어비용지원.png"
-                alt="인테리어비용지원"
+              <label for="icon4">
+                <img
+                  src="../../assets/management/교육비면제.png"
+                  alt="교육비면제"
+                />
+              </label>
+            </div>
+            <div class="icon-item">
+              <input
+                v-model="promotionIcon"
+                value="물품지원"
+                type="checkbox"
+                id="icon5"
               />
-            </label>
+              <label for="icon5">
+                <img
+                  src="../../assets/management/물품지원.png"
+                  alt="물품지원"
+                />
+              </label>
+            </div>
+            <div class="icon-item">
+              <input
+                v-model="promotionIcon"
+                value="장비지원"
+                type="checkbox"
+                id="icon6"
+              />
+              <label for="icon6">
+                <img
+                  src="../../assets/management/장비지원.png"
+                  alt="장비지원"
+                />
+              </label>
+            </div>
+            <div class="icon-item">
+              <input
+                v-model="promotionIcon"
+                value="인테리어비용지원"
+                type="checkbox"
+                id="icon7"
+              />
+              <label for="icon7">
+                <img
+                  src="../../assets/management/인테리어비용지원.png"
+                  alt="인테리어비용지원"
+                />
+              </label>
+            </div>
           </div>
-        </div>
-        <div class="check-box">
-          <input v-model="isPromotionWrite" type="checkbox" id="write" />
-          <label for="write">직접입력</label>
-        </div>
-        <div class="text-input">
-          <input
-            v-model="promotion"
-            type="text"
-            placeholder="비용노출 최소하하여 작성"
-            :disabled="!isPromotionWrite"
-          />
+          <div class="check-box">
+            <input v-model="isPromotionWrite" type="checkbox" id="write" />
+            <label for="write">직접입력</label>
+          </div>
+          <div class="text-input">
+            <input
+              v-model="promotion"
+              type="text"
+              placeholder="비용노출 최소하하여 작성"
+              :disabled="!isPromotionWrite"
+            />
+          </div>
+
+          <div class="premium-modal" v-if="!brand?.isPremium">
+            <div>프리미엄 회원 전용 서비스</div>
+            <div @click="router.push('/shop')">신청하기</div>
+          </div>
         </div>
       </div>
       <!-- mobile -->
@@ -1789,44 +1802,72 @@ getBrandInfo()
         cursor: pointer;
       }
 
-      .promotion-icon {
-        margin-top: 12px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        .icon-item {
-          flex: 1 1 0;
+      .promotion-input {
+        position: relative;
+        .promotion-icon {
+          margin-top: 12px;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          .icon-item {
+            flex: 1 1 0;
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+
+            input[type='checkbox'] {
+              width: 25px;
+              height: 25px;
+              margin-right: 6px;
+            }
+
+            label {
+              img {
+                height: 29px;
+              }
+            }
+          }
+        }
+
+        .check-box {
           display: flex;
           align-items: center;
-          margin-bottom: 12px;
 
           input[type='checkbox'] {
             width: 25px;
             height: 25px;
-            margin-right: 6px;
           }
 
           label {
-            img {
-              height: 29px;
-            }
+            font-size: 1.4rem;
+            color: #353535;
+            margin-left: 7px;
           }
         }
-      }
 
-      .check-box {
-        display: flex;
-        align-items: center;
+        .premium-modal {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.6);
+          display: flex;
+          flex-direction: column;
+          line-height: 1.5;
+          justify-content: center;
+          align-items: center;
+          top: 0;
+          left: 0;
+          font-size: 2.4rem;
+          font-weight: bold;
+          color: #fff;
 
-        input[type='checkbox'] {
-          width: 25px;
-          height: 25px;
-        }
-
-        label {
-          font-size: 1.4rem;
-          color: #353535;
-          margin-left: 7px;
+          div {
+            &:last-child {
+              font-size: 1.8rem;
+              color: red;
+              cursor: pointer;
+            }
+          }
         }
       }
     }

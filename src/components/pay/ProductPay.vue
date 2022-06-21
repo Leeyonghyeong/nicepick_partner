@@ -99,7 +99,12 @@
                 id="payAgree"
                 @change="allCheckStatus"
               />
-              <label for="payAgree">[필수] 주문 및 결제 관련 약관동의</label>
+              <label for="payAgree" style="display: flex"
+                ><div style="margin: 0; line-height: 15px">
+                  주문할 상품, 이용기간, 금액 등을 확인 하였으며, 결제에
+                  동의합니다.
+                </div></label
+              >
             </div>
             <div>
               <input

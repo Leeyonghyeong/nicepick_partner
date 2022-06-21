@@ -117,9 +117,23 @@
             src="../../assets/product/recommend_product_mobile.png"
             alt="추천상품"
           />
+          <div class="move-shop-button">
+            <button @click="router.push('/shop')">
+              프리미엄 서비스 신청하기
+            </button>
+          </div>
         </div>
-        <div class="move-shop-button">
-          <button @click="router.push('/shop')">신청하러가기</button>
+
+        <div class="new-event">
+          <div class="noti">
+            <div>창업픽 신규회원 이벤트</div>
+            <div>프리미엄 회원가입 시,</div>
+            <div>광고서비스 중 택1 무료제공<span>(기간한정)</span></div>
+            <div>프리미엄 서비스 가입하시면 개별연락을 드립니다.</div>
+          </div>
+          <div class="button">
+            <div @click="router.push('/shop')">가입하기</div>
+          </div>
         </div>
       </div>
       <!-- 추천 상품 -->
@@ -405,14 +419,36 @@ getProductList()
       }
 
       .recommend-image {
-        margin-top: 12px;
+        position: relative;
+        width: 1280px;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        margin-top: 28px;
 
         .recommend_mobile {
           display: none;
         }
 
         img {
-          width: 100%;
+          width: 1148px;
+        }
+
+        .move-shop-button {
+          position: absolute;
+          @include pc-container();
+          text-align: center;
+          bottom: 70px;
+
+          button {
+            width: 400px;
+            height: 60px;
+            border-radius: 100px;
+            font-size: 2rem;
+            color: #fff;
+            background-color: $primary;
+            cursor: pointer;
+          }
         }
       }
     }
@@ -424,19 +460,63 @@ getProductList()
         @include pc-container();
       }
 
-      .move-shop-button {
-        @include pc-container();
-        text-align: center;
+      .new-event {
+        width: 1012px;
+        margin: 20px auto 100px;
+        height: 289px;
+        background-color: black;
+        border-radius: 50px;
+        box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.16);
+        background-image: linear-gradient(to bottom, #4087f4, #7061f3);
+        padding: 53px 90px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
 
-        button {
-          margin: 100px 0 100px 0;
-          width: 400px;
-          height: 50px;
-          border-radius: 100px;
-          font-size: 2rem;
+        .noti {
           color: #fff;
-          background-color: $primary;
-          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+
+          div {
+            &:nth-child(1) {
+              font-size: 3.6rem;
+              font-weight: bold;
+              margin-bottom: 28px;
+            }
+
+            &:nth-child(2),
+            &:nth-child(3) {
+              font-size: 2.2rem;
+              line-height: 5px;
+
+              span {
+                font-size: 1.6rem;
+              }
+            }
+
+            &:nth-child(4) {
+              margin-top: 18px;
+              font-size: 1.4rem;
+            }
+          }
+        }
+
+        .button {
+          div {
+            width: 150px;
+            height: 52px;
+            background-color: #fff;
+            color: #3356b2;
+            font-size: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+          }
         }
       }
     }
@@ -445,8 +525,6 @@ getProductList()
 
 @include mobile {
   .product {
-    padding: 24px;
-
     .pay-list,
     .product-list,
     .recommend-product {
@@ -575,7 +653,8 @@ getProductList()
         }
       }
       .recommend-image {
-        margin-top: 12px;
+        margin-top: 24px;
+        position: relative;
 
         .recommend_pc {
           display: none;
@@ -584,20 +663,96 @@ getProductList()
         img {
           width: 100%;
         }
+
+        .move-shop-button {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          position: absolute;
+          bottom: 42px;
+          padding: 0 24px;
+          box-sizing: border-box;
+
+          button {
+            width: 100%;
+            height: 50px;
+            color: #fff;
+            font-size: 1.6rem;
+            background-color: $primary;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            box-sizing: border-box;
+          }
+        }
+      }
+    }
+
+    .pay-list {
+      padding: 24px 24px 0;
+    }
+
+    .product-list {
+      padding: 0 24px;
+    }
+
+    .recommend-product {
+      .list-top {
+        padding: 0 24px;
+      }
+    }
+
+    .new-event {
+      margin-top: -1px;
+      width: 100%;
+      height: 256px;
+      padding: 40px 24px 35px;
+      box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.16);
+      background-image: linear-gradient(to bottom, #4087f4, #7061f3);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .noti {
+        color: #fff;
+
+        div {
+          &:nth-child(1) {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+          }
+
+          &:nth-child(2),
+          &:nth-child(3) {
+            font-size: 1.4rem;
+            line-height: 20px;
+
+            span {
+              font-size: 1rem;
+            }
+          }
+
+          &:nth-child(4) {
+            margin-top: 15px;
+            font-size: 1rem;
+          }
+        }
       }
 
-      .move-shop-button {
-        margin-top: 24px;
-
-        button {
+      .button {
+        div {
           width: 100%;
+          background-color: #fff;
           height: 50px;
-          color: #fff;
-          font-size: 1.6rem;
-          background-color: $primary;
-          font-weight: bold;
           border-radius: 5px;
-          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 1.6rem;
+          color: #3356b2;
+          font-weight: bold;
         }
       }
     }

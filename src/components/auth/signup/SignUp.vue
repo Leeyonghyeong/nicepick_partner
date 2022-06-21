@@ -167,7 +167,6 @@
         <div class="register-item no-button">
           <div class="item-top">
             <div class="title">비밀번호</div>
-            <div class="noti">(이메일 주소는 ID로 사용됩니다)</div>
           </div>
           <div class="input-zone">
             <input
@@ -207,7 +206,6 @@
         <div class="register-item no-button">
           <div class="item-top">
             <div class="title">휴대폰 번호</div>
-            <div class="noti">(이메일 주소는 ID로 사용됩니다)</div>
           </div>
           <div class="input-zone">
             <input

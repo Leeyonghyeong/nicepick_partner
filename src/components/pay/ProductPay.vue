@@ -14,9 +14,10 @@
             </div>
             <div class="noti-origin-price item-info">
               <div>{{ item.payCategoryName }}</div>
-              <div class="origin-price">
+              <div v-if="item.sale > 0" class="origin-price">
                 {{ calcOriginPrice(item.price, item.sale).toLocaleString() }}원
               </div>
+              <div v-else></div>
             </div>
           </div>
         </div>
@@ -195,7 +196,8 @@ const calcTotalSale = (payTermPrice: PayTermPrice[]): number => {
 
   for (const item of payTermPrice) {
     if (item.sale > 0) {
-      totalSale += calcOriginPrice(item.price, item.sale) / item.sale
+      const sale = item.sale / 100
+      totalSale += calcOriginPrice(item.price, item.sale) * sale
     }
   }
 

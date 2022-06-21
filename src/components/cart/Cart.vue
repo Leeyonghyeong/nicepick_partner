@@ -182,7 +182,8 @@ const calcTotalSale = (payTermPrice: PayTermPrice[]): number => {
 
   for (const item of payTermPrice) {
     if (item.sale > 0) {
-      totalSale += calcOriginPrice(item.price, item.sale) / item.sale
+      const sale = item.sale / 100
+      totalSale += calcOriginPrice(item.price, item.sale) * sale
     }
   }
 

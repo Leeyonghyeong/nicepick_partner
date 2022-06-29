@@ -21,6 +21,13 @@
               </div>
               <div
                 class="menu-item"
+                @click="router.push('/management/brand/info')"
+                :class="{ active: route.fullPath === '/management/brand/info' }"
+              >
+                브랜드 정보수정
+              </div>
+              <div
+                class="menu-item"
                 @click="router.push('/qna')"
                 :class="{ active: route.fullPath === '/qna' }"
               >

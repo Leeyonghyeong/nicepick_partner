@@ -92,7 +92,11 @@
           <div>확인하세요</div>
         </div>
         <div class="right">
-          <img src="../../../assets/signin/app_icon.png" alt="icon" />
+          <a
+            href="https://play.google.com/store/apps/details?id=com.nicepick.nicepick_android"
+          >
+            <img src="../../../assets/signin/app_icon.png" alt="icon" />
+          </a>
         </div>
       </div>
     </div>

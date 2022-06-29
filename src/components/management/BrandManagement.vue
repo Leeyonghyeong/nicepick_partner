@@ -1,7 +1,12 @@
 <template>
-  <MobileHeader title="브랜드 정보관리" :cart="false" :back="false" />
+  <MobileHeader title="브랜드 관리" :cart="false" :back="false" />
   <Header />
   <main>
+    <!-- mobile menu tab -->
+    <div class="m-menu-tab">
+      <div class="active">브랜드 관리</div>
+      <div @click="router.push('/management/brand/info')">브랜드 정보수정</div>
+    </div>
     <div class="management" v-if="!isLoading">
       <!-- 브랜드 로고 -->
       <!-- mobile -->
@@ -1280,6 +1285,9 @@ getBrandInfo()
 @import '@/scss/main';
 
 @include desktop {
+  .m-menu-tab {
+    display: none;
+  }
   .management {
     .brand-info-input {
       @include pc-container();
@@ -1645,6 +1653,26 @@ getBrandInfo()
 }
 
 @include mobile {
+  .m-menu-tab {
+    display: flex;
+
+    div {
+      height: 60px;
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.8rem;
+      color: #767676;
+      box-sizing: border-box;
+      border-bottom: 1px solid #ededed;
+      &.active {
+        color: $primary;
+        border-bottom: 3px solid $primary;
+        font-weight: bold;
+      }
+    }
+  }
   .management {
     padding: 24px;
 

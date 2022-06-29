@@ -9,6 +9,7 @@ export interface Brand {
   brandPromotion: string
   brandPromotionIcon: string
   isPremium: boolean
+  isUpdate: boolean
   largeCategoryName: string
   smallCategoryName: string
   brandIntroImg: BrandIntroImg[]
@@ -48,4 +49,31 @@ export interface BrandYoutube {
   id: string
   youtubeUrl: string
   youtubeId: string
+}
+
+export interface BrandChangeStatus {
+  id: string
+  year: number
+  newShopCount: number
+  terminationCount: number
+  cancelCount: number
+  changeCount: number
+}
+
+export interface BrandFranchiseStatus {
+  id: string
+  year: number
+  location: string
+  allCount: number
+}
+
+export interface BrandStartCost {
+  id: string
+  membershipFee: string
+  educationFee: string
+  deposit: string
+  etcFee: string
+  totalFee: string
+  interiorFee: string
+  startTotalPrice: string
 }
